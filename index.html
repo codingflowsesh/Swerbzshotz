@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwerbzShots | Capture Every Moment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="SwerbzShots home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 192 152" role="presentation" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="brandCameraBody" x1="96" y1="10" x2="96" y2="140" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#f38ca8"/>
+                <stop offset="0.46" stop-color="#bd6f8d"/>
+                <stop offset="1" stop-color="#102b55"/>
+              </linearGradient>
+              <linearGradient id="brandCameraLens" x1="96" y1="46" x2="96" y2="126" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#b56d8b"/>
+                <stop offset="1" stop-color="#1a315d"/>
+              </linearGradient>
+            </defs>
+            <rect x="14" y="30" width="164" height="108" rx="20" fill="url(#brandCameraBody)"/>
+            <rect x="68" y="10" width="54" height="28" rx="10" fill="url(#brandCameraBody)"/>
+            <rect x="32" y="20" width="24" height="11" rx="5.5" fill="#d67895"/>
+            <rect x="37" y="16" width="14" height="8" rx="3" fill="#f6a0b7"/>
+            <rect x="141" y="44" width="23" height="20" rx="4" fill="#ffffff"/>
+            <rect x="14" y="65" width="49" height="7" rx="3.5" fill="#ffffff"/>
+            <rect x="129" y="65" width="49" height="7" rx="3.5" fill="#ffffff"/>
+            <circle cx="96" cy="87" r="40" fill="url(#brandCameraLens)" stroke="#ffffff" stroke-width="10"/>
+          </svg>
+        </span>
+        <span class="brand-wordmark">
+          <span class="brand-name">SWERBZSHOTS</span>
+        </span>
+      </a>
+
+      <button
+        class="header-nav-toggle"
+        id="headerNavToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="headerNav"
+        aria-label="Open navigation menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="header-nav" id="headerNav" aria-label="Primary">
+        <a class="header-nav-link" href="#top">Home</a>
+        <a class="header-nav-link" href="#featured-work">Portfolio</a>
+        <a class="header-nav-link" href="#pricing">Services</a>
+        <a class="header-nav-link" href="#about">About</a>
+        <a class="header-nav-link" href="#booking">Contact</a>
+        <a class="header-nav-cta" href="#booking">Book a Shoot</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero-section" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy surface-card" id="about">
+          <p class="eyebrow">Timeless imagery for every chapter</p>
+          <p class="hero-kicker">Graduation, portraits, couples, events, and street sessions.</p>
+          <h1>Stories. Beautifully <span class="accent-word">captured.</span></h1>
+          <p class="hero-text">
+            SwerbzShots builds clean, modern galleries with soft light, bold composition, and a
+            polished booking experience that feels easy on mobile.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#booking">Book a Shoot</a>
+            <a class="button button-secondary" href="#featured-work">View Portfolio</a>
+          </div>
+        </div>
+
+        <div class="hero-card surface-card">
+          <div class="photo-placeholder has-image hero-photo">
+            <img
+              src="assets/gallery/graduation/grad-naren-campus.jpg"
+              alt="UCLA graduate standing on campus between the towers in a blue stole."
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Explore</p>
+          <h2>Swipe Through <span class="accent-word">Categories</span></h2>
+          <p>Scroll the showcase cards to find the shoot style that matches your moment.</p>
+        </div>
+
+        <div class="category-track" id="categoryTrack" aria-label="Photography categories"></div>
+
+        <div class="carousel-toolbar carousel-toolbar-categories">
+          <div class="scroll-dots" id="categoryDots" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section featured-work-section" id="featured-work">
+      <div class="container featured-work-shell">
+        <div class="section-heading section-heading-featured">
+          <p class="eyebrow">Featured Work</p>
+          <h2>Portfolio <span class="accent-word">Spotlight</span></h2>
+        </div>
+
+        <div class="featured-carousel">
+          <div class="featured-stage" id="featuredStage" aria-live="polite"></div>
+        </div>
+
+        <div class="featured-summary" aria-live="polite">
+          <p class="featured-summary-session" id="featuredSummarySession">Graduation Session</p>
+          <h3 class="featured-summary-title" id="featuredSummaryTitle">Graduation Story</h3>
+          <button class="button button-primary featured-summary-button" id="featuredSummaryButton" type="button">
+            View Shoot
+          </button>
+        </div>
+
+        <div class="scroll-dots featured-dots" id="featuredDots" aria-label="Featured work slides"></div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Pricing</p>
+          <h2>Session <span class="accent-word">Packages</span></h2>
+          <p>Clean card-based pricing that still feels premium and easy to scan on mobile.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="pricing-card surface-card">
+            <p class="pricing-label">Graduation Session</p>
+            <h3>$185</h3>
+            <ul>
+              <li>45-minute shoot</li>
+              <li>1 outfit change</li>
+              <li>15 edited images</li>
+              <li>Private online gallery</li>
+            </ul>
+            <a class="button button-primary" href="#booking" data-prefill-session="Graduation Session">Choose Graduation</a>
+          </article>
+
+          <article class="pricing-card pricing-card-featured surface-card">
+            <p class="pricing-label">Portrait Session</p>
+            <h3>$250</h3>
+            <ul>
+              <li>1-hour shoot</li>
+              <li>2 looks or locations</li>
+              <li>20 edited images</li>
+              <li>Creative direction included</li>
+            </ul>
+            <a class="button button-primary" href="#booking" data-prefill-session="Portrait Session">Choose Portrait</a>
+          </article>
+
+          <article class="pricing-card surface-card">
+            <p class="pricing-label">Couples Session</p>
+            <h3>$320</h3>
+            <ul>
+              <li>75-minute shoot</li>
+              <li>Planning call</li>
+              <li>30 edited images</li>
+              <li>Location suggestions</li>
+            </ul>
+            <a class="button button-primary" href="#booking" data-prefill-session="Couples Session">Choose Couples</a>
+          </article>
+
+          <article class="pricing-card surface-card">
+            <p class="pricing-label">Event Session</p>
+            <h3>$475</h3>
+            <ul>
+              <li>Up to 2 hours of coverage</li>
+              <li>Timeline support</li>
+              <li>40 edited images</li>
+              <li>Highlights delivered fast</li>
+            </ul>
+            <a class="button button-primary" href="#booking" data-prefill-session="Event Session">Choose Event</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section booking-section" id="booking">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Book a Shoot</p>
+          <h2>Simple <span class="accent-word">Booking</span> Flow</h2>
+          <p>Cleaner step cards, stronger selection states, and a review-style confirmation screen.</p>
+        </div>
+
+        <div class="booking-layout">
+          <aside class="booking-summary-card surface-card">
+            <p class="summary-label">Booking Snapshot</p>
+            <div class="summary-item">
+              <span>Session</span>
+              <strong id="summarySession">Not selected yet</strong>
+            </div>
+            <div class="summary-item">
+              <span>Date &amp; time</span>
+              <strong id="summaryDateTime">Choose a slot</strong>
+            </div>
+            <div class="summary-item">
+              <span>Contact</span>
+              <strong id="summaryContact">Pick a method</strong>
+            </div>
+            <p class="summary-note">Your selections are being stored in a JavaScript object for the fake confirmation flow.</p>
+          </aside>
+
+          <div class="booking-card surface-card">
+            <div class="booking-topline">
+              <p class="pricing-label">Mobile-first booking</p>
+              <span>Easy to swap for real integrations later</span>
+            </div>
+
+            <div class="stepper" aria-label="Booking steps">
+              <div class="step is-active" data-step-indicator="1">
+                <span>1</span>
+                <small>Session</small>
+              </div>
+              <div class="step" data-step-indicator="2">
+                <span>2</span>
+                <small>Date</small>
+              </div>
+              <div class="step" data-step-indicator="3">
+                <span>3</span>
+                <small>Contact</small>
+              </div>
+              <div class="step" data-step-indicator="4">
+                <span>4</span>
+                <small>Confirm</small>
+              </div>
+            </div>
+
+            <section class="booking-step is-active" data-step-panel="1">
+              <h3>Step 1: Choose your session</h3>
+              <p>Tap a session card to lock in the type of shoot you want.</p>
+
+              <div class="option-grid">
+                <button class="option-card" type="button" data-session="Graduation Session" aria-pressed="false">
+                  <span class="photo-placeholder photo-graduation"></span>
+                  <span class="option-copy">
+                    <strong>Graduation Session</strong>
+                    <small>Celebrate a major milestone.</small>
+                  </span>
+                  <span class="option-arrow" aria-hidden="true">&#8250;</span>
+                </button>
+
+                <button class="option-card" type="button" data-session="Portrait Session" aria-pressed="false">
+                  <span class="photo-placeholder photo-portraits"></span>
+                  <span class="option-copy">
+                    <strong>Portrait Session</strong>
+                    <small>Personal branding or lifestyle portraits.</small>
+                  </span>
+                  <span class="option-arrow" aria-hidden="true">&#8250;</span>
+                </button>
+
+                <button class="option-card" type="button" data-session="Couples Session" aria-pressed="false">
+                  <span class="photo-placeholder photo-couples"></span>
+                  <span class="option-copy">
+                    <strong>Couples Session</strong>
+                    <small>Warm storytelling for two.</small>
+                  </span>
+                  <span class="option-arrow" aria-hidden="true">&#8250;</span>
+                </button>
+
+                <button class="option-card" type="button" data-session="Event Session" aria-pressed="false">
+                  <span class="photo-placeholder photo-events"></span>
+                  <span class="option-copy">
+                    <strong>Event Session</strong>
+                    <small>Coverage for gatherings and celebrations.</small>
+                  </span>
+                  <span class="option-arrow" aria-hidden="true">&#8250;</span>
+                </button>
+              </div>
+
+              <p class="form-error" id="sessionError"></p>
+
+              <div class="step-actions">
+                <button class="button button-primary" type="button" data-next-step="2">Continue</button>
+              </div>
+            </section>
+
+            <section class="booking-step" data-step-panel="2">
+              <h3>Step 2: Pick a date and time</h3>
+              <p>Use the placeholder slots for now, then swap this area for Calendly when you go live.</p>
+
+              <div class="slot-preview">
+                <span>Selected time</span>
+                <strong id="slotPreview">No date selected yet</strong>
+              </div>
+
+              <div class="calendar-placeholder">
+                <strong>Calendly Embed Placeholder</strong>
+                <p>Add your inline Calendly widget here when you are ready for live scheduling.</p>
+                <span class="calendar-footnote">Powered by Calendly later</span>
+                <!-- Calendly should handle date/time booking in the live version of this site. -->
+                <!-- After a booking is created in Calendly, Zapier can trigger the rest of the automation flow. -->
+              </div>
+
+              <div class="slot-grid">
+                <button class="slot-button" type="button" data-slot="June 21 at 10:00 AM" aria-pressed="false">June 21 - 10:00 AM</button>
+                <button class="slot-button" type="button" data-slot="June 21 at 2:00 PM" aria-pressed="false">June 21 - 2:00 PM</button>
+                <button class="slot-button" type="button" data-slot="June 22 at 11:30 AM" aria-pressed="false">June 22 - 11:30 AM</button>
+                <button class="slot-button" type="button" data-slot="June 22 at 5:30 PM" aria-pressed="false">June 22 - 5:30 PM</button>
+                <button class="slot-button" type="button" data-slot="June 23 at 1:00 PM" aria-pressed="false">June 23 - 1:00 PM</button>
+                <button class="slot-button" type="button" data-slot="June 24 at 6:00 PM" aria-pressed="false">June 24 - 6:00 PM</button>
+              </div>
+
+              <p class="form-error" id="dateError"></p>
+
+              <div class="step-actions">
+                <button class="button button-secondary" type="button" data-prev-step="1">Back</button>
+                <button class="button button-primary" type="button" data-next-step="3">Continue</button>
+              </div>
+            </section>
+
+            <section class="booking-step" data-step-panel="3">
+              <h3>Step 3: Choose how we should contact you</h3>
+              <p>Pick one method and only that matching input field will appear below.</p>
+
+              <div class="contact-methods">
+                <button class="contact-method-button" type="button" data-method="Instagram" aria-pressed="false">
+                  <strong>Instagram</strong>
+                  <small>@handle DM</small>
+                </button>
+                <button class="contact-method-button" type="button" data-method="Email" aria-pressed="false">
+                  <strong>Email</strong>
+                  <small>Reply by email</small>
+                </button>
+                <button class="contact-method-button" type="button" data-method="Text" aria-pressed="false">
+                  <strong>Text</strong>
+                  <small>Fast reminders</small>
+                </button>
+              </div>
+
+              <div class="contact-fields">
+                <label class="contact-field" data-field="Instagram" hidden>
+                  <span>Instagram handle</span>
+                  <input id="instagramInput" type="text" placeholder="@yourhandle">
+                </label>
+
+                <label class="contact-field" data-field="Email" hidden>
+                  <span>Email address</span>
+                  <input id="emailInput" type="email" placeholder="you@example.com">
+                </label>
+
+                <label class="contact-field" data-field="Text" hidden>
+                  <span>Phone number</span>
+                  <input id="textInput" type="tel" placeholder="(555) 123-4567">
+                </label>
+              </div>
+
+              <p class="form-error" id="contactError"></p>
+
+              <div class="step-actions">
+                <button class="button button-secondary" type="button" data-prev-step="2">Back</button>
+                <button class="button button-primary" id="submitBooking" type="button">Submit Booking</button>
+              </div>
+            </section>
+
+            <section class="booking-step" data-step-panel="4">
+              <div class="confirmation-card">
+                <div class="confirmation-icon" aria-hidden="true">&#10003;</div>
+                <h3>You&apos;re all set.</h3>
+                <p>Your fake booking submission has been captured and summarized below.</p>
+
+                <div class="confirmation-grid">
+                  <div class="confirmation-item">
+                    <span>Selected session</span>
+                    <strong id="confirmSession">-</strong>
+                  </div>
+                  <div class="confirmation-item">
+                    <span>Date and time</span>
+                    <strong id="confirmDateTime">-</strong>
+                  </div>
+                  <div class="confirmation-item">
+                    <span>Contact method</span>
+                    <strong id="confirmMethod">-</strong>
+                  </div>
+                  <div class="confirmation-item">
+                    <span>Contact info</span>
+                    <strong id="confirmInfo">-</strong>
+                  </div>
+                </div>
+
+                <div class="confirmation-next surface-card">
+                  <h4>What&apos;s next?</h4>
+                  <ul>
+                    <li>You would receive a confirmation through your chosen contact method.</li>
+                    <li>The shoot would be added to your calendar workflow.</li>
+                    <li>The lead details could be passed into your automation stack.</li>
+                  </ul>
+                </div>
+
+                <p class="confirmation-note">
+                  In a live setup, this is where your booking would continue into notifications and calendar automation.
+                </p>
+
+                <div class="step-actions">
+                  <button class="button button-secondary" type="button" id="startOver">Book Another Shoot</button>
+                  <a class="button button-primary" href="#top">Back to Home</a>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div
+    class="shoot-modal"
+    id="shootModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="shootModalSession"
+    hidden
+  >
+    <section class="shoot-modal-panel" id="shootModalPanel" tabindex="-1">
+      <header class="shoot-modal-header">
+        <div class="shoot-modal-header-copy">
+          <h2 class="shoot-modal-session" id="shootModalSession">Graduation Session</h2>
+        </div>
+
+        <button class="shoot-modal-close" id="shootModalClose" type="button" aria-label="Close shoot gallery">
+          <span aria-hidden="true">&#10005;</span>
+        </button>
+      </header>
+
+      <div class="shoot-modal-body" id="shootModalBody">
+        <div class="shoot-modal-gallery">
+          <div class="shoot-modal-viewer-card">
+            <div class="shoot-modal-viewer" id="shootModalViewer">
+              <img class="shoot-modal-main-image" id="shootModalImage" src="" alt="">
+            </div>
+
+            <div class="shoot-modal-gallery-nav">
+              <button class="shoot-modal-arrow" id="shootModalPrev" type="button" aria-label="Show previous gallery image">
+                <span aria-hidden="true">&#10094;</span>
+              </button>
+
+              <div class="shoot-modal-thumbnails" id="shootModalThumbs" aria-label="Shoot gallery thumbnails"></div>
+
+              <button class="shoot-modal-arrow" id="shootModalNext" type="button" aria-label="Show next gallery image">
+                <span aria-hidden="true">&#10095;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <a class="mobile-book-button" href="#booking">Book a Shoot</a>
+
+  <script src="script.js"></script>
+</body>
+</html>
