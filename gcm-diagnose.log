@@ -1,0 +1,250 @@
+﻿Diagnose log at 2026-06-17T04:16:57Z
+
+AppPath: C:\Program Files\Git\mingw64\bin\git-credential-manager.exe
+InstallDir: C:\Program Files\Git\mingw64\bin\
+Version: 2.7.0+d1dd8a4ded75a2b1faae653157ac1699609442ad
+
+------------
+Diagnostic: Environment
+Skipped: False
+Success: True
+Exception: None
+Log:
+OSType: Windows
+OSVersion: 10.0 (build 26200)
+Reading environment variables... OK
+ Variables:
+OneDriveConsumer=C:\Users\tomhr\OneDrive
+PIP_DISABLE_PIP_VERSION_CHECK=1
+MSYSTEM=MINGW64
+ProgramW6432=C:\Program Files
+PAGER=more.com
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 186 Stepping 3, GenuineIntel
+EFC_10784_1262719628=1
+TMP=C:\Users\tomhr\AppData\Local\Temp
+CODEX_INTERNAL_ORIGINATOR_OVERRIDE=codex_vscode
+DriverData=C:\Windows\System32\Drivers\DriverData
+PATHEXT=.BAT;.CMD;.COM;.EXE;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+ProgramData=C:\ProgramData
+RUST_LOG=warn
+VSCODE_CWD=C:\Users\tomhr\AppData\Local\Programs\Microsoft VS Code
+USERPROFILE=C:\Users\tomhr
+EFC_10784_2283032206=1
+PROCESSOR_REVISION=ba03
+CARGO_NET_OFFLINE=true
+TEMP=C:\Users\tomhr\AppData\Local\Temp
+FPS_BROWSER_APP_PROFILE_STRING=Internet Explorer
+FPS_BROWSER_USER_PROFILE_STRING=Default
+LOGONSERVER=\\TOMSLAPTOP
+TERM=xterm-256color
+USERNAME=tomhr
+SystemRoot=C:\WINDOWS
+CHROME_CRASHPAD_PIPE_NAME=\\.\pipe\crashpad_14164_CNIODNGGBAIMKSOO
+CODEX_THREAD_ID=019ec398-1279-76e2-905b-3c3f820d31a1
+PLINK_PROTOCOL=ssh
+EFC_10784_3789132940=1
+LESS=
+OneDrive=C:\Users\tomhr\OneDrive
+PATH=C:/Program Files/Git/mingw64/libexec/git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\tomhr\bin;C:\Users\tomhr\.sbx-denybin;C:\Users\tomhr\.codex\tmp\arg0\codex-arg06bswQM;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\tomhr\AppData\Local\Microsoft\WindowsApps;C:\Users\tomhr\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\tomhr\AppData\Local\Programs\cursor\resources\app\bin;c:\Users\tomhr\.vscode\extensions\openai.chatgpt-26.609.30741-win32-x64\bin\windows-x86_64
+GIT_HTTP_PROXY=http://127.0.0.1:9
+CommonProgramFiles=C:\Program Files\Common Files
+windir=C:\WINDOWS
+NPM_CONFIG_OFFLINE=true
+PROCESSOR_LEVEL=6
+DEBUG=release
+LC_CTYPE=C.UTF-8
+HOMEPATH=\Users\tomhr
+PIP_NO_INDEX=1
+COMPUTERNAME=TOMSLAPTOP
+VSCODE_NLS_CONFIG={"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"C:\\Users\\tomhr\\AppData\\Local\\Programs\\Microsoft VS Code\\6928394f91\\resources\\app\\out\\nls.messages.json","locale":"en-us","availableLanguages":{}}
+CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+VSCODE_HANDLES_UNCAUGHT_ERRORS=true
+GIT_ALLOW_PROTOCOLS=
+ALLUSERSPROFILE=C:\ProgramData
+CommonProgramW6432=C:\Program Files\Common Files
+EFC_10784_1592913036=1
+VSCODE_ESM_ENTRYPOINT=vs/workbench/api/node/extensionHostProcess
+ProgramFiles(x86)=C:\Program Files (x86)
+GIT_EXEC_PATH=C:/Program Files/Git/mingw64/libexec/git-core
+SBX_NONET_ACTIVE=1
+GIT_HTTPS_PROXY=http://127.0.0.1:9
+PROCESSOR_ARCHITECTURE=AMD64
+SESSIONNAME=Console
+EFC_10784_4126798990=1
+HOMEDRIVE=C:
+VSCODE_PID=14164
+VSCODE_CRASH_REPORTER_PROCESS_TYPE=extensionHost
+GIT_TRACE2_PARENT_SID=554d555c-8498-466d-9a6c-9a8bc2d46df2
+EFC_10784_2775293581=1
+NUMBER_OF_PROCESSORS=12
+OS=Windows_NT
+ZES_ENABLE_SYSMAN=1
+NO_PROXY=localhost,127.0.0.1,::1
+ProgramFiles=C:\Program Files
+ComSpec=C:\WINDOWS\system32\cmd.exe
+USERDOMAIN_ROAMINGPROFILE=TOMSLAPTOP
+SystemDrive=C:
+HOME=C:\Users\tomhr
+VSCODE_IPC_HOOK=\\.\pipe\17454f82-1.124.2-main-sock
+CODEX_SANDBOX_NETWORK_DISABLED=1
+ELECTRON_RUN_AS_NODE=1
+PSModulePath=C:\Users\tomhr\OneDrive\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+TMPDIR=C:\Users\tomhr\AppData\Local\Temp
+APPDATA=C:\Users\tomhr\AppData\Roaming
+USERDOMAIN=TOMSLAPTOP
+GIT_SSH_COMMAND=cmd /c exit 1
+LOCALAPPDATA=C:\Users\tomhr\AppData\Local
+HTTPS_PROXY=http://127.0.0.1:9
+ALL_PROXY=http://127.0.0.1:9
+GIT_PAGER=more.com
+COLORTERM=truecolor
+VSCODE_CODE_CACHE_PATH=C:\Users\tomhr\AppData\Roaming\Code\CachedData\6928394f91b684055b873eecb8bc281365131f1c
+PUBLIC=C:\Users\Public
+HTTP_PROXY=http://127.0.0.1:9
+
+
+------------
+Diagnostic: File system
+Skipped: False
+Success: True
+Exception: None
+Log:
+Temporary directory is 'C:\Users\tomhr\AppData\Local\Temp\'...
+Checking basic file I/O...
+Writing to temporary file 'C:\Users\tomhr\AppData\Local\Temp\89c347c8b49138c815cee43a'... OK
+Reading from temporary file 'C:\Users\tomhr\AppData\Local\Temp\89c347c8b49138c815cee43a'... OK
+Deleting temporary file 'C:\Users\tomhr\AppData\Local\Temp\89c347c8b49138c815cee43a'... OK
+Testing IFileSystem instance...
+UserHomePath: C:\Users\tomhr
+UserDataDirectoryPath: C:\Users\tomhr\.gcm
+GetCurrentDirectory(): C:\Users\tomhr\OneDrive\Desktop\Photography Website
+
+------------
+Diagnostic: Networking
+Skipped: False
+Success: False
+Exception:
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 127.0.0.1:9
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at GitCredentialManager.Diagnostics.NetworkingDiagnostic.<RunInternalAsync>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at GitCredentialManager.Diagnostics.Diagnostic.<RunAsync>d__6.MoveNext()
+Log:
+Checking networking and HTTP stack...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com...Sending HEAD request to https://example.com... warning: HEAD request failed
+Sending HEAD request to http://httpforever.com...
+------------
+Diagnostic: Git
+Skipped: False
+Success: True
+Exception: None
+Log:
+Getting Git version... OK
+Git version is '2.53.0.windows.1'
+Locating current repository...Git repository at 'C:/Users/tomhr/OneDrive/Desktop/Photography Website/.git'
+ OK
+Listing all Git configuration... OK
+Git configuration:
+file:C:/Program Files/Git/etc/gitconfig	diff.astextplain.textconv=astextplain
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.clean=git-lfs clean -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.smudge=git-lfs smudge -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.process=git-lfs filter-process
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.required=true
+file:C:/Program Files/Git/etc/gitconfig	http.sslbackend=schannel
+file:C:/Program Files/Git/etc/gitconfig	core.autocrlf=true
+file:C:/Program Files/Git/etc/gitconfig	core.fscache=true
+file:C:/Program Files/Git/etc/gitconfig	core.symlinks=false
+file:C:/Program Files/Git/etc/gitconfig	pull.rebase=false
+file:C:/Program Files/Git/etc/gitconfig	credential.helper=manager
+file:C:/Program Files/Git/etc/gitconfig	credential.https://dev.azure.com.usehttppath=true
+file:C:/Program Files/Git/etc/gitconfig	init.defaultbranch=master
+file:C:/Users/tomhr/.gitconfig	user.name=Tom Hernandez
+file:C:/Users/tomhr/.gitconfig	user.email=tomhrrnndz@gmail.com
+file:.git/config	core.repositoryformatversion=0
+file:.git/config	core.filemode=false
+file:.git/config	core.bare=false
+file:.git/config	core.logallrefupdates=true
+file:.git/config	core.symlinks=false
+file:.git/config	core.ignorecase=true
+file:.git/config	remote.origin.url=https://github.com/codingflowsesh/Swerbzshotz.git
+file:.git/config	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+
+
+------------
+Diagnostic: Credential storage
+Skipped: False
+Success: True
+Exception: None
+Log:
+ICredentialStore instance is of type: CredentialStore
+Writing test credential... OK
+Reading test credential... OK
+Deleting test credential... OK
+
+------------
+Diagnostic: Microsoft authentication (AAD/MSA)
+Skipped: False
+Success: False
+Exception:
+System.UnauthorizedAccessException: Access to the path 'C:\Users\tomhr\AppData\Local\.IdentityService' is denied.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.Directory.InternalCreateDirectory(String fullPath, String path, Object dirSecurityObj, Boolean checkHost)
+   at System.IO.Directory.InternalCreateDirectoryHelper(String path, Boolean checkHost)
+   at Microsoft.Identity.Client.Extensions.Msal.CrossPlatLock..ctor(String lockfilePath, Int32 lockFileRetryDelay, Int32 lockFileRetryCount)
+   at Microsoft.Identity.Client.Extensions.Msal.MsalCacheHelper.CreateCrossPlatLock(StorageCreationProperties storageCreationProperties)
+   at Microsoft.Identity.Client.Extensions.Msal.MsalCacheHelper.<CreateAsync>d__23.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at GitCredentialManager.Diagnostics.MicrosoftAuthenticationDiagnostic.<RunInternalAsync>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at GitCredentialManager.Diagnostics.Diagnostic.<RunAsync>d__6.MoveNext()
+Log:
+Broker is not enabled.
+Flow type is: Auto
+Gathering MSAL token cache data... OK
+CacheDirectory: C:\Users\tomhr\AppData\Local\.IdentityService
+CacheFileName: msal.cache
+CacheFilePath: C:\Users\tomhr\AppData\Local\.IdentityService\msal.cache
+Creating cache helper...
+------------
+Diagnostic: GitHub API
+Skipped: False
+Success: False
+Exception:
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 127.0.0.1:9
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at GitHub.GitHubRestApi.<GetMetaInfoAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at GitHub.Diagnostics.GitHubApiDiagnostic.<RunInternalAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at GitCredentialManager.Diagnostics.Diagnostic.<RunAsync>d__6.MoveNext()
+Log:
+Using 'https://github.com/' as API target.
+Querying '/meta' endpoint...

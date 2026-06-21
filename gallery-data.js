@@ -1,0 +1,186 @@
+(function () {
+  const GALLERY_ROOT = "assets/galleries";
+
+  function buildGalleryImages(folder, fileNames) {
+    return fileNames.map((fileName) => `${GALLERY_ROOT}/${folder}/${fileName}`);
+  }
+
+  const galleryDefinitions = [
+    {
+      id: "grad-story-1",
+      title: "Graduation Story I",
+      category: "Graduation",
+      description: "A polished UCLA graduation story featuring solo portraits, family moments, formal campus frames, and a creative black-and-white edit.",
+      folder: "graduation-story-1",
+      files: [
+        "grad1-campus-cover.jpg",
+        "grad1-campus-close.jpg",
+        "grad1-family-portrait.jpg",
+        "grad1-arch-seated.jpg",
+        "grad1-arch-standing.jpg",
+        "grad1-duo-portrait.jpg",
+        "grad1-bw-strip.jpg"
+      ],
+      sessionType: "Graduation Session",
+      badge: "Graduation Gallery",
+      location: "UCLA Campus",
+      dateLabel: "June 2026",
+      meta: "Solo portraits, family frames, and polished campus moments",
+      cardPrompt: "Tap to open Graduation Story I",
+      photoClass: "photo-graduation",
+      coverAlt: "UCLA graduate standing in a blue stole during a campus portrait."
+    },
+    {
+      id: "grad-story-2",
+      title: "Graduation Story II",
+      category: "Graduation",
+      description: "A UCLA graduation story featuring fountain portraits, diploma moments, ceremony candids, and a polished duo frame.",
+      folder: "graduation-story-2",
+      files: [
+        "grad2-fountain-cover.jpg",
+        "grad2-diploma-banner.jpg",
+        "grad2-fountain-standing.jpg",
+        "grad2-indoor-close.jpg",
+        "grad2-ceremony-close.jpg",
+        "grad2-ceremony-wide.jpg",
+        "grad2-ceremony-walk.jpg",
+        "grad2-duo-portrait.jpg"
+      ],
+      sessionType: "Graduation Session",
+      badge: "Graduation Gallery",
+      location: "UCLA Campus",
+      dateLabel: "June 2026",
+      meta: "Fountain portraits, diploma frames, and ceremony candids",
+      cardPrompt: "Tap to open Graduation Story II",
+      photoClass: "photo-graduation",
+      coverAlt: "UCLA graduate seated by the fountain in a white dress and blue stole."
+    },
+    {
+      id: "grad-story-3",
+      title: "Graduation Story III",
+      category: "Graduation",
+      description: "A UCLA graduation gallery centered on a polished solo portrait, a celebratory duo frame, and a family milestone moment.",
+      folder: "graduation-story-3",
+      files: [
+        "grad3-portrait-cover.jpg",
+        "grad3-duo-portrait.jpg",
+        "grad3-family-portrait.jpg"
+      ],
+      sessionType: "Graduation Session",
+      badge: "Graduation Gallery",
+      location: "UCLA Commencement",
+      dateLabel: "June 2026",
+      meta: "Solo portrait, duo frame, and family celebration",
+      cardPrompt: "Tap to open Graduation Story III",
+      photoClass: "photo-graduation",
+      coverAlt: "UCLA graduate smiling in a blue stole during a commencement portrait."
+    },
+    {
+      id: "wedding-moments",
+      title: "Wedding Moments",
+      category: "Wedding",
+      description: "An intimate wedding gallery with vows, cake moments, reception energy, and emotional portraits.",
+      folder: "wedding-moments",
+      files: [
+        "couples-vows.jpg",
+        "couples-cake-table.jpg",
+        "couples-first-dance-wide.jpg",
+        "couples-bride-entrance.jpg",
+        "couples-bridal-bouquet.jpg"
+      ],
+      sessionType: "Wedding Session",
+      badge: "Wedding Gallery",
+      location: "Private Estate Reception",
+      dateLabel: "Summer 2026",
+      meta: "Vows, portraits, and reception storytelling",
+      cardPrompt: "Tap to open Wedding Moments",
+      photoClass: "photo-couples",
+      coverAlt: "Bride and groom during an emotional wedding speech."
+    },
+    {
+      id: "floral-details",
+      title: "Floral Details",
+      category: "Details",
+      description: "Editorial detail frames featuring blooms, cake texture, and architectural atmosphere.",
+      folder: "floral-details",
+      files: [
+        "detail-flower-bloom.jpg",
+        "detail-flower-macro.jpg",
+        "detail-cake-closeup.jpg",
+        "detail-archway-scene.jpg"
+      ],
+      sessionType: "Detail Gallery",
+      badge: "Detail Gallery",
+      location: "Mixed Scenes",
+      dateLabel: "Editorial Set",
+      meta: "Florals, cake texture, and architectural atmosphere",
+      cardPrompt: "Tap to open Floral Details",
+      photoClass: "photo-details",
+      coverAlt: "Close detail photograph of a white flower bloom."
+    },
+    {
+      id: "portrait-session",
+      title: "Portrait Session",
+      category: "Portrait",
+      description: "A portrait set built around confident posing, soft rail-side framing, and clean editorial closeups.",
+      folder: "portrait-session",
+      files: [
+        "portrait-rail-fence.jpg",
+        "portrait-platform-walk.jpg",
+        "portrait-bw-over-shoulder.jpg"
+      ],
+      sessionType: "Portrait Session",
+      badge: "Portrait Gallery",
+      location: "Los Angeles",
+      dateLabel: "Portrait Edit",
+      meta: "Lifestyle direction and polished solo portraits",
+      cardPrompt: "Tap to open Portrait Session",
+      photoClass: "photo-portraits",
+      coverAlt: "Portrait subject walking on a train platform."
+    },
+    {
+      id: "creative-ai-edits",
+      title: "Creative AI Edits",
+      category: "Creative",
+      description: "Stylized creative edits and experimental treatments built from real client photographs.",
+      folder: "creative-ai-edits",
+      files: [
+        "grad-diploma-portrait.png",
+        "portrait-photo-strip.jpg",
+        "portrait-bw-over-shoulder.jpg"
+      ],
+      sessionType: "Creative Edit Session",
+      badge: "Creative Gallery",
+      location: "Concept Series",
+      dateLabel: "AI Edit Set",
+      meta: "Stylized treatments and editorial remix work",
+      cardPrompt: "Tap to open Creative AI Edits",
+      photoClass: "photo-portraits",
+      coverAlt: "Stylized creative graduation edit based on a real client portrait."
+    }
+  ];
+
+  const galleries = galleryDefinitions.map((gallery) => {
+    const images = buildGalleryImages(gallery.folder, gallery.files);
+
+    return {
+      id: gallery.id,
+      title: gallery.title,
+      category: gallery.category,
+      description: gallery.description,
+      coverImage: images[0] || "",
+      images,
+      sessionType: gallery.sessionType,
+      badge: gallery.badge,
+      location: gallery.location,
+      dateLabel: gallery.dateLabel,
+      meta: gallery.meta,
+      cardPrompt: gallery.cardPrompt,
+      photoClass: gallery.photoClass,
+      coverAlt: gallery.coverAlt
+    };
+  });
+
+  window.SWERBZ_GALLERIES = galleries;
+  window.SWERBZ_GALLERY_BY_ID = Object.fromEntries(galleries.map((gallery) => [gallery.id, gallery]));
+})();

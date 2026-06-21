@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SwerbzShots | Capture Every Moment</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
 
@@ -16,23 +18,23 @@
           <svg viewBox="0 0 192 152" role="presentation" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="brandCameraBody" x1="96" y1="10" x2="96" y2="140" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#f38ca8"/>
-                <stop offset="0.46" stop-color="#bd6f8d"/>
-                <stop offset="1" stop-color="#102b55"/>
+                <stop offset="0" stop-color="#f38ca8" />
+                <stop offset="0.46" stop-color="#bd6f8d" />
+                <stop offset="1" stop-color="#102b55" />
               </linearGradient>
               <linearGradient id="brandCameraLens" x1="96" y1="46" x2="96" y2="126" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#b56d8b"/>
-                <stop offset="1" stop-color="#1a315d"/>
+                <stop offset="0" stop-color="#b56d8b" />
+                <stop offset="1" stop-color="#1a315d" />
               </linearGradient>
             </defs>
-            <rect x="14" y="30" width="164" height="108" rx="20" fill="url(#brandCameraBody)"/>
-            <rect x="68" y="10" width="54" height="28" rx="10" fill="url(#brandCameraBody)"/>
-            <rect x="32" y="20" width="24" height="11" rx="5.5" fill="#d67895"/>
-            <rect x="37" y="16" width="14" height="8" rx="3" fill="#f6a0b7"/>
-            <rect x="141" y="44" width="23" height="20" rx="4" fill="#ffffff"/>
-            <rect x="14" y="65" width="49" height="7" rx="3.5" fill="#ffffff"/>
-            <rect x="129" y="65" width="49" height="7" rx="3.5" fill="#ffffff"/>
-            <circle cx="96" cy="87" r="40" fill="url(#brandCameraLens)" stroke="#ffffff" stroke-width="10"/>
+            <rect x="14" y="30" width="164" height="108" rx="20" fill="url(#brandCameraBody)" />
+            <rect x="68" y="10" width="54" height="28" rx="10" fill="url(#brandCameraBody)" />
+            <rect x="32" y="20" width="24" height="11" rx="5.5" fill="#d67895" />
+            <rect x="37" y="16" width="14" height="8" rx="3" fill="#f6a0b7" />
+            <rect x="141" y="44" width="23" height="20" rx="4" fill="#ffffff" />
+            <rect x="14" y="65" width="49" height="7" rx="3.5" fill="#ffffff" />
+            <rect x="129" y="65" width="49" height="7" rx="3.5" fill="#ffffff" />
+            <circle cx="96" cy="87" r="40" fill="url(#brandCameraLens)" stroke="#ffffff" stroke-width="10" />
           </svg>
         </span>
         <span class="brand-wordmark">
@@ -40,25 +42,21 @@
         </span>
       </a>
 
-      <button
-        class="header-nav-toggle"
-        id="headerNavToggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="headerNav"
-        aria-label="Open navigation menu"
-      >
+      <button class="header-nav-toggle" id="headerNavToggle" type="button" aria-expanded="false"
+        aria-controls="headerNav" aria-label="Open navigation menu">
         <span></span>
         <span></span>
         <span></span>
       </button>
 
       <nav class="header-nav" id="headerNav" aria-label="Primary">
-        <a class="header-nav-link" href="#top">Home</a>
-        <a class="header-nav-link" href="#featured-work">Portfolio</a>
-        <a class="header-nav-link" href="#pricing">Services</a>
-        <a class="header-nav-link" href="#about">About</a>
-        <a class="header-nav-link" href="#booking">Contact</a>
+        <div class="header-nav-links">
+          <a class="header-nav-link" href="#top">Home</a>
+          <a class="header-nav-link" href="#about">About</a>
+          <a class="header-nav-link" href="#featured-work">Portfolio</a>
+          <a class="header-nav-link" href="#pricing">Services</a>
+          <a class="header-nav-link" href="#booking">Contact</a>
+        </div>
         <a class="header-nav-cta" href="#booking">Book a Shoot</a>
       </nav>
     </div>
@@ -67,27 +65,78 @@
   <main id="main-content">
     <section class="hero-section" id="top">
       <div class="container hero-grid">
-        <div class="hero-copy surface-card" id="about">
+        <div class="hero-copy surface-card">
           <p class="eyebrow">Timeless imagery for every chapter</p>
-          <p class="hero-kicker">Graduation, portraits, couples, events, and street sessions.</p>
-          <h1>Stories. Beautifully <span class="accent-word">captured.</span></h1>
-          <p class="hero-text">
-            SwerbzShots builds clean, modern galleries with soft light, bold composition, and a
-            polished booking experience that feels easy on mobile.
-          </p>
+          <h1>
+            <span class="hero-line">YOUR STORY.</span>
+            <span class="hero-line">BEAUTIFULLY</span>
+            <span class="hero-line accent-word">CAPTURED.</span>
+          </h1>
+          <p class="hero-text">Modern photography for milestones, memories, and moments worth keeping.</p>
 
           <div class="hero-actions">
-            <a class="button button-primary" href="#booking">Book a Shoot</a>
+            <a class="button button-primary hero-primary-cta" href="#booking">Book a Shoot</a>
             <a class="button button-secondary" href="#featured-work">View Portfolio</a>
           </div>
         </div>
 
-        <div class="hero-card surface-card">
+        <div class="hero-card">
           <div class="photo-placeholder has-image hero-photo">
-            <img
-              src="assets/gallery/graduation/grad-naren-campus.jpg"
-              alt="UCLA graduate standing on campus between the towers in a blue stole."
-            />
+            <img src="assets/gallery/graduation/grad-naren-campus.jpg"
+              alt="UCLA graduate standing on campus between the towers in a blue stole." />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section trust-section" id="about">
+      <div class="container trust-shell">
+        <div class="trust-panel" aria-label="Studio values">
+          <div class="trust-features">
+            <article class="trust-feature">
+              <span class="trust-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation">
+                  <path d="M12 20s-6.7-4.1-8.4-8.3A4.9 4.9 0 0 1 12 6.6a4.9 4.9 0 0 1 8.4 5.1C18.7 15.9 12 20 12 20Z">
+                  </path>
+                </svg>
+              </span>
+              <div class="trust-feature-copy">
+                <h3>Authentic Moments</h3>
+                <p>Real emotions,<br>real stories.</p>
+              </div>
+            </article>
+
+            <article class="trust-feature">
+              <span class="trust-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation">
+                  <path d="M4.5 8.5h15"></path>
+                  <path d="M7.4 8.5 8.7 5.7h6.6l1.3 2.8"></path>
+                  <rect x="4.5" y="8.5" width="15" height="10" rx="2.4"></rect>
+                  <circle cx="12" cy="13.5" r="2.9"></circle>
+                </svg>
+              </span>
+              <div class="trust-feature-copy">
+                <h3>Professional Quality</h3>
+                <p>Excellence in<br>every frame.</p>
+              </div>
+            </article>
+
+            <article class="trust-feature">
+              <span class="trust-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="presentation">
+                  <circle cx="11" cy="11" r="6.6"></circle>
+                  <path d="M11 7.8v3.6l2.4 1.7"></path>
+                  <path d="M16.2 16.2 18.8 18.8"></path>
+                  <path d="M16.2 7.4h2.6v2.6"></path>
+                  <path d="M15.7 18.6h4"></path>
+                  <path d="M17.7 16.6v4"></path>
+                </svg>
+              </span>
+              <div class="trust-feature-copy">
+                <h3>Timeless Memories</h3>
+                <p>Captured to last<br>a lifetime.</p>
+              </div>
+            </article>
           </div>
         </div>
       </div>
@@ -114,21 +163,27 @@
         <div class="section-heading section-heading-featured">
           <p class="eyebrow">Featured Work</p>
           <h2>Portfolio <span class="accent-word">Spotlight</span></h2>
+          <p>Tap through the featured gallery stack to preview real sessions and open the full shoot.</p>
         </div>
 
         <div class="featured-carousel">
-          <div class="featured-stage" id="featuredStage" aria-live="polite"></div>
+          <div class="featured-stage" id="featuredStage" tabindex="0" role="region"
+            aria-label="Featured work spotlight"></div>
         </div>
 
         <div class="featured-summary" aria-live="polite">
-          <p class="featured-summary-session" id="featuredSummarySession">Graduation Session</p>
-          <h3 class="featured-summary-title" id="featuredSummaryTitle">Graduation Story</h3>
+          <p class="featured-summary-session" id="featuredSummarySession"></p>
+          <h3 class="featured-summary-title" id="featuredSummaryTitle"></h3>
+          <div class="featured-summary-bubbles">
+            <span class="featured-summary-bubble" id="featuredSummaryLocation"></span>
+            <span class="featured-summary-bubble" id="featuredSummaryDate"></span>
+          </div>
           <button class="button button-primary featured-summary-button" id="featuredSummaryButton" type="button">
             View Shoot
           </button>
         </div>
 
-        <div class="scroll-dots featured-dots" id="featuredDots" aria-label="Featured work slides"></div>
+        <div class="scroll-dots featured-dots" id="featuredDots" aria-label="Featured work navigation"></div>
       </div>
     </section>
 
@@ -137,7 +192,6 @@
         <div class="section-heading">
           <p class="eyebrow">Pricing</p>
           <h2>Session <span class="accent-word">Packages</span></h2>
-          <p>Clean card-based pricing that still feels premium and easy to scan on mobile.</p>
         </div>
 
         <div class="pricing-grid">
@@ -150,7 +204,8 @@
               <li>15 edited images</li>
               <li>Private online gallery</li>
             </ul>
-            <a class="button button-primary" href="#booking" data-prefill-session="Graduation Session">Choose Graduation</a>
+            <a class="button button-primary" href="#booking" data-prefill-session="Graduation Session">Choose
+              Graduation</a>
           </article>
 
           <article class="pricing-card pricing-card-featured surface-card">
@@ -197,7 +252,7 @@
         <div class="section-heading">
           <p class="eyebrow">Book a Shoot</p>
           <h2>Simple <span class="accent-word">Booking</span> Flow</h2>
-          <p>Cleaner step cards, stronger selection states, and a review-style confirmation screen.</p>
+          <p>Choose a session, pick a time, and send your details in a clear, easy-to-follow flow.</p>
         </div>
 
         <div class="booking-layout">
@@ -215,13 +270,14 @@
               <span>Contact</span>
               <strong id="summaryContact">Pick a method</strong>
             </div>
-            <p class="summary-note">Your selections are being stored in a JavaScript object for the fake confirmation flow.</p>
           </aside>
 
           <div class="booking-card surface-card">
             <div class="booking-topline">
-              <p class="pricing-label">Mobile-first booking</p>
-              <span>Easy to swap for real integrations later</span>
+              <div class="booking-topline-copy">
+                <p class="pricing-label">Step-by-step booking</p>
+                <strong class="booking-step-status" id="bookingStepStatus">Step 1 of 4 - Session</strong>
+              </div>
             </div>
 
             <div class="stepper" aria-label="Booking steps">
@@ -249,7 +305,10 @@
 
               <div class="option-grid">
                 <button class="option-card" type="button" data-session="Graduation Session" aria-pressed="false">
-                  <span class="photo-placeholder photo-graduation"></span>
+                  <span class="photo-placeholder has-image photo-graduation">
+                    <img src="assets/gallery/graduation/grad-janine-fountain.jpg"
+                      alt="Graduation portrait session preview near the UCLA fountain" loading="lazy">
+                  </span>
                   <span class="option-copy">
                     <strong>Graduation Session</strong>
                     <small>Celebrate a major milestone.</small>
@@ -258,7 +317,10 @@
                 </button>
 
                 <button class="option-card" type="button" data-session="Portrait Session" aria-pressed="false">
-                  <span class="photo-placeholder photo-portraits"></span>
+                  <span class="photo-placeholder has-image photo-portraits">
+                    <img src="assets/galleries/portrait-session/portrait-platform-walk.jpg" alt="Portrait session preview"
+                      loading="lazy">
+                  </span>
                   <span class="option-copy">
                     <strong>Portrait Session</strong>
                     <small>Personal branding or lifestyle portraits.</small>
@@ -267,7 +329,9 @@
                 </button>
 
                 <button class="option-card" type="button" data-session="Couples Session" aria-pressed="false">
-                  <span class="photo-placeholder photo-couples"></span>
+                  <span class="photo-placeholder has-image photo-couples">
+                    <img src="assets/gallery/couples/couples-vows.jpg" alt="Couples session preview" loading="lazy">
+                  </span>
                   <span class="option-copy">
                     <strong>Couples Session</strong>
                     <small>Warm storytelling for two.</small>
@@ -276,7 +340,10 @@
                 </button>
 
                 <button class="option-card" type="button" data-session="Event Session" aria-pressed="false">
-                  <span class="photo-placeholder photo-events"></span>
+                  <span class="photo-placeholder has-image photo-events">
+                    <img src="assets/gallery/events/event-poolside-candid.jpg" alt="Event session preview"
+                      loading="lazy">
+                  </span>
                   <span class="option-copy">
                     <strong>Event Session</strong>
                     <small>Coverage for gatherings and celebrations.</small>
@@ -294,28 +361,28 @@
 
             <section class="booking-step" data-step-panel="2">
               <h3>Step 2: Pick a date and time</h3>
-              <p>Use the placeholder slots for now, then swap this area for Calendly when you go live.</p>
+              <p>Choose the time that feels closest to your ideal session window.</p>
 
               <div class="slot-preview">
                 <span>Selected time</span>
                 <strong id="slotPreview">No date selected yet</strong>
               </div>
 
-              <div class="calendar-placeholder">
-                <strong>Calendly Embed Placeholder</strong>
-                <p>Add your inline Calendly widget here when you are ready for live scheduling.</p>
-                <span class="calendar-footnote">Powered by Calendly later</span>
-                <!-- Calendly should handle date/time booking in the live version of this site. -->
-                <!-- After a booking is created in Calendly, Zapier can trigger the rest of the automation flow. -->
-              </div>
+
 
               <div class="slot-grid">
-                <button class="slot-button" type="button" data-slot="June 21 at 10:00 AM" aria-pressed="false">June 21 - 10:00 AM</button>
-                <button class="slot-button" type="button" data-slot="June 21 at 2:00 PM" aria-pressed="false">June 21 - 2:00 PM</button>
-                <button class="slot-button" type="button" data-slot="June 22 at 11:30 AM" aria-pressed="false">June 22 - 11:30 AM</button>
-                <button class="slot-button" type="button" data-slot="June 22 at 5:30 PM" aria-pressed="false">June 22 - 5:30 PM</button>
-                <button class="slot-button" type="button" data-slot="June 23 at 1:00 PM" aria-pressed="false">June 23 - 1:00 PM</button>
-                <button class="slot-button" type="button" data-slot="June 24 at 6:00 PM" aria-pressed="false">June 24 - 6:00 PM</button>
+                <button class="slot-button" type="button" data-slot="June 21 at 10:00 AM" aria-pressed="false">June 21 -
+                  10:00 AM</button>
+                <button class="slot-button" type="button" data-slot="June 21 at 2:00 PM" aria-pressed="false">June 21 -
+                  2:00 PM</button>
+                <button class="slot-button" type="button" data-slot="June 22 at 11:30 AM" aria-pressed="false">June 22 -
+                  11:30 AM</button>
+                <button class="slot-button" type="button" data-slot="June 22 at 5:30 PM" aria-pressed="false">June 22 -
+                  5:30 PM</button>
+                <button class="slot-button" type="button" data-slot="June 23 at 1:00 PM" aria-pressed="false">June 23 -
+                  1:00 PM</button>
+                <button class="slot-button" type="button" data-slot="June 24 at 6:00 PM" aria-pressed="false">June 24 -
+                  6:00 PM</button>
               </div>
 
               <p class="form-error" id="dateError"></p>
@@ -327,17 +394,21 @@
             </section>
 
             <section class="booking-step" data-step-panel="3">
-              <h3>Step 3: Choose how we should contact you</h3>
-              <p>Pick one method and only that matching input field will appear below.</p>
+              <h3>Step 3: Add your confirmation email</h3>
+              <p>Enter the email where the booking confirmation should be sent, then choose the best follow-up method
+                below.</p>
+
+              <label class="contact-field contact-field-static">
+                <span>Confirmation email</span>
+                <small class="contact-field-hint">This email receives your booking confirmation; choose a follow-up
+                  method below if you want text or DM updates.</small>
+                <input id="confirmationEmailInput" type="email" placeholder="you@example.com" autocomplete="email">
+              </label>
 
               <div class="contact-methods">
                 <button class="contact-method-button" type="button" data-method="Instagram" aria-pressed="false">
                   <strong>Instagram</strong>
                   <small>@handle DM</small>
-                </button>
-                <button class="contact-method-button" type="button" data-method="Email" aria-pressed="false">
-                  <strong>Email</strong>
-                  <small>Reply by email</small>
                 </button>
                 <button class="contact-method-button" type="button" data-method="Text" aria-pressed="false">
                   <strong>Text</strong>
@@ -349,11 +420,6 @@
                 <label class="contact-field" data-field="Instagram" hidden>
                   <span>Instagram handle</span>
                   <input id="instagramInput" type="text" placeholder="@yourhandle">
-                </label>
-
-                <label class="contact-field" data-field="Email" hidden>
-                  <span>Email address</span>
-                  <input id="emailInput" type="email" placeholder="you@example.com">
                 </label>
 
                 <label class="contact-field" data-field="Text" hidden>
@@ -374,7 +440,7 @@
               <div class="confirmation-card">
                 <div class="confirmation-icon" aria-hidden="true">&#10003;</div>
                 <h3>You&apos;re all set.</h3>
-                <p>Your fake booking submission has been captured and summarized below.</p>
+                <p>Your request has been received. Here&apos;s what happens next.</p>
 
                 <div class="confirmation-grid">
                   <div class="confirmation-item">
@@ -390,23 +456,22 @@
                     <strong id="confirmMethod">-</strong>
                   </div>
                   <div class="confirmation-item">
+                    <span>Confirmation email</span>
+                    <strong id="confirmEmail">-</strong>
+                  </div>
+                  <div class="confirmation-item">
                     <span>Contact info</span>
                     <strong id="confirmInfo">-</strong>
                   </div>
                 </div>
 
                 <div class="confirmation-next surface-card">
-                  <h4>What&apos;s next?</h4>
+                  <h4>What&apos;s Next</h4>
                   <ul>
-                    <li>You would receive a confirmation through your chosen contact method.</li>
-                    <li>The shoot would be added to your calendar workflow.</li>
-                    <li>The lead details could be passed into your automation stack.</li>
+                    <li>You will receive a confirmation through your chosen contact method.</li>
+                    <li>SwerbzShots will get in touch to confirm details and finalize your shoot.</li>
                   </ul>
                 </div>
-
-                <p class="confirmation-note">
-                  In a live setup, this is where your booking would continue into notifications and calendar automation.
-                </p>
 
                 <div class="step-actions">
                   <button class="button button-secondary" type="button" id="startOver">Book Another Shoot</button>
@@ -420,14 +485,7 @@
     </section>
   </main>
 
-  <div
-    class="shoot-modal"
-    id="shootModal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="shootModalSession"
-    hidden
-  >
+  <div class="shoot-modal" id="shootModal" role="dialog" aria-modal="true" aria-labelledby="shootModalSession" hidden>
     <section class="shoot-modal-panel" id="shootModalPanel" tabindex="-1">
       <header class="shoot-modal-header">
         <div class="shoot-modal-header-copy">
@@ -447,7 +505,8 @@
             </div>
 
             <div class="shoot-modal-gallery-nav">
-              <button class="shoot-modal-arrow" id="shootModalPrev" type="button" aria-label="Show previous gallery image">
+              <button class="shoot-modal-arrow" id="shootModalPrev" type="button"
+                aria-label="Show previous gallery image">
                 <span aria-hidden="true">&#10094;</span>
               </button>
 
@@ -465,6 +524,8 @@
 
   <a class="mobile-book-button" href="#booking">Book a Shoot</a>
 
+  <script src="gallery-data.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>
