@@ -272,7 +272,12 @@
             </div>
           </aside>
 
-          <div class="booking-card surface-card">
+          <form id="bookingForm" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="booking-card surface-card">
+            <input type="hidden" name="form-name" value="booking" />
+            <input type="hidden" id="bookingSessionType" name="sessionType" value="" />
+            <input type="hidden" id="bookingDateTime" name="dateTime" value="" />
+            <input type="hidden" id="bookingPreferredContactMethod" name="preferredContactMethod" value="" />
+            <input type="text" name="bot-field" hidden />
             <div class="booking-topline">
               <div class="booking-topline-copy">
                 <p class="pricing-label">Step-by-step booking</p>
@@ -399,10 +404,15 @@
                 below.</p>
 
               <label class="contact-field contact-field-static">
+                <span>Full name</span>
+                <input id="fullNameInput" name="fullName" type="text" placeholder="Your full name" autocomplete="name">
+              </label>
+
+              <label class="contact-field contact-field-static">
                 <span>Confirmation email</span>
                 <small class="contact-field-hint">This email receives your booking confirmation; choose a follow-up
                   method below if you want text or DM updates.</small>
-                <input id="confirmationEmailInput" type="email" placeholder="you@example.com" autocomplete="email">
+                <input id="confirmationEmailInput" name="confirmationEmail" type="email" placeholder="you@example.com" autocomplete="email">
               </label>
 
               <div class="contact-methods">
@@ -419,14 +429,20 @@
               <div class="contact-fields">
                 <label class="contact-field" data-field="Instagram" hidden>
                   <span>Instagram handle</span>
-                  <input id="instagramInput" type="text" placeholder="@yourhandle">
+                  <input id="instagramInput" name="preferredContactValue" type="text" placeholder="@yourhandle">
                 </label>
 
                 <label class="contact-field" data-field="Text" hidden>
                   <span>Phone number</span>
-                  <input id="textInput" type="tel" placeholder="(555) 123-4567">
+                  <input id="textInput" name="preferredContactValue" type="tel" placeholder="(555) 123-4567">
                 </label>
               </div>
+
+              <label class="contact-field contact-field-static">
+                <span>Session notes</span>
+                <small class="contact-field-hint">Tell us about your vision — locations, outfit ideas, lighting, or any details that matter.</small>
+                <textarea id="shootNotesInput" name="shootNotes" placeholder="Add your session details here..."></textarea>
+              </label>
 
               <p class="form-error" id="contactError"></p>
 
@@ -479,7 +495,7 @@
                 </div>
               </div>
             </section>
-          </div>
+          </form>
         </div>
       </div>
     </section>
@@ -523,6 +539,18 @@
   </div>
 
   <a class="mobile-book-button" href="#booking">Book a Shoot</a>
+
+  <form name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="booking" />
+    <input type="text" name="bot-field" />
+    <input type="text" name="fullName" />
+    <input type="text" name="sessionType" />
+    <input type="text" name="dateTime" />
+    <input type="email" name="confirmationEmail" />
+    <input type="text" name="preferredContactMethod" />
+    <input type="text" name="preferredContactValue" />
+    <textarea name="shootNotes"></textarea>
+  </form>
 
   <script src="gallery-data.js"></script>
   <script src="script.js"></script>

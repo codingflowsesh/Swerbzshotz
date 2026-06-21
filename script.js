@@ -85,12 +85,6 @@ const bookingData = {
   contactValue: "",
 };
 
-const bookingConfig = {
-  // Replace this with your live form endpoint or webhook URL.
-  // Example: Formspree, a serverless function, or your backend route.
-  emailEndpoint: "",
-};
-
 const featuredStage = document.getElementById("featuredStage");
 const featuredDots = document.getElementById("featuredDots");
 const featuredSummary = document.querySelector(".featured-summary");
@@ -162,6 +156,14 @@ const confirmationEmailInput = document.getElementById(
 );
 const instagramInput = document.getElementById("instagramInput");
 const textInput = document.getElementById("textInput");
+const fullNameInput = document.getElementById("fullNameInput");
+const shootNotesInput = document.getElementById("shootNotesInput");
+const bookingForm = document.getElementById("bookingForm");
+const bookingSessionInput = document.getElementById("bookingSessionType");
+const bookingDateTimeInput = document.getElementById("bookingDateTime");
+const bookingContactMethodInput = document.getElementById(
+  "bookingPreferredContactMethod",
+);
 
 const confirmSession = document.getElementById("confirmSession");
 const confirmDateTime = document.getElementById("confirmDateTime");
@@ -1046,31 +1048,43 @@ function populateConfirmation() {
   confirmInfo.textContent = bookingData.contactValue;
 }
 
-async function sendBookingConfirmation() {
-  if (!bookingConfig.emailEndpoint) {
-    throw new Error("Booking email endpoint is not configured.");
+function updateBookingFormFields() {
+  if (bookingSessionInput) {
+    bookingSessionInput.value = bookingData.sessionType;
   }
 
-  const payload = {
-    sessionType: bookingData.sessionType,
-    dateTime: bookingData.dateTime,
-    confirmationEmail: bookingData.confirmationEmail,
-    preferredContactMethod: bookingData.contactMethod,
-    preferredContactValue: bookingData.contactValue,
-    submittedAt: new Date().toISOString(),
-  };
+  if (bookingDateTimeInput) {
+    bookingDateTimeInput.value = bookingData.dateTime;
+  }
 
-  const response = await fetch(bookingConfig.emailEndpoint, {
+  if (bookingContactMethodInput) {
+    bookingContactMethodInput.value = bookingData.contactMethod;
+  }
+
+  if (shootNotesInput) {
+    shootNotesInput.value = shootNotesInput.value.trim();
+  }
+}
+
+async function sendBookingConfirmation() {
+  if (!bookingForm) {
+    throw new Error("Booking form is not available.");
+  }
+
+  updateBookingFormFields();
+
+  const formData = new FormData(bookingForm);
+  const response = await fetch("/", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify(payload),
+    body: new URLSearchParams(formData).toString(),
   });
 
   if (!response.ok) {
     throw new Error(
-      `Booking email request failed with status ${response.status}.`,
+      `Booking form submission failed with status ${response.status}.`,
     );
   }
 }
@@ -1770,7 +1784,7 @@ contactMethodButtons.forEach((button) => {
   });
 });
 
-[confirmationEmailInput, instagramInput, textInput].forEach((input) => {
+[confirmationEmailInput, instagramInput, textInput, fullNameInput, shootNotesInput].forEach((input) => {
   input.addEventListener("input", () => {
     bookingData.confirmationEmail = confirmationEmailInput.value.trim();
     bookingData.contactValue = getActiveContactValue().trim();
@@ -1816,9 +1830,8 @@ submitBookingButton.addEventListener("click", async () => {
     showStep(4);
   } catch (error) {
     console.error("Booking confirmation failed:", error);
-    contactError.textContent = bookingConfig.emailEndpoint
-      ? "We couldn't send the confirmation email right now. Please try again in a moment."
-      : "Booking email is not connected yet. Add your live email endpoint in script.js before using this flow.";
+    contactError.textContent =
+      "We couldn't submit your booking request right now. Please try again in a moment.";
   } finally {
     submitBookingButton.disabled = false;
     submitBookingButton.textContent = originalLabel;
