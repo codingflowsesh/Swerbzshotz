@@ -274,9 +274,9 @@
 
           <form id="bookingForm" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="booking-card surface-card">
             <input type="hidden" name="form-name" value="booking" />
-            <input type="hidden" id="bookingSessionType" name="sessionType" value="" />
-            <input type="hidden" id="bookingDateTime" name="dateTime" value="" />
-            <input type="hidden" id="bookingPreferredContactMethod" name="preferredContactMethod" value="" />
+            <input type="hidden" id="bookingSessionType" name="Session Type" value="" />
+            <input type="hidden" id="bookingDateTime" name="Preferred Date/Time" value="" />
+            <input type="hidden" id="bookingPreferredContactMethod" name="Preferred Contact Method" value="" />
             <input type="text" name="bot-field" hidden />
             <div class="booking-topline">
               <div class="booking-topline-copy">
@@ -405,14 +405,14 @@
 
               <label class="contact-field contact-field-static">
                 <span>Full name</span>
-                <input id="fullNameInput" name="fullName" type="text" placeholder="Your full name" autocomplete="name">
+                <input id="fullNameInput" name="Full Name" type="text" placeholder="Your full name" autocomplete="name">
               </label>
 
               <label class="contact-field contact-field-static">
                 <span>Confirmation email</span>
                 <small class="contact-field-hint">This email receives your booking confirmation; choose a follow-up
                   method below if you want text or DM updates.</small>
-                <input id="confirmationEmailInput" name="confirmationEmail" type="email" placeholder="you@example.com" autocomplete="email">
+                <input id="confirmationEmailInput" name="Confirmation Email" type="email" placeholder="you@example.com" autocomplete="email">
               </label>
 
               <div class="contact-methods">
@@ -429,12 +429,12 @@
               <div class="contact-fields">
                 <label class="contact-field" data-field="Instagram" hidden>
                   <span>Instagram handle</span>
-                  <input id="instagramInput" name="preferredContactValue" type="text" placeholder="@yourhandle">
+                  <input id="instagramInput" name="Instagram Handle" type="text" placeholder="@yourhandle">
                 </label>
 
                 <label class="contact-field" data-field="Text" hidden>
                   <span>Phone number</span>
-                  <input id="textInput" name="preferredContactValue" type="tel" placeholder="(555) 123-4567">
+                  <input id="textInput" name="Phone Number" type="tel" placeholder="(555) 123-4567">
                 </label>
               </div>
 
@@ -543,13 +543,14 @@
   <form name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
     <input type="hidden" name="form-name" value="booking" />
     <input type="text" name="bot-field" />
-    <input type="text" name="fullName" />
-    <input type="text" name="sessionType" />
-    <input type="text" name="dateTime" />
-    <input type="email" name="confirmationEmail" />
-    <input type="text" name="preferredContactMethod" />
-    <input type="text" name="preferredContactValue" />
-    <textarea name="shootNotes"></textarea>
+    <input type="text" name="Full Name" />
+    <input type="text" name="Session Type" />
+    <input type="text" name="Preferred Date/Time" />
+    <input type="email" name="Confirmation Email" />
+    <input type="text" name="Preferred Contact Method" />
+    <input type="text" name="Phone Number" />
+    <input type="text" name="Instagram Handle" />
+    <textarea name="Shoot Notes"></textarea>
   </form>
 
   <script src="gallery-data.js"></script>

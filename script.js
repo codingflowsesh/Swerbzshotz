@@ -164,6 +164,8 @@ const bookingDateTimeInput = document.getElementById("bookingDateTime");
 const bookingContactMethodInput = document.getElementById(
   "bookingPreferredContactMethod",
 );
+const bookingPhoneNumberInput = document.createElement("input");
+const bookingInstagramHandleInput = document.createElement("input");
 
 const confirmSession = document.getElementById("confirmSession");
 const confirmDateTime = document.getElementById("confirmDateTime");
