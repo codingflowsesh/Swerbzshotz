@@ -272,7 +272,8 @@
             </div>
           </aside>
 
-          <form id="bookingForm" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="booking-card surface-card">
+          <form id="bookingForm" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field"
+            class="booking-card surface-card">
             <input type="hidden" name="form-name" value="booking" />
             <input type="hidden" id="bookingSessionType" name="Session Type" value="" />
             <input type="hidden" id="bookingDateTime" name="Preferred Date/Time" value="" />
@@ -323,8 +324,8 @@
 
                 <button class="option-card" type="button" data-session="Portrait Session" aria-pressed="false">
                   <span class="photo-placeholder has-image photo-portraits">
-                    <img src="assets/galleries/portrait-session/portrait-platform-walk.jpg" alt="Portrait session preview"
-                      loading="lazy">
+                    <img src="assets/galleries/portrait-session/portrait-platform-walk.jpg"
+                      alt="Portrait session preview" loading="lazy">
                   </span>
                   <span class="option-copy">
                     <strong>Portrait Session</strong>
@@ -412,7 +413,8 @@
                 <span>Confirmation email</span>
                 <small class="contact-field-hint">This email receives your booking confirmation; choose a follow-up
                   method below if you want text or DM updates.</small>
-                <input id="confirmationEmailInput" name="Confirmation Email" type="email" placeholder="you@example.com" autocomplete="email">
+                <input id="confirmationEmailInput" name="Confirmation Email" type="email" placeholder="you@example.com"
+                  autocomplete="email">
               </label>
 
               <div class="contact-methods">
@@ -440,8 +442,10 @@
 
               <label class="contact-field contact-field-static">
                 <span>Session notes</span>
-                <small class="contact-field-hint">Tell us about your vision — locations, outfit ideas, lighting, or any details that matter.</small>
-                <textarea id="shootNotesInput" name="shootNotes" placeholder="Add your session details here..."></textarea>
+                <small class="contact-field-hint">Tell us about your vision — locations, outfit ideas, lighting, or any
+                  details that matter.</small>
+                <textarea id="shootNotesInput" name="shootNotes"
+                  placeholder="Add your session details here..."></textarea>
               </label>
 
               <p class="form-error" id="contactError"></p>
@@ -460,7 +464,11 @@
 
                 <div class="confirmation-grid">
                   <div class="confirmation-item">
-                    <span>Selected session</span>
+                    <span>Full Name</span>
+                    <strong id="confirmName">-</strong>
+                  </div>
+                  <div class="confirmation-item">
+                    <span>Session Type</span>
                     <strong id="confirmSession">-</strong>
                   </div>
                   <div class="confirmation-item">
@@ -468,23 +476,28 @@
                     <strong id="confirmDateTime">-</strong>
                   </div>
                   <div class="confirmation-item">
-                    <span>Contact method</span>
+                    <span>Preferred Contact Method</span>
                     <strong id="confirmMethod">-</strong>
                   </div>
                   <div class="confirmation-item">
-                    <span>Confirmation email</span>
-                    <strong id="confirmEmail">-</strong>
-                  </div>
-                  <div class="confirmation-item">
-                    <span>Contact info</span>
+                    <span>Contact Information</span>
                     <strong id="confirmInfo">-</strong>
                   </div>
+                  <div class="confirmation-item">
+                    <span>Confirmation Email</span>
+                    <strong id="confirmEmail">-</strong>
+                  </div>
+                </div>
+
+                <div class="confirmation-notes">
+                  <span>Shoot Details</span>
+                  <p id="confirmNotes" class="confirmation-notes-text">-</p>
                 </div>
 
                 <div class="confirmation-next surface-card">
                   <h4>What&apos;s Next</h4>
                   <ul>
-                    <li>You will receive a confirmation through your chosen contact method.</li>
+                    <li>You will receive a confirmation at your provided email address.</li>
                     <li>SwerbzShots will get in touch to confirm details and finalize your shoot.</li>
                   </ul>
                 </div>

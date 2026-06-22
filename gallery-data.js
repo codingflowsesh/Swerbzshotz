@@ -2,7 +2,10 @@
   const GALLERY_ROOT = "assets/galleries";
 
   function buildGalleryImages(folder, fileNames) {
-    return fileNames.map((fileName) => `${GALLERY_ROOT}/${folder}/${fileName}`);
+    return fileNames.map((fileName) => {
+      const encodedFileName = encodeURIComponent(fileName);
+      return `${GALLERY_ROOT}/${folder}/${encodedFileName}`;
+    });
   }
 
   const galleryDefinitions = [
@@ -82,11 +85,18 @@
       description: "An intimate wedding gallery with vows, cake moments, reception energy, and emotional portraits.",
       folder: "wedding-moments",
       files: [
-        "couples-vows.jpg",
-        "couples-cake-table.jpg",
-        "couples-first-dance-wide.jpg",
-        "couples-bride-entrance.jpg",
-        "couples-bridal-bouquet.jpg"
+        "IMG_20260620_204300 (4).jpg",
+        "IMG_20260620_204256.jpg",
+        "IMG_20260620_204257.jpg",
+        "IMG_20260620_204257 (1).jpg",
+        "IMG_20260620_204257 (2).jpg",
+        "IMG_20260620_204257 (3).jpg",
+        "IMG_20260620_204257 (4).jpg",
+        "IMG_20260620_204257 (5).jpg",
+        "IMG_20260620_204257 (6).jpg",
+        "IMG_20260620_204257 (7).jpg",
+        "IMG_20260620_204257 (8).jpg",
+        "IMG_20260620_204300 (2).jpg"
       ],
       sessionType: "Wedding Session",
       badge: "Wedding Gallery",
@@ -124,6 +134,7 @@
       category: "Portrait",
       description: "A portrait set built around confident posing, soft rail-side framing, and clean editorial closeups.",
       folder: "portrait-session",
+      coverImage: "assets/galleries/portrait-session/portrait-platform-walk.jpg",
       files: [
         "portrait-rail-fence.jpg",
         "portrait-platform-walk.jpg",
@@ -168,7 +179,7 @@
       title: gallery.title,
       category: gallery.category,
       description: gallery.description,
-      coverImage: images[0] || "",
+      coverImage: gallery.coverImage || images[0] || "",
       images,
       sessionType: gallery.sessionType,
       badge: gallery.badge,

@@ -172,6 +172,8 @@ const confirmDateTime = document.getElementById("confirmDateTime");
 const confirmMethod = document.getElementById("confirmMethod");
 const confirmEmail = document.getElementById("confirmEmail");
 const confirmInfo = document.getElementById("confirmInfo");
+const confirmName = document.getElementById("confirmName");
+const confirmNotes = document.getElementById("confirmNotes");
 const submitBookingButton = document.getElementById("submitBooking");
 
 const focusableSelector =
@@ -688,7 +690,10 @@ function buildFeaturedCarousel() {
 
     const image = document.createElement("img");
     image.loading = "eager";
-    hydrateGalleryImage(image, item.images[0], item, 0);
+    const coverSource = item.coverImage
+      ? { src: item.coverImage, alt: item.alt }
+      : item.images[0] || { src: "", alt: item.alt };
+    hydrateGalleryImage(image, coverSource, item, 0);
 
     media.appendChild(image);
     slide.append(stackLayer, media);
@@ -1043,29 +1048,38 @@ function resetInputsExcept(activeMethod) {
 }
 
 function populateConfirmation() {
+  confirmName.textContent = fullNameInput.value.trim() || "-";
   confirmSession.textContent = bookingData.sessionType;
   confirmDateTime.textContent = bookingData.dateTime;
-  confirmMethod.textContent = bookingData.contactMethod;
-  confirmEmail.textContent = bookingData.confirmationEmail;
-  confirmInfo.textContent = bookingData.contactValue;
+  confirmMethod.textContent = bookingData.contactMethod || "-";
+  confirmInfo.textContent = bookingData.contactValue || "-";
+  confirmEmail.textContent = bookingData.confirmationEmail || "-";
+  confirmNotes.textContent = shootNotesInput.value.trim() || "-";
 }
 
 function updateBookingFormFields() {
-  if (bookingSessionInput) {
-    bookingSessionInput.value = bookingData.sessionType;
-  }
-
-  if (bookingDateTimeInput) {
-    bookingDateTimeInput.value = bookingData.dateTime;
-  }
-
-  if (bookingContactMethodInput) {
-    bookingContactMethodInput.value = bookingData.contactMethod;
-  }
-
   if (shootNotesInput) {
     shootNotesInput.value = shootNotesInput.value.trim();
   }
+}
+
+function getFormattedContactMethod() {
+  const value = bookingData.contactValue.trim();
+
+  if (bookingData.contactMethod === "Instagram") {
+    const handle = value.startsWith("@") ? value : `@${value}`;
+    return `Instagram: ${handle}`;
+  }
+
+  if (bookingData.contactMethod === "Text") {
+    return `Text: ${value}`;
+  }
+
+  if (bookingData.contactMethod === "Email") {
+    return "Email";
+  }
+
+  return "";
 }
 
 async function sendBookingConfirmation() {
@@ -1075,13 +1089,46 @@ async function sendBookingConfirmation() {
 
   updateBookingFormFields();
 
-  const formData = new FormData(bookingForm);
+  const fullName = fullNameInput.value.trim();
+  const confirmationEmail = confirmationEmailInput.value.trim();
+  const shootNotes = shootNotesInput.value.trim();
+  const preferredDateTime = bookingData.dateTime;
+  const sessionType = bookingData.sessionType;
+  const contactMethodText = getFormattedContactMethod();
+
+  const payload = new URLSearchParams();
+  payload.append("form-name", "booking");
+
+  if (fullName) {
+    payload.append("Full Name", fullName);
+  }
+
+  if (preferredDateTime) {
+    payload.append("Preferred Date/Time", preferredDateTime);
+  }
+
+  if (sessionType) {
+    payload.append("Session Type", sessionType);
+  }
+
+  if (contactMethodText) {
+    payload.append("Preferred Contact Method", contactMethodText);
+  }
+
+  if (confirmationEmail) {
+    payload.append("Confirmation Email", confirmationEmail);
+  }
+
+  if (shootNotes) {
+    payload.append("Shoot Notes", shootNotes);
+  }
+
   const response = await fetch("/", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: new URLSearchParams(formData).toString(),
+    body: payload.toString(),
   });
 
   if (!response.ok) {
@@ -1786,7 +1833,13 @@ contactMethodButtons.forEach((button) => {
   });
 });
 
-[confirmationEmailInput, instagramInput, textInput, fullNameInput, shootNotesInput].forEach((input) => {
+[
+  confirmationEmailInput,
+  instagramInput,
+  textInput,
+  fullNameInput,
+  shootNotesInput,
+].forEach((input) => {
   input.addEventListener("input", () => {
     bookingData.confirmationEmail = confirmationEmailInput.value.trim();
     bookingData.contactValue = getActiveContactValue().trim();
