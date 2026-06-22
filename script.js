@@ -26,7 +26,8 @@ const exploreCategoryItems = [
   {
     category: "Graduation",
     sessionType: "Graduation Session",
-    meta: "Caps, gowns, families, and campus milestones",
+    meta: "Graduation portraits & campus milestones",
+    cta: "View gallery →",
     photoClass: "photo-graduation",
     alt: "Graduation session preview near the UCLA fountain.",
     images: [
@@ -39,7 +40,8 @@ const exploreCategoryItems = [
   {
     category: "Portrait",
     sessionType: "Portrait Session",
-    meta: "Personal branding, lifestyle, and confident solo portraits",
+    meta: "Personal branding & lifestyle portraits",
+    cta: "View gallery →",
     photoClass: "photo-portraits",
     alt: "Portrait session preview beside a rail fence.",
     images: [
@@ -52,26 +54,28 @@ const exploreCategoryItems = [
   {
     category: "Couples",
     sessionType: "Couples Session",
-    meta: "Warm storytelling, connection, and candid moments for two",
+    meta: "Authentic connection & storytelling",
+    cta: "View gallery →",
     photoClass: "photo-couples",
-    alt: "Couples session preview during wedding vows.",
+    alt: "Couples session preview from wedding moments.",
     images: [
       {
-        src: "assets/gallery/couples/couples-vows.jpg",
-        alt: "Couples session preview during wedding vows.",
+        src: "assets/galleries/wedding-moments/IMG_20260620_204257 (4).jpg",
+        alt: "Couples session preview from wedding moments.",
       },
     ],
   },
   {
     category: "Event",
     sessionType: "Event Session",
-    meta: "Celebrations, parties, and highlight coverage",
+    meta: "Celebrations, gatherings & highlights",
+    cta: "View gallery →",
     photoClass: "photo-events",
-    alt: "Event session preview at a poolside celebration.",
+    alt: "Event reception preview from wedding moments.",
     images: [
       {
-        src: "assets/gallery/events/event-poolside-candid.jpg",
-        alt: "Event session preview at a poolside celebration.",
+        src: "assets/galleries/wedding-moments/IMG_20260620_204257 (1).jpg",
+        alt: "Event reception preview from wedding moments.",
       },
     ],
   },
