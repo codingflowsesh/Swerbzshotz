@@ -621,11 +621,7 @@ function buildCategoryTrack() {
     note.className = "category-note";
     note.textContent = item.meta;
 
-    const arrow = document.createElement("span");
-    arrow.className = "category-arrow";
-    arrow.textContent = "";
-
-    copy.append(name, note, arrow);
+    copy.append(name, note);
     card.append(media, copy);
     categoryTrack.appendChild(card);
   });
