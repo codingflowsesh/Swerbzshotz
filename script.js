@@ -1491,31 +1491,52 @@ async function sendBookingConfirmation() {
   syncBookingData(snapshot);
   updateBookingFormFields(snapshot);
 
-  const payload = new URLSearchParams();
-  payload.append("form-name", "booking");
-  payload.append("Full Name", snapshot.fullName);
-  payload.append("Confirmation Email", snapshot.confirmationEmail);
-  payload.append("Session Type", snapshot.sessionType);
-  payload.append("Preferred Date/Time", snapshot.preferredDateTime);
-  payload.append(
+  const formData = new FormData(bookingForm);
+  formData.set("form-name", "booking");
+  formData.set("Full Name", snapshot.fullName);
+  formData.set("Confirmation Email", snapshot.confirmationEmail);
+  formData.set("Session Type", snapshot.sessionType);
+  formData.set("Preferred Date/Time", snapshot.preferredDateTime);
+  formData.set(
     "Preferred Contact Method",
     snapshot.preferredContactMethod,
   );
+  formData.delete("bot-field");
+  formData.delete("Instagram Handle");
+  formData.delete("Phone Number");
 
   if (
     snapshot.preferredContactMethod === "Instagram" &&
     snapshot.instagramHandle
   ) {
-    payload.append("Instagram Handle", snapshot.instagramHandle);
+    formData.set("Instagram Handle", snapshot.instagramHandle);
   }
 
   if (snapshot.preferredContactMethod === "Text" && snapshot.phoneNumber) {
-    payload.append("Phone Number", snapshot.phoneNumber);
+    formData.set("Phone Number", snapshot.phoneNumber);
   }
 
   if (snapshot.shootNotes) {
-    payload.append("Shoot Notes", snapshot.shootNotes);
+    formData.set("Shoot Notes", snapshot.shootNotes);
+  } else {
+    formData.delete("Shoot Notes");
   }
+
+  const emptyFieldNames = [];
+  formData.forEach((value, key) => {
+    if (key === "form-name") {
+      return;
+    }
+
+    if (typeof value === "string" && !value.trim()) {
+      emptyFieldNames.push(key);
+    }
+  });
+  emptyFieldNames.forEach((key) => {
+    formData.delete(key);
+  });
+
+  const payload = new URLSearchParams(formData);
 
   const response = await fetch("/", {
     method: "POST",

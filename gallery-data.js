@@ -167,9 +167,10 @@
         "Stylized creative edits and experimental treatments built from real client photographs.",
       folder: "creative-ai-edits",
       files: [
-        "grad-diploma-portrait.png",
-        "portrait-photo-strip.jpg",
-        "portrait-bw-over-shoulder.jpg",
+        "IMG_20260620_204313.png",
+        "IMG_20260620_204313 (1).png",
+        "IMG_20260620_204313 (2).png",
+        "IMG_20260620_204313 (3).png",
       ],
       sessionType: "Creative Edit Session",
       badge: "Creative Gallery",
