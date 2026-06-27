@@ -67,7 +67,7 @@ const exploreCategoryItems = [
   },
   {
     category: "Event",
-    sessionType: "Event Session",
+    sessionType: "Event Coverage",
     meta: "Celebrations, gatherings & highlights",
     cta: "View gallery →",
     photoClass: "photo-events",
@@ -92,6 +92,7 @@ const bookingData = {
 const featuredStage = document.getElementById("featuredStage");
 const featuredDots = document.getElementById("featuredDots");
 const featuredSummary = document.querySelector(".featured-summary");
+const featuredSummaryLabel = document.getElementById("featuredSummaryLabel");
 const featuredSummarySession = document.getElementById(
   "featuredSummarySession",
 );
@@ -125,11 +126,12 @@ const categoryDots = document.getElementById("categoryDots");
 const pricingCards = Array.from(document.querySelectorAll(".pricing-card"));
 
 const sessionButtons = Array.from(document.querySelectorAll("[data-session]"));
-const slotButtons = Array.from(document.querySelectorAll("[data-slot]"));
 const contactMethodButtons = Array.from(
   document.querySelectorAll("[data-method]"),
 );
-const contactFields = Array.from(document.querySelectorAll(".contact-field"));
+const contactFields = Array.from(
+  document.querySelectorAll(".contact-fields [data-field]"),
+);
 const stepPanels = Array.from(document.querySelectorAll("[data-step-panel]"));
 const stepIndicators = Array.from(
   document.querySelectorAll("[data-step-indicator]"),
@@ -150,6 +152,12 @@ const summarySession = document.getElementById("summarySession");
 const summaryDateTime = document.getElementById("summaryDateTime");
 const summaryContact = document.getElementById("summaryContact");
 const slotPreview = document.getElementById("slotPreview");
+const calendarMonthLabel = document.getElementById("calendarMonthLabel");
+const calendarDateGrid = document.getElementById("calendarDateGrid");
+const calendarPrevMonth = document.getElementById("calendarPrevMonth");
+const calendarNextMonth = document.getElementById("calendarNextMonth");
+const timeSlotGrid = document.getElementById("timeSlotGrid");
+const timeSlotHeading = document.getElementById("timeSlotHeading");
 
 const sessionError = document.getElementById("sessionError");
 const dateError = document.getElementById("dateError");
@@ -159,7 +167,7 @@ const confirmationEmailInput = document.getElementById(
   "confirmationEmailInput",
 );
 const instagramInput = document.getElementById("instagramInput");
-const textInput = document.getElementById("textInput");
+const phoneNumberInput = document.getElementById("phoneNumberInput");
 const fullNameInput = document.getElementById("fullNameInput");
 const shootNotesInput = document.getElementById("shootNotesInput");
 const bookingForm = document.getElementById("bookingForm");
@@ -168,13 +176,12 @@ const bookingDateTimeInput = document.getElementById("bookingDateTime");
 const bookingContactMethodInput = document.getElementById(
   "bookingPreferredContactMethod",
 );
-const bookingPhoneNumberInput = document.createElement("input");
-const bookingInstagramHandleInput = document.createElement("input");
 
 const confirmSession = document.getElementById("confirmSession");
 const confirmDateTime = document.getElementById("confirmDateTime");
 const confirmMethod = document.getElementById("confirmMethod");
 const confirmEmail = document.getElementById("confirmEmail");
+const confirmInfoItem = document.getElementById("confirmInfoItem");
 const confirmInfo = document.getElementById("confirmInfo");
 const confirmName = document.getElementById("confirmName");
 const confirmNotes = document.getElementById("confirmNotes");
@@ -186,6 +193,14 @@ const prefersReducedMotion = window.matchMedia?.(
   "(prefers-reduced-motion: reduce)",
 ) || { matches: false };
 const bookingStepLabels = ["Session", "Date", "Contact", "Confirm"];
+const bookingTimeSlots = [
+  "7:00 AM",
+  "8:00 AM",
+  "9:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "12:30 PM",
+];
 
 let currentStep = 1;
 let categoryCards = [];
@@ -200,6 +215,21 @@ let isBookingVisible = false;
 let navHighlightFrame = 0;
 let featuredSummaryAnimationTimer = 0;
 const shootModalTransitionMs = 920;
+const earliestBookingDate = (() => {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + 1);
+  return date;
+})();
+const bookingCalendarState = {
+  visibleMonth: new Date(
+    earliestBookingDate.getFullYear(),
+    earliestBookingDate.getMonth(),
+    1,
+  ),
+  selectedDate: "",
+  selectedTime: "",
+};
 
 function createDots(container, total, options = {}) {
   if (!container) {
@@ -808,6 +838,10 @@ function updateFeaturedCarousel(animateSummary = false) {
     featuredSummarySession.textContent = item.sessionType || item.badge;
   }
 
+  if (featuredSummaryLabel) {
+    featuredSummaryLabel.textContent = `Viewing ${featuredIndex + 1} of ${featuredWorkItems.length}`;
+  }
+
   if (featuredSummaryTitle) {
     featuredSummaryTitle.textContent = item.title;
   }
@@ -889,13 +923,418 @@ function updateCategoryState(activeIndex) {
   updateDotGroup(categoryDots, getCategoryPageIndex(activeIndex));
 }
 
+function formatCalendarDateKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function parseCalendarDateKey(dateKey) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function formatBookingDate(date) {
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function getSelectedBookingDate() {
+  if (!bookingCalendarState.selectedDate) {
+    return null;
+  }
+
+  return parseCalendarDateKey(bookingCalendarState.selectedDate);
+}
+
+function getSelectedDateTimeDisplay(fallbackText) {
+  const selectedDate = getSelectedBookingDate();
+
+  if (!selectedDate) {
+    return fallbackText;
+  }
+
+  const dateLabel = formatBookingDate(selectedDate);
+
+  if (!bookingCalendarState.selectedTime) {
+    return `${dateLabel}\nSelect a time`;
+  }
+
+  return `${dateLabel}\n${bookingCalendarState.selectedTime}`;
+}
+
+function syncSelectedDateTime() {
+  const selectedDate = getSelectedBookingDate();
+
+  bookingData.dateTime =
+    selectedDate && bookingCalendarState.selectedTime
+      ? `${formatBookingDate(selectedDate)} at ${bookingCalendarState.selectedTime}`
+      : "";
+}
+
+function renderTimeSlots() {
+  if (!timeSlotGrid || !timeSlotHeading) {
+    return;
+  }
+
+  const selectedDate = getSelectedBookingDate();
+
+  timeSlotGrid.innerHTML = "";
+
+  if (!selectedDate) {
+    timeSlotHeading.textContent = "Select a date to view times";
+    return;
+  }
+
+  timeSlotHeading.textContent = formatBookingDate(selectedDate);
+
+  bookingTimeSlots.forEach((timeLabel) => {
+    const button = document.createElement("button");
+    const isSelected = bookingCalendarState.selectedTime === timeLabel;
+
+    button.type = "button";
+    button.className = "slot-button time-slot-button";
+    button.textContent = timeLabel;
+    button.setAttribute("aria-pressed", String(isSelected));
+    button.classList.toggle("is-selected", isSelected);
+    button.addEventListener("click", () => {
+      bookingCalendarState.selectedTime = timeLabel;
+      syncSelectedDateTime();
+      dateError.textContent = "";
+      renderTimeSlots();
+      updateSummary();
+    });
+
+    timeSlotGrid.appendChild(button);
+  });
+}
+
+function renderBookingCalendar() {
+  if (!calendarDateGrid || !calendarMonthLabel) {
+    return;
+  }
+
+  const monthStart = bookingCalendarState.visibleMonth;
+  const firstDayOffset = (monthStart.getDay() + 6) % 7;
+  const daysInMonth = new Date(
+    monthStart.getFullYear(),
+    monthStart.getMonth() + 1,
+    0,
+  ).getDate();
+  const firstAvailableMonth = new Date(
+    earliestBookingDate.getFullYear(),
+    earliestBookingDate.getMonth(),
+    1,
+  );
+
+  calendarMonthLabel.textContent = monthStart.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+  calendarDateGrid.innerHTML = "";
+
+  if (calendarPrevMonth) {
+    calendarPrevMonth.disabled = monthStart <= firstAvailableMonth;
+  }
+
+  for (let index = 0; index < firstDayOffset; index += 1) {
+    const spacer = document.createElement("span");
+    spacer.className = "calendar-day-spacer";
+    spacer.setAttribute("aria-hidden", "true");
+    calendarDateGrid.appendChild(spacer);
+  }
+
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const date = new Date(
+      monthStart.getFullYear(),
+      monthStart.getMonth(),
+      day,
+    );
+    const dateKey = formatCalendarDateKey(date);
+    const isSelected = bookingCalendarState.selectedDate === dateKey;
+    const isUnavailable = date < earliestBookingDate;
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "calendar-day-button";
+    button.textContent = String(day);
+    button.disabled = isUnavailable;
+    button.setAttribute("aria-pressed", String(isSelected));
+    button.classList.toggle("is-selected", isSelected);
+
+    if (!isUnavailable) {
+      button.addEventListener("click", () => {
+        bookingCalendarState.selectedDate = dateKey;
+        bookingCalendarState.selectedTime = "";
+        syncSelectedDateTime();
+        dateError.textContent = "";
+        renderBookingCalendar();
+        renderTimeSlots();
+        updateSummary();
+      });
+    }
+
+    calendarDateGrid.appendChild(button);
+  }
+
+  while (calendarDateGrid.children.length % 7 !== 0) {
+    const spacer = document.createElement("span");
+    spacer.className = "calendar-day-spacer";
+    spacer.setAttribute("aria-hidden", "true");
+    calendarDateGrid.appendChild(spacer);
+  }
+}
+
+function normalizeInstagramHandle(value) {
+  const trimmedValue = value.trim().replace(/^@+/, "");
+
+  if (!trimmedValue) {
+    return "";
+  }
+
+  return `@${trimmedValue}`;
+}
+
+function getBookingFieldErrorElement(input, shouldCreate = false) {
+  if (!input) {
+    return null;
+  }
+
+  const field = input.closest(".contact-field");
+
+  if (!field) {
+    return null;
+  }
+
+  let errorElement = field.querySelector(`[data-error-for="${input.id}"]`);
+
+  if (!errorElement && shouldCreate) {
+    errorElement = document.createElement("p");
+    errorElement.className = "form-error";
+    errorElement.dataset.errorFor = input.id;
+    errorElement.setAttribute("aria-live", "polite");
+    field.append(errorElement);
+  }
+
+  return errorElement;
+}
+
+function clearBookingFieldError(input) {
+  const errorElement = getBookingFieldErrorElement(input);
+  input?.setCustomValidity("");
+  input?.removeAttribute("aria-invalid");
+
+  if (errorElement) {
+    errorElement.remove();
+  }
+}
+
+function showBookingFieldError(input, message) {
+  const errorElement = getBookingFieldErrorElement(input, true);
+
+  input?.setAttribute("aria-invalid", "true");
+
+  if (errorElement) {
+    errorElement.textContent = message;
+  }
+}
+
+function syncBookingContactRequirements(method = bookingData.contactMethod) {
+  instagramInput.required = method === "Instagram";
+  phoneNumberInput.required = method === "Text";
+
+  if (method !== "Instagram") {
+    clearBookingFieldError(instagramInput);
+  }
+
+  if (method !== "Text") {
+    clearBookingFieldError(phoneNumberInput);
+  }
+}
+
+function validateBookingField(input, message) {
+  const isValid = input.checkValidity();
+
+  if (!isValid) {
+    showBookingFieldError(input, message || input.validationMessage);
+    return false;
+  }
+
+  clearBookingFieldError(input);
+  return true;
+}
+
+function validateBookingForm() {
+  const phonePattern =
+    /^(?:\+1\s?)?(?:\(\d{3}\)\s?\d{3}-\d{4}|\d{3}[-\s]?\d{3}[-\s]?\d{4})$/;
+  const instagramValue = instagramInput.value.trim();
+  const instagramUsername = instagramValue.replace(/^@+/, "");
+  const preferredContactMethod = bookingData.contactMethod;
+  let firstInvalidInput = null;
+
+  contactError.textContent = "";
+  fullNameInput.value = fullNameInput.value.trim();
+  confirmationEmailInput.value = confirmationEmailInput.value.trim();
+  instagramInput.value = instagramValue;
+  phoneNumberInput.value = phoneNumberInput.value.trim();
+
+  [fullNameInput, confirmationEmailInput, instagramInput, phoneNumberInput]
+    .forEach((input) => {
+      clearBookingFieldError(input);
+    });
+
+  syncBookingContactRequirements(preferredContactMethod);
+
+  fullNameInput.setCustomValidity(
+    fullNameInput.value.length >= 2 ? "" : "Please enter your full name.",
+  );
+
+  if (!validateBookingField(fullNameInput, "Please enter your full name.")) {
+    firstInvalidInput = fullNameInput;
+  }
+
+  confirmationEmailInput.setCustomValidity("");
+
+  if (
+    !validateBookingField(
+      confirmationEmailInput,
+      "Please enter a valid email address.",
+    ) &&
+    !firstInvalidInput
+  ) {
+    firstInvalidInput = confirmationEmailInput;
+  }
+
+  if (!preferredContactMethod) {
+    contactError.textContent = "Please choose your preferred contact method.";
+  }
+
+  if (preferredContactMethod === "Instagram") {
+    instagramInput.setCustomValidity(
+      instagramUsername && /^[A-Za-z0-9._]{2,30}$/.test(instagramUsername)
+        ? ""
+        : "Please enter a valid Instagram username.",
+    );
+
+    if (
+      !validateBookingField(
+        instagramInput,
+        "Please enter a valid Instagram username.",
+      ) &&
+      !firstInvalidInput
+    ) {
+      firstInvalidInput = instagramInput;
+    }
+  }
+
+  if (preferredContactMethod === "Text") {
+    phoneNumberInput.setCustomValidity(
+      phonePattern.test(phoneNumberInput.value)
+        ? ""
+        : "Please enter a valid phone number.",
+    );
+
+    if (
+      !validateBookingField(
+        phoneNumberInput,
+        "Please enter a valid phone number.",
+      ) &&
+      !firstInvalidInput
+    ) {
+      firstInvalidInput = phoneNumberInput;
+    }
+  }
+
+  if (firstInvalidInput) {
+    firstInvalidInput.focus();
+  }
+
+  if (firstInvalidInput || !preferredContactMethod) {
+    return false;
+  }
+
+  const snapshot = getCurrentBookingSnapshot();
+
+  syncBookingData(snapshot);
+  updateBookingFormFields(snapshot);
+  updateSummary();
+  return true;
+}
+
+function getCurrentBookingSnapshot() {
+  const preferredContactMethod = bookingData.contactMethod;
+
+  syncSelectedDateTime();
+
+  return {
+    fullName: fullNameInput.value.trim(),
+    confirmationEmail: confirmationEmailInput.value.trim(),
+    sessionType: bookingData.sessionType.trim(),
+    preferredDateTime: bookingData.dateTime.trim(),
+    preferredContactMethod,
+    instagramHandle:
+      preferredContactMethod === "Instagram"
+        ? normalizeInstagramHandle(instagramInput.value)
+        : "",
+    phoneNumber:
+      preferredContactMethod === "Text" ? phoneNumberInput.value.trim() : "",
+    shootNotes: shootNotesInput.value.trim(),
+  };
+}
+
+function getContactValueForSnapshot(snapshot = getCurrentBookingSnapshot()) {
+  if (snapshot.preferredContactMethod === "Instagram") {
+    return snapshot.instagramHandle;
+  }
+
+  if (snapshot.preferredContactMethod === "Text") {
+    return snapshot.phoneNumber;
+  }
+
+  return "";
+}
+
+function syncBookingData(snapshot = getCurrentBookingSnapshot()) {
+  bookingData.confirmationEmail = snapshot.confirmationEmail;
+  bookingData.contactValue = getContactValueForSnapshot(snapshot);
+}
+
+function updateBookingFormFields(snapshot = getCurrentBookingSnapshot()) {
+  bookingSessionInput.value = snapshot.sessionType;
+  bookingDateTimeInput.value = snapshot.preferredDateTime;
+  bookingContactMethodInput.value = snapshot.preferredContactMethod;
+  instagramInput.disabled = snapshot.preferredContactMethod !== "Instagram";
+  phoneNumberInput.disabled = snapshot.preferredContactMethod !== "Text";
+}
+
+function getSummaryContactText(snapshot = getCurrentBookingSnapshot()) {
+  if (!snapshot.preferredContactMethod) {
+    return "Pick a method";
+  }
+
+  if (snapshot.preferredContactMethod === "Email") {
+    return "Email";
+  }
+
+  const contactValue = getContactValueForSnapshot(snapshot);
+
+  return contactValue
+    ? `${snapshot.preferredContactMethod}: ${contactValue}`
+    : `${snapshot.preferredContactMethod}: Waiting for details`;
+}
+
 function updateSummary() {
-  summarySession.textContent = bookingData.sessionType || "Not selected yet";
-  summaryDateTime.textContent = bookingData.dateTime || "Choose a slot";
-  summaryContact.textContent = bookingData.contactMethod
-    ? `${bookingData.contactMethod}: ${bookingData.contactValue || "Waiting for details"}`
-    : "Pick a method";
-  slotPreview.textContent = bookingData.dateTime || "No date selected yet";
+  syncSelectedDateTime();
+  const snapshot = getCurrentBookingSnapshot();
+
+  syncBookingData(snapshot);
+  updateBookingFormFields(snapshot);
+
+  summarySession.textContent = snapshot.sessionType || "Not selected yet";
+  summaryDateTime.textContent = getSelectedDateTimeDisplay("Choose a slot");
+  summaryContact.textContent = getSummaryContactText(snapshot);
+  slotPreview.textContent = getSelectedDateTimeDisplay("No date selected yet");
 }
 
 function showStep(stepNumber) {
@@ -932,6 +1371,21 @@ function showStep(stepNumber) {
     stepper.style.setProperty("--step-progress", String(progress));
   }
 
+  if (stepNumber === 2) {
+    const selectedDate = getSelectedBookingDate();
+
+    if (selectedDate) {
+      bookingCalendarState.visibleMonth = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        1,
+      );
+    }
+
+    renderBookingCalendar();
+    renderTimeSlots();
+  }
+
   const isConfirmedStep = stepNumber === 4;
   bookingLayout?.classList.toggle("is-confirmed", isConfirmedStep);
   bookingSummaryCard?.setAttribute("aria-hidden", String(isConfirmedStep));
@@ -943,7 +1397,7 @@ function getActiveContactValue() {
   }
 
   if (bookingData.contactMethod === "Text") {
-    return textInput.value;
+    return phoneNumberInput.value;
   }
 
   return "";
@@ -960,58 +1414,12 @@ function validateStep(stepNumber) {
   if (stepNumber === 2) {
     dateError.textContent = bookingData.dateTime
       ? ""
-      : "Please choose a date and time placeholder.";
+      : "Please choose a preferred date and time.";
     return Boolean(bookingData.dateTime);
   }
 
   if (stepNumber === 3) {
-    const confirmationEmail = confirmationEmailInput.value.trim();
-    bookingData.confirmationEmail = confirmationEmail;
-
-    if (!confirmationEmail) {
-      contactError.textContent =
-        "Please add the email where the confirmation should be sent.";
-      return false;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(confirmationEmail)) {
-      contactError.textContent = "Enter a valid confirmation email address.";
-      return false;
-    }
-
-    if (!bookingData.contactMethod) {
-      contactError.textContent =
-        "Please choose a contact method for follow-up.";
-      return false;
-    }
-
-    const value = getActiveContactValue().trim();
-    bookingData.contactValue = value;
-    updateSummary();
-
-    if (!value) {
-      contactError.textContent = "Please enter your contact details.";
-      return false;
-    }
-
-    if (
-      bookingData.contactMethod === "Instagram" &&
-      !/^@?[A-Za-z0-9._]{2,30}$/.test(value)
-    ) {
-      contactError.textContent = "Enter a valid Instagram handle.";
-      return false;
-    }
-
-    if (
-      bookingData.contactMethod === "Text" &&
-      !/^[0-9+()\-\s]{7,20}$/.test(value)
-    ) {
-      contactError.textContent = "Enter a valid phone number.";
-      return false;
-    }
-
-    contactError.textContent = "";
-    return true;
+    return validateBookingForm();
   }
 
   return true;
@@ -1021,14 +1429,21 @@ function showContactField(method) {
   let activeInput = null;
 
   contactFields.forEach((field) => {
+    const input = field.querySelector("input");
     const isActive = field.dataset.field === method;
     field.hidden = !isActive;
     field.classList.toggle("is-active", isActive);
 
+    if (input) {
+      input.disabled = !isActive;
+    }
+
     if (isActive) {
-      activeInput = field.querySelector("input");
+      activeInput = input;
     }
   });
+
+  syncBookingContactRequirements(method);
 
   if (activeInput) {
     window.requestAnimationFrame(() => {
@@ -1043,43 +1458,27 @@ function resetInputsExcept(activeMethod) {
   }
 
   if (activeMethod !== "Text") {
-    textInput.value = "";
+    phoneNumberInput.value = "";
   }
 }
 
-function populateConfirmation() {
-  confirmName.textContent = fullNameInput.value.trim() || "-";
-  confirmSession.textContent = bookingData.sessionType;
-  confirmDateTime.textContent = bookingData.dateTime;
-  confirmMethod.textContent = bookingData.contactMethod || "-";
-  confirmInfo.textContent = bookingData.contactValue || "-";
-  confirmEmail.textContent = bookingData.confirmationEmail || "-";
-  confirmNotes.textContent = shootNotesInput.value.trim() || "-";
-}
+function populateConfirmation(snapshot = getCurrentBookingSnapshot()) {
+  const contactValue = getContactValueForSnapshot(snapshot);
 
-function updateBookingFormFields() {
-  if (shootNotesInput) {
-    shootNotesInput.value = shootNotesInput.value.trim();
+  syncBookingData(snapshot);
+  updateBookingFormFields(snapshot);
+
+  confirmName.textContent = snapshot.fullName || "-";
+  confirmSession.textContent = snapshot.sessionType || "-";
+  confirmDateTime.textContent = snapshot.preferredDateTime || "-";
+  confirmMethod.textContent = snapshot.preferredContactMethod || "-";
+  confirmInfo.textContent = contactValue || "-";
+  confirmEmail.textContent = snapshot.confirmationEmail || "-";
+  confirmNotes.textContent = snapshot.shootNotes || "-";
+
+  if (confirmInfoItem) {
+    confirmInfoItem.hidden = !contactValue;
   }
-}
-
-function getFormattedContactMethod() {
-  const value = bookingData.contactValue.trim();
-
-  if (bookingData.contactMethod === "Instagram") {
-    const handle = value.startsWith("@") ? value : `@${value}`;
-    return `Instagram: ${handle}`;
-  }
-
-  if (bookingData.contactMethod === "Text") {
-    return `Text: ${value}`;
-  }
-
-  if (bookingData.contactMethod === "Email") {
-    return "Email";
-  }
-
-  return "";
 }
 
 async function sendBookingConfirmation() {
@@ -1087,40 +1486,35 @@ async function sendBookingConfirmation() {
     throw new Error("Booking form is not available.");
   }
 
-  updateBookingFormFields();
+  const snapshot = getCurrentBookingSnapshot();
 
-  const fullName = fullNameInput.value.trim();
-  const confirmationEmail = confirmationEmailInput.value.trim();
-  const shootNotes = shootNotesInput.value.trim();
-  const preferredDateTime = bookingData.dateTime;
-  const sessionType = bookingData.sessionType;
-  const contactMethodText = getFormattedContactMethod();
+  syncBookingData(snapshot);
+  updateBookingFormFields(snapshot);
 
   const payload = new URLSearchParams();
   payload.append("form-name", "booking");
+  payload.append("Full Name", snapshot.fullName);
+  payload.append("Confirmation Email", snapshot.confirmationEmail);
+  payload.append("Session Type", snapshot.sessionType);
+  payload.append("Preferred Date/Time", snapshot.preferredDateTime);
+  payload.append(
+    "Preferred Contact Method",
+    snapshot.preferredContactMethod,
+  );
 
-  if (fullName) {
-    payload.append("Full Name", fullName);
+  if (
+    snapshot.preferredContactMethod === "Instagram" &&
+    snapshot.instagramHandle
+  ) {
+    payload.append("Instagram Handle", snapshot.instagramHandle);
   }
 
-  if (preferredDateTime) {
-    payload.append("Preferred Date/Time", preferredDateTime);
+  if (snapshot.preferredContactMethod === "Text" && snapshot.phoneNumber) {
+    payload.append("Phone Number", snapshot.phoneNumber);
   }
 
-  if (sessionType) {
-    payload.append("Session Type", sessionType);
-  }
-
-  if (contactMethodText) {
-    payload.append("Preferred Contact Method", contactMethodText);
-  }
-
-  if (confirmationEmail) {
-    payload.append("Confirmation Email", confirmationEmail);
-  }
-
-  if (shootNotes) {
-    payload.append("Shoot Notes", shootNotes);
+  if (snapshot.shootNotes) {
+    payload.append("Shoot Notes", snapshot.shootNotes);
   }
 
   const response = await fetch("/", {
@@ -1136,6 +1530,8 @@ async function sendBookingConfirmation() {
       `Booking form submission failed with status ${response.status}.`,
     );
   }
+
+  return snapshot;
 }
 
 function setSelectedSession(sessionName) {
@@ -1165,12 +1561,9 @@ function resetBookingFlow() {
   bookingData.contactMethod = "";
   bookingData.contactValue = "";
 
-  sessionButtons.forEach((button) => {
-    button.classList.remove("is-selected");
-    button.setAttribute("aria-pressed", "false");
-  });
+  bookingForm.reset();
 
-  slotButtons.forEach((button) => {
+  sessionButtons.forEach((button) => {
     button.classList.remove("is-selected");
     button.setAttribute("aria-pressed", "false");
   });
@@ -1180,19 +1573,35 @@ function resetBookingFlow() {
     button.setAttribute("aria-pressed", "false");
   });
 
-  contactFields.forEach((field) => {
-    field.hidden = true;
-    field.classList.remove("is-active");
-  });
-
-  confirmationEmailInput.value = "";
-  instagramInput.value = "";
-  emailInput.value = "";
-  textInput.value = "";
+  bookingCalendarState.visibleMonth = new Date(
+    earliestBookingDate.getFullYear(),
+    earliestBookingDate.getMonth(),
+    1,
+  );
+  bookingCalendarState.selectedDate = "";
+  bookingCalendarState.selectedTime = "";
 
   sessionError.textContent = "";
   dateError.textContent = "";
   contactError.textContent = "";
+  [fullNameInput, confirmationEmailInput, instagramInput, phoneNumberInput]
+    .forEach((input) => {
+      clearBookingFieldError(input);
+    });
+
+  showContactField("");
+  renderBookingCalendar();
+  renderTimeSlots();
+  populateConfirmation({
+    fullName: "",
+    confirmationEmail: "",
+    sessionType: "",
+    preferredDateTime: "",
+    preferredContactMethod: "",
+    instagramHandle: "",
+    phoneNumber: "",
+    shootNotes: "",
+  });
 
   updateSummary();
   showStep(1);
@@ -1272,7 +1681,7 @@ function createGalleryFallbackImage(shoot, imageIndex) {
       <rect width="1600" height="1100" fill="url(#bg)" />
       <rect width="1600" height="1100" fill="url(#glow)" />
       <rect x="0" y="640" width="1600" height="460" fill="rgba(12, 18, 28, 0.38)" />
-      <text x="92" y="128" fill="#0f1723" font-size="34" font-family="Arial, sans-serif" font-weight="700" opacity="0.68">SwerbzShots Placeholder</text>
+      <text x="92" y="128" fill="#0f1723" font-size="34" font-family="Arial, sans-serif" font-weight="700" opacity="0.68">SwerbzShotz Placeholder</text>
       <text x="92" y="872" fill="#ffffff" font-size="48" font-family="Arial, sans-serif" font-weight="700" letter-spacing="4">${sessionType}</text>
       <text x="92" y="944" fill="#ffffff" font-size="112" font-family="Arial, sans-serif" font-weight="800">${title}</text>
       <text x="92" y="1016" fill="#e5eef9" font-size="42" font-family="Arial, sans-serif">${previewLabel} • Replace this image path with a real client photo.</text>
@@ -1551,6 +1960,8 @@ bindCategoryCardEvents();
 buildFeaturedCarousel();
 updateFeaturedCarousel();
 updateCategoryState(0);
+renderBookingCalendar();
+renderTimeSlots();
 updateSummary();
 showStep(currentStep);
 updateMobileBookViewportState();
@@ -1794,13 +2205,33 @@ sessionButtons.forEach((button) => {
   });
 });
 
-slotButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    bookingData.dateTime = button.dataset.slot;
-    updatePressedState(slotButtons, button);
-    dateError.textContent = "";
-    updateSummary();
-  });
+calendarPrevMonth?.addEventListener("click", () => {
+  const visibleMonth = bookingCalendarState.visibleMonth;
+  const previousMonth = new Date(
+    visibleMonth.getFullYear(),
+    visibleMonth.getMonth() - 1,
+    1,
+  );
+
+  if (previousMonth >= new Date(
+    earliestBookingDate.getFullYear(),
+    earliestBookingDate.getMonth(),
+    1,
+  )) {
+    bookingCalendarState.visibleMonth = previousMonth;
+    renderBookingCalendar();
+  }
+});
+
+calendarNextMonth?.addEventListener("click", () => {
+  const visibleMonth = bookingCalendarState.visibleMonth;
+
+  bookingCalendarState.visibleMonth = new Date(
+    visibleMonth.getFullYear(),
+    visibleMonth.getMonth() + 1,
+    1,
+  );
+  renderBookingCalendar();
 });
 
 contactMethodButtons.forEach((button) => {
@@ -1836,13 +2267,15 @@ contactMethodButtons.forEach((button) => {
 [
   confirmationEmailInput,
   instagramInput,
-  textInput,
+  phoneNumberInput,
   fullNameInput,
   shootNotesInput,
 ].forEach((input) => {
   input.addEventListener("input", () => {
     bookingData.confirmationEmail = confirmationEmailInput.value.trim();
     bookingData.contactValue = getActiveContactValue().trim();
+    contactError.textContent = "";
+    clearBookingFieldError(input);
     updateSummary();
   });
 });
@@ -1869,7 +2302,17 @@ document.querySelectorAll("[data-prev-step]").forEach((button) => {
   });
 });
 
-submitBookingButton.addEventListener("click", async () => {
+async function handleBookingSubmission() {
+  if (!validateStep(1)) {
+    showStep(1);
+    return;
+  }
+
+  if (!validateStep(2)) {
+    showStep(2);
+    return;
+  }
+
   if (!validateStep(3)) {
     return;
   }
@@ -1880,8 +2323,8 @@ submitBookingButton.addEventListener("click", async () => {
   contactError.textContent = "";
 
   try {
-    await sendBookingConfirmation();
-    populateConfirmation();
+    const submittedSnapshot = await sendBookingConfirmation();
+    populateConfirmation(submittedSnapshot);
     showStep(4);
   } catch (error) {
     console.error("Booking confirmation failed:", error);
@@ -1891,6 +2334,20 @@ submitBookingButton.addEventListener("click", async () => {
     submitBookingButton.disabled = false;
     submitBookingButton.textContent = originalLabel;
   }
+}
+
+bookingForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (currentStep !== 3) {
+    return;
+  }
+
+  await handleBookingSubmission();
+});
+
+submitBookingButton.addEventListener("click", async () => {
+  await handleBookingSubmission();
 });
 
 document.getElementById("startOver").addEventListener("click", () => {
