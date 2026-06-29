@@ -640,6 +640,8 @@ function buildCategoryTrack() {
 
     const image = document.createElement("img");
     image.loading = "lazy";
+    image.decoding = "async";
+    image.fetchPriority = "low";
     hydrateGalleryImage(image, item.images[0], item, 0);
 
     media.appendChild(image);
@@ -719,7 +721,9 @@ function buildFeaturedCarousel() {
     media.className = `featured-slide-media photo-placeholder has-image ${item.photoClass}`;
 
     const image = document.createElement("img");
-    image.loading = "eager";
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.fetchPriority = "low";
     const coverSource = item.coverImage
       ? { src: item.coverImage, alt: item.alt }
       : item.images[0] || { src: "", alt: item.alt };
@@ -1763,42 +1767,58 @@ function hydrateGalleryImage(
 
   imageElement.alt = finalAlt;
   imageElement.dataset.requestedSrc = requestedSrc;
+  imageElement.dataset.galleryFallback = "false";
   imageElement.classList.add("is-loading");
-  imageElement.src = fallbackSrc;
+  imageElement.decoding = "async";
 
-  if (!requestedSrc) {
+  const finalizeImage = (dimensions) => {
     imageElement.classList.remove("is-loading");
-    onReady?.({ naturalWidth: 4, naturalHeight: 5, isFallback: true });
-    return;
-  }
+    onReady?.(dimensions);
+  };
 
-  const preload = new Image();
-
-  preload.onload = () => {
+  imageElement.onload = () => {
     if (imageElement.dataset.requestedSrc !== requestedSrc) {
       return;
     }
 
-    imageElement.src = requestedSrc;
-    imageElement.classList.remove("is-loading");
-    onReady?.({
-      naturalWidth: preload.naturalWidth,
-      naturalHeight: preload.naturalHeight,
-      isFallback: false,
+    finalizeImage({
+      naturalWidth: imageElement.naturalWidth || 4,
+      naturalHeight: imageElement.naturalHeight || 5,
+      isFallback: imageElement.dataset.galleryFallback === "true",
     });
   };
 
-  preload.onerror = () => {
+  imageElement.onerror = () => {
     if (imageElement.dataset.requestedSrc !== requestedSrc) {
       return;
     }
 
+    if (imageElement.src === fallbackSrc || imageElement.currentSrc === fallbackSrc) {
+      finalizeImage({ naturalWidth: 4, naturalHeight: 5, isFallback: true });
+      return;
+    }
+
+    imageElement.dataset.galleryFallback = "true";
     imageElement.src = fallbackSrc;
-    imageElement.classList.remove("is-loading");
-    onReady?.({ naturalWidth: 4, naturalHeight: 5, isFallback: true });
   };
 
-  preload.src = requestedSrc;
+  if (!requestedSrc) {
+    imageElement.dataset.galleryFallback = "true";
+    imageElement.src = fallbackSrc;
+    finalizeImage({ naturalWidth: 4, naturalHeight: 5, isFallback: true });
+    return;
+  }
+
+  imageElement.src = requestedSrc;
+
+  if (imageElement.complete) {
+    if (imageElement.naturalWidth > 0) {
+      imageElement.onload();
+      return;
+    }
+
+    imageElement.onerror();
+  }
 }
 
 function getShootModalFocusableElements() {
@@ -1831,6 +1851,8 @@ function renderShootModalThumbnails() {
 
     const thumbImage = document.createElement("img");
     thumbImage.loading = "lazy";
+    thumbImage.decoding = "async";
+    thumbImage.alt = "";
 
     hydrateGalleryImage(thumbImage, image, shoot, index);
 
@@ -1857,6 +1879,7 @@ function renderShootModal() {
 
   shootModalSession.textContent = shoot.sessionType;
   syncShootModalViewerLayout();
+  shootModalImage.decoding = "async";
   hydrateGalleryImage(
     shootModalImage,
     activeImage,
@@ -1990,6 +2013,13 @@ setHeaderNavOpen(false);
 setupSectionRevealAnimations();
 syncCurrentNavLink();
 syncHeaderScrollState();
+window.lucide?.createIcons({
+  attrs: {
+    width: 28,
+    height: 28,
+    "stroke-width": 2,
+  },
+});
 
 featuredSummaryButton?.addEventListener("click", () => {
   openShootModal(featuredIndex, featuredSummaryButton);
@@ -2171,14 +2201,6 @@ categoryTrack.addEventListener("wheel", (event) => {
   if (event.deltaX > 0 && atEnd) {
     categoryTrack.classList.add("bounce-left");
   }
-});
-
-categoryTrack.addEventListener("animationend", () => {
-  categoryTrack.classList.remove("bounce-left", "bounce-right");
-});
-
-window.addEventListener("resize", () => {
-  window.requestAnimationFrame(renderCategoryDots);
 });
 
 categoryTrack.addEventListener("animationend", () => {

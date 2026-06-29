@@ -576,6 +576,8 @@ input[type="reset"] {
 .slot-button:focus-visible,
 .contact-method-button:focus-visible {
   transform: translateY(-2px);
+  outline: 2px solid rgba(133, 192, 255, 0.62);
+  outline-offset: 0.14rem;
 }
 
 .button-primary {
@@ -1821,7 +1823,13 @@ input[type="reset"] {
   border-radius: 0.95rem;
   background: rgba(216, 236, 255, 0.55);
   box-shadow: 0 8px 18px rgba(40, 84, 142, 0.06);
-  font-size: 1.3rem;
+  color: var(--accent-strong);
+}
+
+.pricing-card-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke-width: 2;
 }
 
 .pricing-card h3 {

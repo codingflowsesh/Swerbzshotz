@@ -1,19 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>SwerbzShotz | Capture Every Moment</title>
+  <meta name="description"
+    content="SwerbzShotz offers graduation, portrait, couples, and event photography across Los Angeles with timeless editing and an easy online booking experience.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#f6fbff">
+  <link rel="canonical" href="https://swerbzshotz.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SwerbzShotz">
   <meta property="og:title" content="SwerbzShotz | Capture Every Moment">
+  <meta property="og:description"
+    content="Graduation, portrait, couples, and event photography across Los Angeles with polished edits and seamless online booking.">
+  <meta property="og:url" content="https://swerbzshotz.com/">
+  <meta property="og:image" content="https://swerbzshotz.com/assets/gallery/graduation/grad-naren-campus.jpg">
+  <meta property="og:image:alt" content="UCLA graduate standing on campus between the towers in a blue stole.">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SwerbzShotz | Capture Every Moment">
+  <meta name="twitter:description"
+    content="Los Angeles photography for graduation, portrait, couples, and event sessions with timeless editing and easy booking.">
+  <meta name="twitter:image" content="https://swerbzshotz.com/assets/gallery/graduation/grad-naren-campus.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" media="print"
+    onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  </noscript>
+  <link rel="preload" as="image" href="assets/gallery/graduation/grad-naren-campus.jpg">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <!-- Update the canonical URLs below if the production domain differs from swerbzshotz.com. -->
+  <!-- Google Analytics 4 placeholder: replace G-XXXXXXXXXX before launch. -->
+  <!-- Google Search Console placeholder: add the verification meta tag here before launch. -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://swerbzshotz.com/#organization",
+          "name": "SwerbzShotz",
+          "url": "https://swerbzshotz.com/",
+          "logo": "https://swerbzshotz.com/apple-touch-icon.png",
+          "image": "https://swerbzshotz.com/assets/gallery/graduation/grad-naren-campus.jpg",
+          "description": "Graduation, portrait, couples, and event photography across Los Angeles with timeless editing and easy online booking."
+        },
+        {
+          "@type": [
+            "LocalBusiness",
+            "ProfessionalService"
+          ],
+          "@id": "https://swerbzshotz.com/#business",
+          "name": "SwerbzShotz",
+          "url": "https://swerbzshotz.com/",
+          "image": "https://swerbzshotz.com/assets/gallery/graduation/grad-naren-campus.jpg",
+          "description": "Photography sessions for graduations, portraits, couples, and events throughout Los Angeles.",
+          "serviceType": [
+            "Graduation photography",
+            "Portrait photography",
+            "Couples photography",
+            "Event photography"
+          ],
+          "areaServed": {
+            "@type": "City",
+            "name": "Los Angeles"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Los Angeles",
+            "addressRegion": "CA",
+            "addressCountry": "US"
+          },
+          "priceRange": "Contact for pricing",
+          "parentOrganization": {
+            "@id": "https://swerbzshotz.com/#organization"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://swerbzshotz.com/#website",
+          "url": "https://swerbzshotz.com/",
+          "name": "SwerbzShotz",
+          "inLanguage": "en-US",
+          "publisher": {
+            "@id": "https://swerbzshotz.com/#organization"
+          }
+        }
+      ]
+    }
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -92,7 +176,8 @@
         <div class="hero-card">
           <div class="photo-placeholder has-image hero-photo">
             <img src="assets/gallery/graduation/grad-naren-campus.jpg"
-              alt="UCLA graduate standing on campus between the towers in a blue stole." />
+              alt="UCLA graduate standing on campus between the towers in a blue stole." width="1616" height="1080"
+              loading="eager" fetchpriority="high" decoding="async">
           </div>
         </div>
       </div>
@@ -161,7 +246,7 @@
         <div class="category-track" id="categoryTrack" aria-label="Photography categories"></div>
 
         <div class="carousel-toolbar carousel-toolbar-categories">
-          <div class="scroll-dots" id="categoryDots" aria-hidden="true"></div>
+          <div class="scroll-dots" id="categoryDots" aria-label="Category navigation"></div>
         </div>
       </div>
     </section>
@@ -204,7 +289,7 @@
 
         <div class="pricing-grid">
           <article class="pricing-card surface-card">
-            <span class="pricing-card-icon" aria-hidden="true">🎓</span>
+            <span class="pricing-card-icon" aria-hidden="true"><i data-lucide="graduation-cap"></i></span>
             <h3>Graduation Session</h3>
             <p class="pricing-card-description">Celebrate your graduation with timeless portraits.</p>
             <span class="pricing-card-divider" aria-hidden="true"></span>
@@ -219,7 +304,7 @@
           </article>
 
           <article class="pricing-card pricing-card-featured surface-card">
-            <span class="pricing-card-icon" aria-hidden="true">📷</span>
+            <span class="pricing-card-icon" aria-hidden="true"><i data-lucide="camera"></i></span>
             <h3>Portrait Session</h3>
             <p class="pricing-card-description">Personal portraits with polished, natural direction.</p>
             <span class="pricing-card-divider" aria-hidden="true"></span>
@@ -234,7 +319,7 @@
           </article>
 
           <article class="pricing-card surface-card">
-            <span class="pricing-card-icon" aria-hidden="true">❤️</span>
+            <span class="pricing-card-icon" aria-hidden="true"><i data-lucide="heart-handshake"></i></span>
             <h3>Couples Session</h3>
             <p class="pricing-card-description">Story-driven imagery for couples and connection.</p>
             <span class="pricing-card-divider" aria-hidden="true"></span>
@@ -249,7 +334,7 @@
           </article>
 
           <article class="pricing-card surface-card">
-            <span class="pricing-card-icon" aria-hidden="true">🎉</span>
+            <span class="pricing-card-icon" aria-hidden="true"><i data-lucide="party-popper"></i></span>
             <h3>Event Coverage</h3>
             <p class="pricing-card-description">Joyful coverage for parties and milestone events.</p>
             <span class="pricing-card-divider" aria-hidden="true"></span>
@@ -329,7 +414,8 @@
                 <button class="option-card" type="button" data-session="Graduation Session" aria-pressed="false">
                   <span class="photo-placeholder has-image photo-graduation">
                     <img src="assets/gallery/graduation/grad-janine-fountain.jpg"
-                      alt="Graduation portrait session preview near the UCLA fountain" loading="lazy">
+                      alt="Graduation portrait session preview near the UCLA fountain" width="1616" height="1080"
+                      loading="lazy" decoding="async">
                   </span>
                   <span class="option-copy">
                     <strong>Graduation Session</strong>
@@ -341,7 +427,8 @@
                 <button class="option-card" type="button" data-session="Portrait Session" aria-pressed="false">
                   <span class="photo-placeholder has-image photo-portraits">
                     <img src="assets/galleries/portrait-session/portrait-platform-walk.jpg"
-                      alt="Portrait session preview" loading="lazy">
+                      alt="Portrait subject walking along a train platform during a lifestyle portrait session."
+                      width="1616" height="1080" loading="lazy" decoding="async">
                   </span>
                   <span class="option-copy">
                     <strong>Portrait Session</strong>
@@ -352,7 +439,9 @@
 
                 <button class="option-card" type="button" data-session="Couples Session" aria-pressed="false">
                   <span class="photo-placeholder has-image photo-couples">
-                    <img src="assets/gallery/couples/couples-vows.jpg" alt="Couples session preview" loading="lazy">
+                    <img src="assets/gallery/couples/couples-vows.jpg"
+                      alt="Couple embracing during an outdoor ceremony for a storytelling session." width="1080"
+                      height="1616" loading="lazy" decoding="async">
                   </span>
                   <span class="option-copy">
                     <strong>Couples Session</strong>
@@ -363,8 +452,9 @@
 
                 <button class="option-card" type="button" data-session="Event Coverage" aria-pressed="false">
                   <span class="photo-placeholder has-image photo-events">
-                    <img src="assets/gallery/events/event-poolside-candid.jpg" alt="Event coverage preview"
-                      loading="lazy">
+                    <img src="assets/gallery/events/event-poolside-candid.jpg"
+                      alt="Guests sharing a candid moment beside a pool during an event." width="1616" height="1080"
+                      loading="lazy" decoding="async">
                   </span>
                   <span class="option-copy">
                     <strong>Event Coverage</strong>
@@ -374,7 +464,7 @@
                 </button>
               </div>
 
-              <p class="form-error" id="sessionError"></p>
+              <p class="form-error" id="sessionError" aria-live="polite"></p>
 
               <div class="step-actions">
                 <button class="button button-primary" type="button" data-next-step="2">Continue</button>
@@ -409,7 +499,7 @@
                   <span>Sun</span>
                 </div>
 
-                <div class="booking-calendar-grid" id="calendarDateGrid"></div>
+                <div class="booking-calendar-grid" id="calendarDateGrid" aria-label="Booking calendar dates"></div>
               </div>
 
               <div class="time-slot-shell">
@@ -417,10 +507,11 @@
                   <span>Available times</span>
                   <strong id="timeSlotHeading">Select a date to view times</strong>
                 </div>
-                <div class="slot-grid time-slot-grid" id="timeSlotGrid" aria-live="polite"></div>
+                <div class="slot-grid time-slot-grid" id="timeSlotGrid" aria-live="polite"
+                  aria-label="Available booking times"></div>
               </div>
 
-              <p class="form-error" id="dateError"></p>
+              <p class="form-error" id="dateError" aria-live="polite"></p>
 
               <div class="step-actions">
                 <button class="button button-secondary" type="button" data-prev-step="1">Back</button>
@@ -441,17 +532,17 @@
 
               <label class="contact-field contact-field-static">
                 <span>Confirmation email</span>
-                <small class="contact-field-hint">This email receives your booking confirmation; choose a follow-up
+                <small class="contact-field-hint" id="confirmationEmailHint">This email receives your booking confirmation; choose a follow-up
                   method below if you want text or DM updates.</small>
                 <input id="confirmationEmailInput" name="Confirmation Email" type="email" placeholder="you@example.com"
-                  autocomplete="email" required>
+                  autocomplete="email" aria-describedby="confirmationEmailHint" required>
               </label>
 
               <input type="hidden" id="bookingSessionType" name="Session Type" value="" />
               <input type="hidden" id="bookingDateTime" name="Preferred Date/Time" value="" />
               <input type="hidden" id="bookingPreferredContactMethod" name="Preferred Contact Method" value="" />
 
-              <div class="contact-methods">
+              <div class="contact-methods" role="group" aria-label="Preferred contact method">
                 <button class="contact-method-button" type="button" data-method="Email" aria-pressed="false">
                   <strong>Email</strong>
                   <small>Replies by email</small>
@@ -481,13 +572,14 @@
 
               <label class="contact-field contact-field-static">
                 <span>Session notes</span>
-                <small class="contact-field-hint">Tell us about your vision — locations, outfit ideas, lighting, or any
+                <small class="contact-field-hint" id="shootNotesHint">Tell us about your vision — locations, outfit ideas, lighting, or any
                   details that matter.</small>
                 <textarea id="shootNotesInput" name="Shoot Notes"
+                  aria-describedby="shootNotesHint"
                   placeholder="Add your session details here..."></textarea>
               </label>
 
-              <p class="form-error" id="contactError"></p>
+              <p class="form-error" id="contactError" aria-live="polite"></p>
 
               <div class="step-actions">
                 <button class="button button-secondary" type="button" data-prev-step="2">Back</button>
@@ -592,8 +684,9 @@
 
   <a class="mobile-book-button" href="#booking">Book a Shoot</a>
 
-  <script src="gallery-data.js"></script>
-  <script src="script.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+  <script src="gallery-data.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 
 </html>
