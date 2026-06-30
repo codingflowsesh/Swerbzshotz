@@ -32,7 +32,7 @@ const exploreCategoryItems = [
     alt: "Graduation session preview near the UCLA fountain.",
     images: [
       {
-        src: "assets/gallery/graduation/grad-janine-fountain.jpg",
+        src: "assets/galleries/graduation-session/grad-janine-fountain.jpg",
         alt: "Graduation portrait session preview near the UCLA fountain.",
       },
     ],
@@ -57,11 +57,11 @@ const exploreCategoryItems = [
     meta: "Authentic connection & storytelling",
     cta: "View gallery →",
     photoClass: "photo-couples",
-    alt: "Couples session preview from wedding moments.",
+    alt: "Couples session preview during an outdoor ceremony.",
     images: [
       {
-        src: "assets/galleries/wedding-moments/IMG_20260620_204257 (4).jpg",
-        alt: "Couples session preview from wedding moments.",
+        src: "assets/galleries/couples-session/couples-vows.jpg",
+        alt: "Couples session preview during an outdoor ceremony.",
       },
     ],
   },
@@ -71,11 +71,11 @@ const exploreCategoryItems = [
     meta: "Celebrations, gatherings & highlights",
     cta: "View gallery →",
     photoClass: "photo-events",
-    alt: "Event reception preview from wedding moments.",
+    alt: "Event coverage preview by the pool.",
     images: [
       {
-        src: "assets/galleries/wedding-moments/IMG_20260620_204257 (1).jpg",
-        alt: "Event reception preview from wedding moments.",
+        src: "assets/galleries/event-coverage/event-poolside-candid.jpg",
+        alt: "Event coverage preview by the pool.",
       },
     ],
   },
