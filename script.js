@@ -105,6 +105,7 @@ const featuredSummaryButton = document.getElementById("featuredSummaryButton");
 const headerNav = document.getElementById("headerNav");
 const headerNavToggle = document.getElementById("headerNavToggle");
 const siteHeader = document.querySelector(".site-header");
+const siteFooter = document.querySelector(".site-footer");
 const heroPrimaryCta = document.querySelector(".hero-primary-cta");
 const bookingSection = document.getElementById("booking");
 const mobileBookButton = document.querySelector(".mobile-book-button");
@@ -142,6 +143,9 @@ const prefillSessionLinks = Array.from(
 const headerNavLinks = Array.from(headerNav.querySelectorAll("a"));
 const headerNavSectionLinks = Array.from(
   headerNav.querySelectorAll(".header-nav-link"),
+);
+const footerFaqItems = Array.from(
+  document.querySelectorAll(".footer-faq-item"),
 );
 const bookingStepStatus = document.getElementById("bookingStepStatus");
 const stepper = document.querySelector(".stepper");
@@ -212,8 +216,10 @@ let shootModalCloseTimer = 0;
 let lastModalTrigger = null;
 let isHeroVisible = false;
 let isBookingVisible = false;
+let isFooterVisible = false;
 let navHighlightFrame = 0;
 let featuredSummaryAnimationTimer = 0;
+const footerFaqAnimations = new WeakMap();
 const shootModalTransitionMs = 920;
 const earliestBookingDate = (() => {
   const date = new Date();
@@ -367,6 +373,119 @@ function getMotionBehavior() {
   return prefersReducedMotion.matches ? "auto" : "smooth";
 }
 
+function syncFooterFaqExpandedState(item) {
+  const summary = item.querySelector(".footer-faq-summary");
+
+  if (!summary) {
+    return;
+  }
+
+  summary.setAttribute("aria-expanded", String(item.open));
+}
+
+function resetFooterFaqAnimation(item, answerWrap) {
+  item.classList.remove("is-faq-animating");
+  answerWrap.style.height = "";
+  answerWrap.style.opacity = "";
+  answerWrap.style.overflow = "";
+  answerWrap.style.willChange = "";
+}
+
+function toggleFooterFaqItem(item) {
+  const answerWrap = item.querySelector(".footer-faq-answer-wrap");
+  const answer = item.querySelector(".footer-faq-answer");
+
+  if (!answerWrap || !answer) {
+    item.open = !item.open;
+    syncFooterFaqExpandedState(item);
+    return;
+  }
+
+  const shouldOpen = !item.open;
+  const startHeight = answerWrap.getBoundingClientRect().height;
+  const startOpacity =
+    Number.parseFloat(window.getComputedStyle(answerWrap).opacity) ||
+    Number(item.open);
+  const activeAnimation = footerFaqAnimations.get(item);
+
+  activeAnimation?.cancel();
+
+  if (prefersReducedMotion.matches || typeof answerWrap.animate !== "function") {
+    item.open = shouldOpen;
+    syncFooterFaqExpandedState(item);
+    resetFooterFaqAnimation(item, answerWrap);
+    return;
+  }
+
+  if (shouldOpen) {
+    item.open = true;
+  }
+
+  const endHeight = shouldOpen ? answer.getBoundingClientRect().height : 0;
+  const endOpacity = shouldOpen ? 1 : 0;
+  const duration = shouldOpen ? 360 : 300;
+  const easing = shouldOpen
+    ? "cubic-bezier(0.22, 1, 0.36, 1)"
+    : "cubic-bezier(0.4, 0, 0.2, 1)";
+
+  item.classList.add("is-faq-animating");
+  answerWrap.style.height = `${startHeight}px`;
+  answerWrap.style.opacity = String(startOpacity);
+  answerWrap.style.overflow = "hidden";
+  answerWrap.style.willChange = "height, opacity";
+  syncFooterFaqExpandedState(item);
+
+  const animation = answerWrap.animate(
+    [
+      {
+        height: `${startHeight}px`,
+        opacity: startOpacity,
+      },
+      {
+        height: `${endHeight}px`,
+        opacity: endOpacity,
+      },
+    ],
+    {
+      duration,
+      easing,
+      fill: "forwards",
+    },
+  );
+
+  footerFaqAnimations.set(item, animation);
+
+  animation.onfinish = () => {
+    if (footerFaqAnimations.get(item) !== animation) {
+      return;
+    }
+
+    footerFaqAnimations.delete(item);
+    item.open = shouldOpen;
+    syncFooterFaqExpandedState(item);
+    resetFooterFaqAnimation(item, answerWrap);
+  };
+
+  animation.oncancel = () => {
+    if (footerFaqAnimations.get(item) === animation) {
+      footerFaqAnimations.delete(item);
+    }
+  };
+}
+
+function setupFooterFaqAnimations() {
+  footerFaqItems.forEach((item) => {
+    const summary = item.querySelector(".footer-faq-summary");
+
+    syncFooterFaqExpandedState(item);
+
+    summary?.addEventListener("click", (event) => {
+      event.preventDefault();
+      toggleFooterFaqItem(item);
+    });
+  });
+}
+
 function setHeaderNavOpen(isOpen) {
   headerNav.classList.toggle("is-open", isOpen);
   siteHeader?.classList.toggle("is-nav-open", isOpen);
@@ -375,7 +494,7 @@ function setHeaderNavOpen(isOpen) {
     "aria-label",
     isOpen ? "Close navigation menu" : "Open navigation menu",
   );
-  syncMobileBookButtonVisibility();
+  syncStickyUiVisibility();
 }
 
 function setMobileBookButtonHidden(isHidden) {
@@ -384,6 +503,15 @@ function setMobileBookButtonHidden(isHidden) {
   }
 
   mobileBookButton.classList.toggle("is-hidden", isHidden);
+}
+
+function setSiteHeaderHidden(isHidden) {
+  if (!siteHeader) {
+    return;
+  }
+
+  siteHeader.classList.toggle("is-hidden", isHidden);
+  siteHeader.toggleAttribute("inert", isHidden);
 }
 
 function updateMobileBookViewportState() {
@@ -399,15 +527,27 @@ function updateMobileBookViewportState() {
     isBookingVisible =
       bookingRect.top < window.innerHeight && bookingRect.bottom > 0;
   }
+
+  if (siteFooter) {
+    const footerRect = siteFooter.getBoundingClientRect();
+    isFooterVisible =
+      footerRect.top < window.innerHeight && footerRect.bottom > 0;
+  }
 }
 
-function syncMobileBookButtonVisibility() {
-  if (!mobileBookButton) {
-    return;
+function syncStickyUiVisibility() {
+  if (isFooterVisible && headerNav?.classList.contains("is-open")) {
+    headerNav.classList.remove("is-open");
+    siteHeader?.classList.remove("is-nav-open");
+    headerNavToggle.setAttribute("aria-expanded", "false");
+    headerNavToggle.setAttribute("aria-label", "Open navigation menu");
   }
 
   const isMenuOpen = headerNav?.classList.contains("is-open");
-  setMobileBookButtonHidden(isHeroVisible || isBookingVisible || isMenuOpen);
+  setMobileBookButtonHidden(
+    isHeroVisible || isBookingVisible || isMenuOpen || isFooterVisible,
+  );
+  setSiteHeaderHidden(isFooterVisible);
 }
 
 function syncCurrentNavLink() {
@@ -2002,6 +2142,7 @@ updateSummary();
 showStep(currentStep);
 updateMobileBookViewportState();
 setHeaderNavOpen(false);
+setupFooterFaqAnimations();
 setupSectionRevealAnimations();
 syncCurrentNavLink();
 syncHeaderScrollState();
@@ -2042,8 +2183,8 @@ featuredStage?.addEventListener("keydown", (event) => {
   }
 });
 
-if ("IntersectionObserver" in window && (heroPrimaryCta || bookingSection)) {
-  // Hide the floating CTA while the hero CTA or booking section is visible.
+if ("IntersectionObserver" in window && (heroPrimaryCta || bookingSection || siteFooter)) {
+  // Hide the floating CTA around the hero, booking section, and footer.
   const headerOffset = siteHeader?.offsetHeight || 0;
   const mobileBookObserver = new IntersectionObserver(
     (entries) => {
@@ -2055,9 +2196,13 @@ if ("IntersectionObserver" in window && (heroPrimaryCta || bookingSection)) {
         if (entry.target === bookingSection) {
           isBookingVisible = entry.isIntersecting;
         }
+
+        if (entry.target === siteFooter) {
+          isFooterVisible = entry.isIntersecting;
+        }
       });
 
-      syncMobileBookButtonVisibility();
+      syncStickyUiVisibility();
     },
     {
       threshold: 0.12,
@@ -2072,17 +2217,24 @@ if ("IntersectionObserver" in window && (heroPrimaryCta || bookingSection)) {
   if (bookingSection) {
     mobileBookObserver.observe(bookingSection);
   }
+
+  if (siteFooter) {
+    mobileBookObserver.observe(siteFooter);
+  }
 } else {
-  // Fallback for older browsers: compare the hero CTA and booking section to the viewport.
-  const syncMobileBookButton = () => {
+  // Fallback for older browsers: compare the hero CTA, booking section, and footer to the viewport.
+  const syncStickyUi = () => {
     updateMobileBookViewportState();
-    syncMobileBookButtonVisibility();
+    syncStickyUiVisibility();
   };
 
-  syncMobileBookButton();
-  window.addEventListener("scroll", syncMobileBookButton, { passive: true });
-  window.addEventListener("resize", syncMobileBookButton);
+  syncStickyUi();
+  window.addEventListener("scroll", syncStickyUi, { passive: true });
+  window.addEventListener("resize", syncStickyUi);
 }
+
+updateMobileBookViewportState();
+syncStickyUiVisibility();
 
 headerNavToggle.addEventListener("click", () => {
   const isOpen = headerNavToggle.getAttribute("aria-expanded") === "true";
@@ -2116,7 +2268,7 @@ window.addEventListener("resize", () => {
   }
 
   updateMobileBookViewportState();
-  syncMobileBookButtonVisibility();
+  syncStickyUiVisibility();
   queueNavHighlightSync();
 
   if (featuredSlides.length) {

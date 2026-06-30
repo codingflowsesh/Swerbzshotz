@@ -26,8 +26,7 @@
   <meta name="twitter:description"
     content="Los Angeles photography for graduation, portrait, couples, and event sessions with timeless editing and easy booking.">
   <meta name="twitter:image" content="https://swerbzshotz.com/assets/gallery/graduation/grad-naren-campus.jpg">
-  <meta name="twitter:image:alt"
-    content="UCLA graduate standing on campus between the towers in a blue stole.">
+  <meta name="twitter:image:alt" content="UCLA graduate standing on campus between the towers in a blue stole.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" as="style">
@@ -75,7 +74,12 @@
           "url": "https://swerbzshotz.com/",
           "image": "https://swerbzshotz.com/assets/gallery/graduation/grad-naren-campus.jpg",
           "description": "Photography sessions for graduations, portraits, couples, and events throughout Los Angeles.",
+          "sameAs": [
+            "https://www.instagram.com/swerbz2408/"
+          ],
+          "email": "swerbz420@gmail.com",
           "serviceType": [
+            "Photography service",
             "Graduation photography",
             "Portrait photography",
             "Couples photography",
@@ -83,13 +87,35 @@
           ],
           "areaServed": {
             "@type": "City",
-            "name": "Los Angeles"
+            "name": "Los Angeles, CA"
           },
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Los Angeles",
             "addressRegion": "CA",
             "addressCountry": "US"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Photography Services",
+            "itemListElement": [
+              {
+                "@type": "OfferCatalog",
+                "name": "Graduation Photography"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Portrait Photography"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Couples Photography"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Event Photography"
+              }
+            ]
           },
           "priceRange": "Contact for pricing",
           "parentOrganization": {
@@ -105,6 +131,44 @@
           "publisher": {
             "@id": "https://swerbzshotz.com/#organization"
           }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://swerbzshotz.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Do you require a deposit to book?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. A deposit may be required to reserve your date and time. The remaining balance is due before or at the session."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What happens if I need to reschedule?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "If you need to reschedule, reach out as soon as possible. We'll work together to find the next available date."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How soon will I receive my photos?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Delivery time depends on the session type, but most edited galleries are delivered within a reasonable turnaround after the shoot."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What's included in each photography session?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Each session includes the shoot time, basic direction/posing help, professionally edited images, and a private gallery or delivery link."
+              }
+            }
+          ]
         }
       ]
     }
@@ -158,7 +222,7 @@
           <a class="header-nav-link" href="#hero">Home</a>
           <a class="header-nav-link" href="#about">About</a>
           <a class="header-nav-link" href="#gallery">Gallery</a>
-          <a class="header-nav-link" href="#graduation-photography">Services</a>
+          <a class="header-nav-link" href="#pricing">Services</a>
           <a class="header-nav-link" href="#contact">Contact</a>
         </div>
         <a class="header-nav-cta" href="#booking">Book a Shoot</a>
@@ -176,7 +240,8 @@
             <span class="hero-line">BEAUTIFULLY</span>
             <span class="hero-line accent-word">CAPTURED.</span>
           </h1>
-          <p class="hero-text">Modern photography for milestones, memories, and moments worth keeping.</p>
+          <p class="hero-text">Modern Los Angeles photography for graduations, portraits, couples, events, and moments
+            worth keeping.</p>
 
           <div class="hero-actions">
             <a class="button button-primary hero-primary-cta" href="#booking">Book a Shoot</a>
@@ -230,8 +295,7 @@
                 <h2>Photography for moments worth <span class="accent-word">keeping.</span></h2>
                 <p>SwerbzShotz captures graduation, portrait, couples, and event photography across Los Angeles. Every
                   session focuses on authentic moments, natural direction, and timeless edits you'll love looking back
-                  on. <a class="context-link" href="#couples-photography">Explore Couples Photography</a> or <a
-                    class="context-link" href="#gallery">browse the gallery</a>.</p>
+                  on.</p>
               </div>
             </div>
 
@@ -254,10 +318,7 @@
         <div class="section-heading">
           <p class="eyebrow">Explore</p>
           <h2>Swipe Through <span class="accent-word">Categories</span></h2>
-          <p>Scroll the showcase cards to find the shoot style that matches your moment. <a class="context-link"
-              href="#graduation-photography">View Graduation Photography</a>, <a class="context-link"
-              href="#portrait-photography">See Portrait Sessions</a>, or <a class="context-link"
-              href="#event-photography">Browse Event Photography</a>.</p>
+          <p>Graduation, portrait, couples, and event photography in one place.</p>
         </div>
 
         <div class="category-track" id="categoryTrack" aria-label="Photography categories"></div>
@@ -273,9 +334,7 @@
         <div class="section-heading section-heading-featured">
           <p class="eyebrow">Featured Work</p>
           <h2>Portfolio <span class="accent-word">Spotlight</span></h2>
-          <p>Tap through the featured gallery stack to preview real sessions and open the full shoot. <a
-              class="context-link" href="#booking">Book Your Session</a> or <a class="context-link"
-              href="#contact">Contact SwerbzShotz</a>.</p>
+          <p>Real sessions, polished edits, and moments that feel true to you.</p>
         </div>
 
         <div class="featured-carousel">
@@ -304,11 +363,7 @@
       <div class="container">
         <div class="section-heading">
           <h2>SESSION <span class="accent-word">PACKAGES</span></h2>
-          <p>Jump to <a class="context-link" href="#graduation-photography">Graduation Photography</a>, <a
-              class="context-link" href="#portrait-photography">Portrait Sessions</a>, <a class="context-link"
-              href="#couples-photography">Couples Photography</a>, <a class="context-link"
-              href="#event-photography">Event Photography</a>, or <a class="context-link" href="#booking">Book Your
-              Session</a>.</p>
+          <p>Packages for graduation, portrait, couples, and event photography.</p>
         </div>
 
         <div class="pricing-grid">
@@ -667,7 +722,183 @@
         </div>
       </div>
     </section>
+
   </main>
+
+  <footer class="site-footer" aria-labelledby="footerBrandHeading">
+    <div class="container">
+      <div class="footer-shell">
+        <div class="footer-top">
+          <section class="footer-brand footer-column" aria-labelledby="footerBrandHeading">
+            <span class="footer-brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 192 152" role="presentation" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                <defs>
+                  <linearGradient id="footerBrandCameraBody" x1="96" y1="10" x2="96" y2="140"
+                    gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#f38ca8" />
+                    <stop offset="0.46" stop-color="#bd6f8d" />
+                    <stop offset="1" stop-color="#102b55" />
+                  </linearGradient>
+                  <linearGradient id="footerBrandCameraLens" x1="96" y1="46" x2="96" y2="126"
+                    gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#b56d8b" />
+                    <stop offset="1" stop-color="#1a315d" />
+                  </linearGradient>
+                </defs>
+                <rect x="14" y="30" width="164" height="108" rx="20" fill="url(#footerBrandCameraBody)" />
+                <rect x="68" y="10" width="54" height="28" rx="10" fill="url(#footerBrandCameraBody)" />
+                <rect x="32" y="20" width="24" height="11" rx="5.5" fill="#d67895" />
+                <rect x="37" y="16" width="14" height="8" rx="3" fill="#f6a0b7" />
+                <rect x="141" y="44" width="23" height="20" rx="4" fill="#ffffff" />
+                <rect x="14" y="65" width="49" height="7" rx="3.5" fill="#ffffff" />
+                <rect x="129" y="65" width="49" height="7" rx="3.5" fill="#ffffff" />
+                <circle cx="96" cy="87" r="40" fill="url(#footerBrandCameraLens)" stroke="#ffffff" stroke-width="10" />
+              </svg>
+            </span>
+            <h2 id="footerBrandHeading">SWERBZSHOTZ</h2>
+            <p class="footer-description">Los Angeles photography for graduation,<br>portrait, couples, and event
+              sessions.<br>Timeless photos, real moments.</p>
+            <a class="button footer-book-link" href="#booking" aria-label="Jump to the booking form section">
+              <span>Book a Shoot</span>
+              <span class="footer-link-arrow" aria-hidden="true"><i data-lucide="chevron-right"></i></span>
+            </a>
+          </section>
+
+          <nav class="footer-nav footer-column" aria-labelledby="footerQuickLinksHeading">
+            <h3 class="footer-heading" id="footerQuickLinksHeading">Quick Links</h3>
+            <ul class="footer-link-list">
+              <li>
+                <a class="footer-link" href="#hero">
+                  <span>Home</span>
+                  <span class="footer-link-arrow" aria-hidden="true"><i data-lucide="chevron-right"></i></span>
+                </a>
+              </li>
+              <li>
+                <a class="footer-link" href="#about">
+                  <span>About</span>
+                  <span class="footer-link-arrow" aria-hidden="true"><i data-lucide="chevron-right"></i></span>
+                </a>
+              </li>
+              <li>
+                <a class="footer-link" href="#gallery">
+                  <span>Portfolio</span>
+                  <span class="footer-link-arrow" aria-hidden="true"><i data-lucide="chevron-right"></i></span>
+                </a>
+              </li>
+              <li>
+                <a class="footer-link" href="#booking">
+                  <span>Book a Shoot</span>
+                  <span class="footer-link-arrow" aria-hidden="true"><i data-lucide="chevron-right"></i></span>
+                </a>
+              </li>
+              <li>
+                <a class="footer-link" href="#contact">
+                  <span>Contact</span>
+                  <span class="footer-link-arrow" aria-hidden="true"><i data-lucide="chevron-right"></i></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <section class="footer-contact footer-column" aria-labelledby="footerContactHeading">
+            <h3 class="footer-heading" id="footerContactHeading">Let's Connect</h3>
+            <address class="footer-contact-list">
+              <p class="footer-contact-row">
+                <span class="footer-contact-icon" aria-hidden="true"><i data-lucide="map-pin"></i></span>
+                <span>Los Angeles, CA</span>
+              </p>
+              <a class="footer-contact-row footer-contact-link" href="mailto:swerbz420@gmail.com"
+                aria-label="Email SwerbzShotz at swerbz420@gmail.com">
+                <span class="footer-contact-icon" aria-hidden="true"><i data-lucide="mail"></i></span>
+                <span>swerbz420@gmail.com</span>
+              </a>
+            </address>
+
+            <div class="footer-mini-divider" aria-hidden="true"></div>
+
+            <section class="footer-follow" aria-labelledby="footerFollowHeading">
+              <h3 class="footer-heading" id="footerFollowHeading">Follow</h3>
+              <p>Follow for the latest sessions and updates.</p>
+              <a class="footer-follow-link" href="https://www.instagram.com/swerbz2408/" target="_blank"
+                rel="noopener noreferrer" aria-label="Open the SwerbzShotz Instagram profile">
+                <span class="footer-contact-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" role="presentation" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                    <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor"
+                      stroke-width="2" />
+                    <circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="2" />
+                    <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" />
+                  </svg>
+                </span>
+                <span class="footer-follow-handle">@swerbz2408</span>
+              </a>
+            </section>
+          </section>
+        </div>
+
+        <section class="footer-faq" id="faq" aria-labelledby="footerFaqHeading">
+          <div class="footer-divider" aria-hidden="true"></div>
+          <h3 class="footer-heading footer-faq-heading" id="footerFaqHeading">Questions Before You Book?</h3>
+          <div class="footer-faq-list">
+            <details class="footer-faq-item">
+              <summary class="footer-faq-summary">
+                <span>Do you require a deposit to book?</span>
+                <span class="footer-faq-symbol" aria-hidden="true">+</span>
+              </summary>
+              <div class="footer-faq-answer-wrap">
+                <div class="footer-faq-answer">
+                  <p>Yes. A deposit may be required to reserve your date and time. The remaining balance is due before
+                    or at the session.</p>
+                </div>
+              </div>
+            </details>
+
+            <details class="footer-faq-item">
+              <summary class="footer-faq-summary">
+                <span>What happens if I need to reschedule?</span>
+                <span class="footer-faq-symbol" aria-hidden="true">+</span>
+              </summary>
+              <div class="footer-faq-answer-wrap">
+                <div class="footer-faq-answer">
+                  <p>If you need to reschedule, reach out as soon as possible. We'll work together to find the next
+                    available date.</p>
+                </div>
+              </div>
+            </details>
+
+            <details class="footer-faq-item">
+              <summary class="footer-faq-summary">
+                <span>How soon will I receive my photos?</span>
+                <span class="footer-faq-symbol" aria-hidden="true">+</span>
+              </summary>
+              <div class="footer-faq-answer-wrap">
+                <div class="footer-faq-answer">
+                  <p>Delivery time depends on the session type, but most edited galleries are delivered within a
+                    reasonable turnaround after the shoot.</p>
+                </div>
+              </div>
+            </details>
+
+            <details class="footer-faq-item">
+              <summary class="footer-faq-summary">
+                <span>What's included in each photography session?</span>
+                <span class="footer-faq-symbol" aria-hidden="true">+</span>
+              </summary>
+              <div class="footer-faq-answer-wrap">
+                <div class="footer-faq-answer">
+                  <p>Each session includes the shoot time, basic direction/posing help, professionally edited images,
+                    and a private gallery or delivery link.</p>
+                </div>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 SwerbzShotz. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <div class="shoot-modal" id="shootModal" role="dialog" aria-modal="true" aria-labelledby="shootModalSession" hidden>
     <section class="shoot-modal-panel" id="shootModalPanel" tabindex="-1">
