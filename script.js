@@ -1499,6 +1499,7 @@ async function sendBookingConfirmation() {
   formData.set("form-name", "booking");
   formData.set("Full Name", snapshot.fullName);
   formData.set("email", snapshot.confirmationEmail);
+  formData.set("Confirmation Email", snapshot.confirmationEmail);
   formData.set("Session Type", snapshot.sessionType);
   formData.set("Preferred Date/Time", snapshot.preferredDateTime);
   formData.set(
@@ -2386,10 +2387,6 @@ bookingForm.addEventListener("submit", async (event) => {
     return;
   }
 
-  await handleBookingSubmission();
-});
-
-submitBookingButton.addEventListener("click", async () => {
   await handleBookingSubmission();
 });
 

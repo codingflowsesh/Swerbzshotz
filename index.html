@@ -385,8 +385,8 @@
             </div>
           </aside>
 
-          <form id="bookingForm" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field"
-            class="booking-card surface-card">
+          <form id="bookingForm" name="booking" method="POST" action="/" data-netlify="true"
+            netlify-honeypot="bot-field" class="booking-card surface-card">
             <input type="hidden" name="form-name" value="booking" />
             <input type="text" name="bot-field" hidden />
             <div class="booking-topline">
@@ -544,7 +544,7 @@
                 <small class="contact-field-hint" id="confirmationEmailHint">This email receives your booking
                   confirmation; choose a follow-up
                   method below if you want text or DM updates.</small>
-                <input id="confirmationEmailInput" name="Confirmation Email" type="email" placeholder="you@example.com"
+                <input id="confirmationEmailInput" name="email" type="email" placeholder="you@example.com"
                   autocomplete="email" aria-describedby="confirmationEmailHint" required>
               </label>
 
@@ -593,7 +593,7 @@
 
               <div class="step-actions">
                 <button class="button button-secondary" type="button" data-prev-step="2">Back</button>
-                <button class="button button-primary" id="submitBooking" type="button">Submit Booking</button>
+                <button class="button button-primary" id="submitBooking" type="submit">Submit Booking</button>
               </div>
             </section>
 
