@@ -1496,17 +1496,14 @@ async function sendBookingConfirmation() {
   updateBookingFormFields(snapshot);
 
   const formData = new FormData(bookingForm);
-  formData.set("form-name", "booking");
   formData.set("Full Name", snapshot.fullName);
   formData.set("email", snapshot.confirmationEmail);
-  formData.set("Confirmation Email", snapshot.confirmationEmail);
   formData.set("Session Type", snapshot.sessionType);
   formData.set("Preferred Date/Time", snapshot.preferredDateTime);
   formData.set(
     "Preferred Contact Method",
     snapshot.preferredContactMethod,
   );
-  formData.delete("bot-field");
   formData.delete("Instagram Handle");
   formData.delete("Phone Number");
 
@@ -1529,10 +1526,6 @@ async function sendBookingConfirmation() {
 
   const emptyFieldNames = [];
   formData.forEach((value, key) => {
-    if (key === "form-name") {
-      return;
-    }
-
     if (typeof value === "string" && !value.trim()) {
       emptyFieldNames.push(key);
     }
@@ -1541,14 +1534,12 @@ async function sendBookingConfirmation() {
     formData.delete(key);
   });
 
-  const payload = new URLSearchParams(formData);
-
-  const response = await fetch("/", {
+  const response = await fetch(bookingForm.action, {
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "application/json",
     },
-    body: payload.toString(),
+    body: formData,
   });
 
   if (!response.ok) {
