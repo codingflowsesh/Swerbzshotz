@@ -389,6 +389,8 @@
           <form id="bookingForm" name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field"
             class="booking-card surface-card">
             <input type="hidden" name="form-name" value="booking" />
+            <input type="hidden" name="subject" data-remove-prefix
+              value="New booking request from %{siteName} (%{formName})" />
             <input type="text" name="bot-field" hidden />
             <div class="booking-topline">
               <div class="booking-topline-copy">
@@ -530,8 +532,8 @@
             </section>
 
             <section class="booking-step" data-step-panel="3">
-              <h3>Step 3: Add your confirmation email</h3>
-              <p>Enter the email where the booking confirmation should be sent, then choose the best follow-up method
+              <h3>Step 3: Add your contact email</h3>
+              <p>Enter the best email for booking follow-up, then choose the best follow-up method
                 below.</p>
 
               <label class="contact-field contact-field-static">
@@ -541,11 +543,11 @@
               </label>
 
               <label class="contact-field contact-field-static">
-                <span>Confirmation email</span>
-                <small class="contact-field-hint" id="confirmationEmailHint">This email receives your booking
-                  confirmation; choose a follow-up
+                <span>Contact email</span>
+                <small class="contact-field-hint" id="confirmationEmailHint">This email is used for booking follow-up;
+                  choose a follow-up
                   method below if you want text or DM updates.</small>
-                <input id="confirmationEmailInput" name="Confirmation Email" type="email" placeholder="you@example.com"
+                <input id="confirmationEmailInput" name="email" type="email" placeholder="you@example.com"
                   autocomplete="email" aria-describedby="confirmationEmailHint" required>
               </label>
 
@@ -626,7 +628,7 @@
                     <strong id="confirmInfo">-</strong>
                   </div>
                   <div class="confirmation-item">
-                    <span>Confirmation Email</span>
+                    <span>Contact Email</span>
                     <strong id="confirmEmail">-</strong>
                   </div>
                 </div>
@@ -639,8 +641,8 @@
                 <div class="confirmation-next surface-card">
                   <h4>What&apos;s Next</h4>
                   <ul>
-                    <li>You will receive a confirmation at your provided email address.</li>
-                    <li>SwerbzShotz will get in touch to confirm details and finalize your shoot.</li>
+                    <li>SwerbzShotz will follow up using the contact details you provided.</li>
+                    <li>Your shoot details will be confirmed directly after review.</li>
                   </ul>
                 </div>
 
