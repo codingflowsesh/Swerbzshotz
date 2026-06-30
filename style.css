@@ -408,7 +408,14 @@ input[type="reset"] {
 
 .hero-section,
 .featured-work-section,
-.booking-section {
+.booking-section,
+#about,
+#gallery,
+#graduation-photography,
+#portrait-photography,
+#couples-photography,
+#event-photography,
+#contact {
   scroll-margin-top: 5.85rem;
 }
 
@@ -914,6 +921,22 @@ input[type="reset"] {
 .section-heading p:last-child {
   max-width: 40rem;
   margin: 0.6rem 0 0;
+}
+
+.context-link {
+  color: var(--brand-navy-soft);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(78, 157, 248, 0.45);
+  text-decoration-thickness: 0.11em;
+  text-underline-offset: 0.18em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.context-link:hover,
+.context-link:focus-visible {
+  color: var(--accent-strong);
+  text-decoration-color: currentColor;
 }
 
 .carousel-toolbar,
@@ -1799,6 +1822,7 @@ input[type="reset"] {
   height: 100%;
   padding: 1.55rem;
   overflow: visible;
+  scroll-margin-inline: 0.35rem;
   scroll-snap-align: start;
   touch-action: pan-x pan-y;
   transition:
