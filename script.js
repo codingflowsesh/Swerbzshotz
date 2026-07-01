@@ -555,19 +555,40 @@ function syncCurrentNavLink() {
     return;
   }
 
-  const headerOffset =
-    document.querySelector(".site-header")?.offsetHeight || 0;
+  const headerOffset = siteHeader?.offsetHeight || 0;
   const scrollMarker =
-    window.scrollY + headerOffset + window.innerHeight * 0.16;
-  let activeLink = headerNavSectionLinks[0];
+    window.scrollY + headerOffset + Math.min(window.innerHeight * 0.22, 180);
+  let activeLink = null;
+  let firstLink = null;
+  let firstTargetTop = Number.POSITIVE_INFINITY;
 
   headerNavSectionLinks.forEach((link) => {
     const target = document.querySelector(link.getAttribute("href"));
 
-    if (target && target.offsetTop <= scrollMarker) {
+    if (!target) {
+      return;
+    }
+
+    const targetTop = target.getBoundingClientRect().top + window.scrollY;
+    const rangeElement = target.closest("section") || target;
+    const rangeBottom =
+      rangeElement.getBoundingClientRect().top +
+      window.scrollY +
+      rangeElement.offsetHeight;
+
+    if (targetTop < firstTargetTop) {
+      firstTargetTop = targetTop;
+      firstLink = link;
+    }
+
+    if (scrollMarker >= targetTop && scrollMarker < rangeBottom - 1) {
       activeLink = link;
     }
   });
+
+  if (!activeLink && firstLink && scrollMarker < firstTargetTop) {
+    activeLink = firstLink;
+  }
 
   headerNavSectionLinks.forEach((link) => {
     const isCurrent = link === activeLink;
