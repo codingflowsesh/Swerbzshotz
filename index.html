@@ -35,8 +35,10 @@
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   </noscript>
-  <link rel="preload" as="image" href="assets/galleries/graduation-session/grad-naren-campus.jpg"
-    fetchpriority="high">
+  <link rel="preload" as="image" href="assets/galleries/graduation-session/grad-naren-campus-642.webp"
+    imagesrcset="assets/galleries/graduation-session/grad-naren-campus-428.webp 428w, assets/galleries/graduation-session/grad-naren-campus-642.webp 642w, assets/galleries/graduation-session/grad-naren-campus-855.webp 855w, assets/galleries/graduation-session/grad-naren-campus.webp 1080w"
+    imagesizes="(min-width: 1200px) 627px, (min-width: 992px) 55vw, calc(100vw - 1.5rem)" fetchpriority="high"
+    type="image/webp">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -311,9 +313,16 @@
 
         <div class="hero-card">
           <div class="photo-placeholder has-image hero-photo">
-            <img src="assets/galleries/graduation-session/grad-naren-campus.jpg"
-              alt="UCLA graduate standing on campus between the towers in a blue stole." width="1616" height="1080"
-              loading="eager" fetchpriority="high" decoding="async">
+            <picture>
+              <source type="image/webp"
+                srcset="assets/galleries/graduation-session/grad-naren-campus-428.webp 428w, assets/galleries/graduation-session/grad-naren-campus-642.webp 642w, assets/galleries/graduation-session/grad-naren-campus-855.webp 855w, assets/galleries/graduation-session/grad-naren-campus.webp 1080w"
+                sizes="(min-width: 1200px) 627px, (min-width: 992px) 55vw, calc(100vw - 1.5rem)">
+              <img src="assets/galleries/graduation-session/grad-naren-campus-642.jpg"
+                srcset="assets/galleries/graduation-session/grad-naren-campus-428.jpg 428w, assets/galleries/graduation-session/grad-naren-campus-642.jpg 642w, assets/galleries/graduation-session/grad-naren-campus-855.jpg 855w, assets/galleries/graduation-session/grad-naren-campus.jpg 1080w"
+                sizes="(min-width: 1200px) 627px, (min-width: 992px) 55vw, calc(100vw - 1.5rem)"
+                alt="UCLA graduate standing on campus between the towers in a blue stole." width="1080"
+                height="1616" loading="eager" fetchpriority="high" decoding="async">
+            </picture>
           </div>
         </div>
       </div>
@@ -564,7 +573,7 @@
                 <button class="option-card" type="button" data-session="Graduation Session" aria-pressed="false">
                   <span class="photo-placeholder has-image photo-graduation">
                     <img src="assets/galleries/graduation-session/grad-janine-fountain.jpg"
-                      alt="Graduation portrait session preview near the UCLA fountain" width="1616" height="1080"
+                      alt="Graduation portrait session preview near the UCLA fountain" width="1080" height="1616"
                       loading="lazy" decoding="async">
                   </span>
                   <span class="option-copy">
@@ -578,7 +587,7 @@
                   <span class="photo-placeholder has-image photo-portraits">
                     <img src="assets/galleries/portrait-session/portrait-platform-walk.jpg"
                       alt="Portrait subject walking along a train platform during a lifestyle portrait session."
-                      width="1616" height="1080" loading="lazy" decoding="async">
+                      width="1080" height="1616" loading="lazy" decoding="async">
                   </span>
                   <span class="option-copy">
                     <strong>Portrait Session</strong>
@@ -603,7 +612,7 @@
                 <button class="option-card" type="button" data-session="Event Coverage" aria-pressed="false">
                   <span class="photo-placeholder has-image photo-events">
                     <img src="assets/galleries/event-coverage/event-poolside-candid.jpg"
-                      alt="Guests sharing a candid moment beside a pool during an event." width="1616" height="1080"
+                      alt="Guests sharing a candid moment beside a pool during an event." width="1080" height="1616"
                       loading="lazy" decoding="async">
                   </span>
                   <span class="option-copy">
@@ -1035,7 +1044,7 @@
 
   <a class="mobile-book-button" href="#booking">Book a Shoot</a>
 
-  <script src="gallery-data.min.js?v=20260630-perf" defer></script>
+  <script src="gallery-data.min.js?v=20260630-perf2" defer></script>
   <script src="script.min.js?v=20260630-perf" defer></script>
 </body>
 
