@@ -937,22 +937,6 @@ input[type="reset"] {
   margin: 0.6rem 0 0;
 }
 
-.context-link {
-  color: var(--brand-navy-soft);
-  font-weight: 700;
-  text-decoration: underline;
-  text-decoration-color: rgba(78, 157, 248, 0.45);
-  text-decoration-thickness: 0.11em;
-  text-underline-offset: 0.18em;
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
-}
-
-.context-link:hover,
-.context-link:focus-visible {
-  color: var(--accent-strong);
-  text-decoration-color: currentColor;
-}
-
 .site-footer {
   padding: clamp(1.85rem, 5vw, 3.3rem) 0 clamp(5.75rem, 10vw, 7.8rem);
 }

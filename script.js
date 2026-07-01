@@ -2146,13 +2146,6 @@ setupFooterFaqAnimations();
 setupSectionRevealAnimations();
 syncCurrentNavLink();
 syncHeaderScrollState();
-window.lucide?.createIcons({
-  attrs: {
-    width: 28,
-    height: 28,
-    "stroke-width": 2,
-  },
-});
 
 featuredSummaryButton?.addEventListener("click", () => {
   openShootModal(featuredIndex, featuredSummaryButton);
