@@ -236,6 +236,39 @@ const bookingCalendarState = {
   selectedDate: "",
   selectedTime: "",
 };
+const analyticsEventNames = Object.freeze({
+  bookingFormStart: "booking_form_start",
+  bookingFormSubmit: "booking_form_submit",
+  mobileMenuOpen: "mobile_menu_open",
+});
+const analyticsState = {
+  hasTrackedBookingFormStart: false,
+};
+
+function pushDataLayerEvent(eventName) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: eventName });
+}
+
+// Fires from the existing booking listeners on the first real form interaction only.
+function trackBookingFormStart() {
+  if (analyticsState.hasTrackedBookingFormStart) {
+    return;
+  }
+
+  analyticsState.hasTrackedBookingFormStart = true;
+  pushDataLayerEvent(analyticsEventNames.bookingFormStart);
+}
+
+// Fires only after Formspree confirms a successful submission.
+function trackBookingFormSubmit() {
+  pushDataLayerEvent(analyticsEventNames.bookingFormSubmit);
+}
+
+// Fires from the shared mobile-nav state setter when the menu opens.
+function trackMobileMenuOpen() {
+  pushDataLayerEvent(analyticsEventNames.mobileMenuOpen);
+}
 
 function createDots(container, total, options = {}) {
   if (!container) {
@@ -487,6 +520,12 @@ function setupFooterFaqAnimations() {
 }
 
 function setHeaderNavOpen(isOpen) {
+  const wasOpen = headerNav.classList.contains("is-open");
+
+  if (!wasOpen && isOpen) {
+    trackMobileMenuOpen();
+  }
+
   headerNav.classList.toggle("is-open", isOpen);
   siteHeader?.classList.toggle("is-nav-open", isOpen);
   headerNavToggle.setAttribute("aria-expanded", String(isOpen));
@@ -1164,6 +1203,7 @@ function renderTimeSlots() {
     button.setAttribute("aria-pressed", String(isSelected));
     button.classList.toggle("is-selected", isSelected);
     button.addEventListener("click", () => {
+      trackBookingFormStart();
       bookingCalendarState.selectedTime = timeLabel;
       syncSelectedDateTime();
       dateError.textContent = "";
@@ -1230,6 +1270,7 @@ function renderBookingCalendar() {
 
     if (!isUnavailable) {
       button.addEventListener("click", () => {
+        trackBookingFormStart();
         bookingCalendarState.selectedDate = dateKey;
         bookingCalendarState.selectedTime = "";
         syncSelectedDateTime();
@@ -1728,6 +1769,7 @@ function setSelectedSession(sessionName) {
 }
 
 function beginBookingForSession(sessionName) {
+  trackBookingFormStart();
   setSelectedSession(sessionName);
   showStep(2);
 }
@@ -2437,6 +2479,7 @@ calendarNextMonth?.addEventListener("click", () => {
 
 contactMethodButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    trackBookingFormStart();
     bookingData.contactMethod = button.dataset.method;
     bookingData.contactValue = "";
 
@@ -2473,6 +2516,7 @@ contactMethodButtons.forEach((button) => {
   shootNotesInput,
 ].forEach((input) => {
   input.addEventListener("input", () => {
+    trackBookingFormStart();
     bookingData.confirmationEmail = confirmationEmailInput.value.trim();
     bookingData.contactValue = getActiveContactValue().trim();
     contactError.textContent = "";
@@ -2526,6 +2570,8 @@ async function handleBookingSubmission() {
   try {
     const submittedSnapshot = await sendBookingConfirmation();
     populateConfirmation(submittedSnapshot);
+    // Report the successful Formspree submission immediately before the success state is shown.
+    trackBookingFormSubmit();
     showStep(4);
   } catch (error) {
     console.error("Booking confirmation failed:", error);
