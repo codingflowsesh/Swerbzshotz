@@ -32,7 +32,7 @@ const exploreCategoryItems = [
     alt: "Graduation session preview near the UCLA fountain.",
     images: [
       {
-        src: "assets/galleries/graduation-session/grad-janine-fountain.jpg",
+        src: "assets/images/graduation/ucla-graduate-fountain-seated.jpg",
         alt: "Graduation portrait session preview near the UCLA fountain.",
       },
     ],
@@ -46,7 +46,7 @@ const exploreCategoryItems = [
     alt: "Portrait session preview beside a rail fence.",
     images: [
       {
-        src: "assets/galleries/portrait-session/portrait-platform-walk.jpg",
+        src: "assets/images/portraits/railway-platform-walking-portrait.jpg",
         alt: "Portrait session preview on a train platform.",
       },
     ],
@@ -60,7 +60,7 @@ const exploreCategoryItems = [
     alt: "Couples session preview during an outdoor ceremony.",
     images: [
       {
-        src: "assets/galleries/couples-session/couples-vows.jpg",
+        src: "assets/images/events/wedding-couple-reaction.jpg",
         alt: "Couples session preview during an outdoor ceremony.",
       },
     ],
@@ -74,7 +74,7 @@ const exploreCategoryItems = [
     alt: "Event coverage preview by the pool.",
     images: [
       {
-        src: "assets/galleries/event-coverage/event-poolside-candid.jpg",
+        src: "assets/images/events/wedding-reception-dance.jpg",
         alt: "Event coverage preview by the pool.",
       },
     ],
@@ -107,6 +107,16 @@ const headerNavToggle = document.getElementById("headerNavToggle");
 const siteHeader = document.querySelector(".site-header");
 const siteFooter = document.querySelector(".site-footer");
 const heroPrimaryCta = document.querySelector(".hero-primary-cta");
+const heroBento = document.querySelector("[data-bento-carousel]");
+const bentoScenes = Array.from(
+  heroBento?.querySelectorAll("[data-bento-scene]") || [],
+);
+const bentoDots = Array.from(
+  heroBento?.querySelectorAll("[data-bento-dot]") || [],
+);
+const bentoPrev = heroBento?.querySelector("[data-bento-prev]");
+const bentoNext = heroBento?.querySelector("[data-bento-next]");
+const bentoStatus = heroBento?.querySelector("[data-bento-status]");
 const bookingSection = document.getElementById("booking");
 const mobileBookButton = document.querySelector(".mobile-book-button");
 
@@ -212,8 +222,17 @@ let featuredIndex = 0;
 let featuredSlides = [];
 let activeShootIndex = 0;
 let activeShootImageIndex = 0;
+let activeCustomShoot = null;
 let shootModalCloseTimer = 0;
 let lastModalTrigger = null;
+let bentoIndex = 0;
+let bentoAutoplayTimer = 0;
+let bentoTransitionTimer = 0;
+let bentoRequestId = 0;
+let bentoTouchStartX = 0;
+let bentoTouchStartY = 0;
+let bentoSuppressClickUntil = 0;
+let isBentoHovered = false;
 let isHeroVisible = false;
 let isBookingVisible = false;
 let isFooterVisible = false;
@@ -221,6 +240,9 @@ let navHighlightFrame = 0;
 let featuredSummaryAnimationTimer = 0;
 const footerFaqAnimations = new WeakMap();
 const shootModalTransitionMs = 920;
+const bentoAutoplayMs = 7000;
+const bentoTransitionMs = prefersReducedMotion.matches ? 90 : 720;
+const bentoHydrationPromises = new WeakMap();
 const earliestBookingDate = (() => {
   const date = new Date();
   date.setHours(0, 0, 0, 0);
@@ -2026,8 +2048,12 @@ function getShootModalFocusableElements() {
   );
 }
 
+function getActiveModalShoot() {
+  return activeCustomShoot || featuredWorkItems[activeShootIndex];
+}
+
 function renderShootModalThumbnails() {
-  const shoot = featuredWorkItems[activeShootIndex];
+  const shoot = getActiveModalShoot();
 
   shootModalThumbs.innerHTML = "";
 
@@ -2069,7 +2095,7 @@ function renderShootModalThumbnails() {
 }
 
 function renderShootModal() {
-  const shoot = featuredWorkItems[activeShootIndex];
+  const shoot = getActiveModalShoot();
   const activeImage = shoot.images[activeShootImageIndex];
 
   shootModalSession.textContent = shoot.sessionType;
@@ -2086,7 +2112,7 @@ function renderShootModal() {
 }
 
 function setShootModalImage(index) {
-  const shoot = featuredWorkItems[activeShootIndex];
+  const shoot = getActiveModalShoot();
 
   activeShootImageIndex = (index + shoot.images.length) % shoot.images.length;
   renderShootModal();
@@ -2099,6 +2125,7 @@ function cycleShootModalImage(direction) {
 function openShootModal(index, triggerButton) {
   window.clearTimeout(shootModalCloseTimer);
 
+  activeCustomShoot = null;
   activeShootIndex = index;
   activeShootImageIndex = 0;
   lastModalTrigger = triggerButton || document.activeElement;
@@ -2107,6 +2134,7 @@ function openShootModal(index, triggerButton) {
 
   shootModal.hidden = false;
   document.body.classList.add("modal-open");
+  clearBentoAutoplay();
   shootModalBody.scrollTop = 0;
 
   window.requestAnimationFrame(() => {
@@ -2127,6 +2155,8 @@ function closeShootModal(options = {}) {
 
   shootModalCloseTimer = window.setTimeout(() => {
     shootModal.hidden = true;
+    activeCustomShoot = null;
+    scheduleBentoAutoplay();
 
     if (returnFocus && lastModalTrigger instanceof HTMLElement) {
       lastModalTrigger.focus();
@@ -2186,6 +2216,307 @@ function handleShootModalKeydown(event) {
   }
 }
 
+function clearBentoAutoplay() {
+  window.clearTimeout(bentoAutoplayTimer);
+  bentoAutoplayTimer = 0;
+}
+
+function canRunBentoAutoplay() {
+  return Boolean(
+    heroBento &&
+      bentoScenes.length > 1 &&
+      !document.hidden &&
+      !isBentoHovered &&
+      shootModal.hidden,
+  );
+}
+
+function scheduleBentoAutoplay() {
+  clearBentoAutoplay();
+
+  if (!canRunBentoAutoplay()) {
+    return;
+  }
+
+  bentoAutoplayTimer = window.setTimeout(() => {
+    showBentoScene(bentoIndex + 1);
+  }, bentoAutoplayMs);
+}
+
+function hydrateBentoScene(scene) {
+  if (!scene || scene.dataset.hydrated === "true") {
+    return Promise.resolve();
+  }
+
+  const existingPromise = bentoHydrationPromises.get(scene);
+
+  if (existingPromise) {
+    return existingPromise;
+  }
+
+  const images = Array.from(scene.querySelectorAll("img"));
+
+  scene.querySelectorAll("source[data-srcset]").forEach((source) => {
+    source.srcset = source.dataset.srcset;
+  });
+
+  const loadPromises = images.map((image) => {
+    return new Promise((resolve) => {
+      const finish = () => resolve();
+
+      image.addEventListener("load", finish, { once: true });
+      image.addEventListener("error", finish, { once: true });
+
+      if (image.dataset.src) {
+        image.loading = "eager";
+        image.fetchPriority = "low";
+        image.src = image.dataset.src;
+      }
+
+      if (image.complete && image.naturalWidth > 0) {
+        finish();
+      }
+    });
+  });
+
+  const hydrationPromise = Promise.all(loadPromises).then(() => {
+    scene.dataset.hydrated = "true";
+  });
+
+  bentoHydrationPromises.set(scene, hydrationPromise);
+  return hydrationPromise;
+}
+
+function updateBentoControls() {
+  bentoDots.forEach((dot, index) => {
+    const isActive = index === bentoIndex;
+
+    dot.classList.toggle("is-active", isActive);
+    dot.setAttribute("aria-pressed", String(isActive));
+
+    if (isActive) {
+      dot.setAttribute("aria-current", "true");
+    } else {
+      dot.removeAttribute("aria-current");
+    }
+  });
+}
+
+function queueBentoScenePreload(index) {
+  const scene = bentoScenes[index];
+
+  if (!scene || scene.dataset.hydrated === "true") {
+    return;
+  }
+
+  const preload = () => hydrateBentoScene(scene);
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(preload, { timeout: 1400 });
+  } else {
+    window.setTimeout(preload, 180);
+  }
+}
+
+async function showBentoScene(index, options = {}) {
+  if (!heroBento || bentoScenes.length < 2) {
+    return;
+  }
+
+  const { manual = false } = options;
+  const nextIndex = (index + bentoScenes.length) % bentoScenes.length;
+  const requestId = ++bentoRequestId;
+
+  clearBentoAutoplay();
+
+  if (nextIndex === bentoIndex) {
+    scheduleBentoAutoplay();
+    return;
+  }
+
+  const incomingScene = bentoScenes[nextIndex];
+
+  await hydrateBentoScene(incomingScene);
+
+  if (requestId !== bentoRequestId) {
+    return;
+  }
+
+  const outgoingScene = bentoScenes[bentoIndex];
+
+  window.clearTimeout(bentoTransitionTimer);
+  bentoScenes.forEach((scene) => {
+    if (scene !== outgoingScene && scene !== incomingScene) {
+      scene.classList.remove("is-active", "is-exiting");
+      scene.setAttribute("aria-hidden", "true");
+      scene.setAttribute("inert", "");
+    }
+  });
+
+  outgoingScene.classList.remove("is-active");
+  outgoingScene.classList.add("is-exiting");
+  outgoingScene.setAttribute("aria-hidden", "true");
+  outgoingScene.setAttribute("inert", "");
+
+  incomingScene.classList.remove("is-exiting");
+  incomingScene.classList.add("is-active");
+  incomingScene.setAttribute("aria-hidden", "false");
+  incomingScene.removeAttribute("inert");
+
+  bentoIndex = nextIndex;
+  updateBentoControls();
+
+  if (bentoStatus) {
+    bentoStatus.setAttribute("aria-live", manual ? "polite" : "off");
+    bentoStatus.textContent = `Scene ${bentoIndex + 1} of ${bentoScenes.length}: ${
+      incomingScene.dataset.sceneLabel || "Photography"
+    }`;
+  }
+
+  bentoTransitionTimer = window.setTimeout(() => {
+    outgoingScene.classList.remove("is-exiting");
+  }, bentoTransitionMs);
+
+  queueBentoScenePreload((bentoIndex + 1) % bentoScenes.length);
+  scheduleBentoAutoplay();
+}
+
+function openBentoPhotoModal(scene, triggerButton) {
+  const visiblePhotos = Array.from(
+    scene.querySelectorAll("[data-bento-photo]"),
+  ).filter((button) => button.getClientRects().length > 0);
+  const selectedIndex = visiblePhotos.indexOf(triggerButton);
+
+  if (selectedIndex < 0) {
+    return;
+  }
+
+  const sceneLabel = scene.dataset.sceneLabel || "Photography";
+  const images = visiblePhotos.map((button) => {
+    const image = button.querySelector("img");
+
+    return {
+      src: image?.currentSrc || image?.src || button.dataset.fullSrc || "",
+      alt:
+        button.dataset.photoAlt || image?.alt || `${sceneLabel} photograph`,
+    };
+  });
+
+  window.clearTimeout(shootModalCloseTimer);
+  activeCustomShoot = {
+    title: sceneLabel,
+    sessionType: sceneLabel,
+    photoClass: "photo-nature",
+    alt: images[selectedIndex].alt,
+    images,
+  };
+  activeShootImageIndex = selectedIndex;
+  lastModalTrigger = triggerButton;
+
+  renderShootModal();
+  shootModal.hidden = false;
+  document.body.classList.add("modal-open");
+  clearBentoAutoplay();
+  shootModalBody.scrollTop = 0;
+
+  window.requestAnimationFrame(() => {
+    shootModal.classList.add("is-open");
+    shootModalClose.focus();
+  });
+}
+
+function setupBentoCarousel() {
+  if (!heroBento || bentoScenes.length < 2) {
+    return;
+  }
+
+  bentoScenes[0].dataset.hydrated = "true";
+  updateBentoControls();
+
+  bentoPrev?.addEventListener("click", () => {
+    showBentoScene(bentoIndex - 1, { manual: true });
+  });
+
+  bentoNext?.addEventListener("click", () => {
+    showBentoScene(bentoIndex + 1, { manual: true });
+  });
+
+  bentoDots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      showBentoScene(Number(dot.dataset.bentoDot), { manual: true });
+    });
+  });
+
+  bentoScenes.forEach((scene) => {
+    scene.querySelectorAll("[data-bento-photo]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (Date.now() < bentoSuppressClickUntil) {
+          return;
+        }
+
+        openBentoPhotoModal(scene, button);
+      });
+    });
+  });
+
+  heroBento.addEventListener("mouseenter", () => {
+    isBentoHovered = true;
+    clearBentoAutoplay();
+  });
+
+  heroBento.addEventListener("mouseleave", () => {
+    isBentoHovered = false;
+    scheduleBentoAutoplay();
+  });
+
+  heroBento.addEventListener(
+    "touchstart",
+    (event) => {
+      const touch = event.changedTouches[0];
+      bentoTouchStartX = touch.clientX;
+      bentoTouchStartY = touch.clientY;
+    },
+    { passive: true },
+  );
+
+  heroBento.addEventListener(
+    "touchend",
+    (event) => {
+      const touch = event.changedTouches[0];
+      const deltaX = touch.clientX - bentoTouchStartX;
+      const deltaY = touch.clientY - bentoTouchStartY;
+
+      if (Math.abs(deltaX) < 45 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) {
+        return;
+      }
+
+      bentoSuppressClickUntil = Date.now() + 500;
+      showBentoScene(bentoIndex + (deltaX < 0 ? 1 : -1), { manual: true });
+    },
+    { passive: true },
+  );
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      clearBentoAutoplay();
+    } else {
+      scheduleBentoAutoplay();
+    }
+  });
+
+  const queueInitialPreload = () => {
+    queueBentoScenePreload((bentoIndex + 1) % bentoScenes.length);
+  };
+
+  if (document.readyState === "complete") {
+    queueInitialPreload();
+  } else {
+    window.addEventListener("load", queueInitialPreload, { once: true });
+  }
+
+  scheduleBentoAutoplay();
+}
+
 createDots(featuredDots, featuredWorkItems.length, {
   interactive: true,
   label: "Show featured work",
@@ -2209,6 +2540,7 @@ setupFooterFaqAnimations();
 setupSectionRevealAnimations();
 syncCurrentNavLink();
 syncHeaderScrollState();
+setupBentoCarousel();
 
 featuredSummaryButton?.addEventListener("click", () => {
   openShootModal(featuredIndex, featuredSummaryButton);
