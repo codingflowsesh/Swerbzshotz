@@ -2,84 +2,125 @@ const galleryRegistry = Array.isArray(window.SWERBZ_GALLERIES)
   ? window.SWERBZ_GALLERIES
   : [];
 
-const featuredWorkItems = galleryRegistry.map((gallery) => {
-  const coverAlt = gallery.coverAlt || `${gallery.title} cover image`;
+const featuredWorkItems = galleryRegistry
+  .map((gallery) => {
+    const spotlight = gallery.spotlight || {};
+    const title = spotlight.title || gallery.title || "Featured session";
+    const sourceImages = Array.isArray(gallery.images)
+      ? gallery.images
+      : Array.isArray(gallery.gallery)
+        ? gallery.gallery
+        : [];
+    const desktopImageSources = new Set(
+      sourceImages
+        .map((image) => (typeof image === "string" ? image : image?.src))
+        .filter((src) => src && !/-mobile\.[^.]+$/.test(src))
+        .map((src) => src.replace(/-desktop(\.[^.]+)$/, "$1")),
+    );
+    const coverAlt =
+      spotlight.alt ||
+      gallery.alt ||
+      gallery.coverAlt ||
+      `${title} featured image`;
+    const images = sourceImages
+      .map((image, index) => {
+        const src = typeof image === "string" ? image : image?.src;
+        if (!src) return null;
 
-  return {
-    ...gallery,
-    badge: gallery.badge || `${gallery.category} Gallery`,
-    sessionType: gallery.sessionType || `${gallery.category} Session`,
-    location: gallery.location || gallery.category,
-    dateLabel: gallery.dateLabel || "",
-    meta: gallery.meta || gallery.description,
-    cardPrompt: gallery.cardPrompt || `Tap to open ${gallery.title}`,
-    photoClass: gallery.photoClass || "photo-graduation",
-    alt: coverAlt,
-    images: gallery.images.map((src, index) => ({
-      src,
-      alt: index === 0 ? coverAlt : `${gallery.title} image ${index + 1}`,
-    })),
-  };
-});
+        return {
+          src,
+          alt:
+            image?.alt ||
+            (index === 0 ? coverAlt : `${title} image ${index + 1}`),
+        };
+      })
+      .filter(Boolean)
+      .filter(
+        (image) =>
+          !/-mobile\.[^.]+$/.test(image.src) ||
+          !desktopImageSources.has(
+            image.src.replace(/-mobile(\.[^.]+)$/, "$1"),
+          ),
+      );
+    const image =
+      spotlight.image ||
+      gallery.spotlightDesktopImage ||
+      gallery.coverImage ||
+      gallery.image ||
+      images[0]?.src ||
+      "";
 
-const exploreCategoryItems = [
-  {
-    category: "Graduation",
-    sessionType: "Graduation Session",
-    meta: "Graduation portraits & campus milestones",
-    cta: "View gallery →",
-    photoClass: "photo-graduation",
-    alt: "Graduation session preview near the UCLA fountain.",
-    images: [
-      {
-        src: "assets/images/graduation/ucla-graduate-fountain-seated.jpg",
-        alt: "Graduation portrait session preview near the UCLA fountain.",
-      },
-    ],
-  },
-  {
-    category: "Portrait",
-    sessionType: "Portrait Session",
-    meta: "Personal branding & lifestyle portraits",
-    cta: "View gallery →",
-    photoClass: "photo-portraits",
-    alt: "Portrait session preview beside a rail fence.",
-    images: [
-      {
-        src: "assets/images/portraits/railway-platform-walking-portrait.jpg",
-        alt: "Portrait session preview on a train platform.",
-      },
-    ],
-  },
-  {
-    category: "Couples",
-    sessionType: "Couples Session",
-    meta: "Authentic connection & storytelling",
-    cta: "View gallery →",
-    photoClass: "photo-couples",
-    alt: "Couples session preview during an outdoor ceremony.",
-    images: [
-      {
-        src: "assets/images/events/wedding-couple-reaction.jpg",
-        alt: "Couples session preview during an outdoor ceremony.",
-      },
-    ],
-  },
-  {
-    category: "Event",
-    sessionType: "Event Coverage",
-    meta: "Celebrations, gatherings & highlights",
-    cta: "View gallery →",
-    photoClass: "photo-events",
-    alt: "Event coverage preview by the pool.",
-    images: [
-      {
-        src: "assets/images/events/wedding-reception-dance.jpg",
-        alt: "Event coverage preview by the pool.",
-      },
-    ],
-  },
+    return {
+      ...gallery,
+      title,
+      category: spotlight.category || gallery.category || "Featured Work",
+      date: spotlight.date || gallery.date || gallery.dateLabel || "",
+      location:
+        spotlight.location || gallery.location || gallery.category || "",
+      image,
+      mobileImage:
+        spotlight.mobileImage ||
+        gallery.spotlightMobileImage ||
+        gallery.imageMobile ||
+        image,
+      spotlightPosition:
+        spotlight.position || gallery.spotlightPosition || "50% 50%",
+      spotlightPositionMobile:
+        spotlight.mobilePosition ||
+        gallery.spotlightPositionMobile ||
+        "50% 50%",
+      badge: gallery.badge || `${gallery.category || "Featured Work"} Gallery`,
+      sessionType:
+        gallery.sessionType || `${gallery.category || "Featured Work"} Session`,
+      dateLabel: gallery.dateLabel || gallery.date || "",
+      meta: gallery.meta || gallery.description || "",
+      cardPrompt: gallery.cardPrompt || `Tap to open ${title}`,
+      photoClass: gallery.photoClass || "photo-graduation",
+      alt: coverAlt,
+      images: images.length
+        ? images
+        : image
+          ? [{ src: image, alt: coverAlt }]
+          : [],
+    };
+  })
+  .filter((gallery) => gallery.image);
+
+const exploreCategoryDefinitions = [
+  ["Wildlife", "wildlife-in-focus"],
+  ["Nature", "garden-geometry"],
+  ["Los Angeles", "los-angeles-from-above"],
+  ["Astro / Night", "twilight-shoreline"],
+  ["Macro", "macro-studies"],
 ];
+
+const exploreCategoryImageOverrides = {
+  Wildlife: {
+    src: "assets/images/originals/wildlife/1000044609.jpg",
+    alt: "Hawk feeding outdoors",
+  },
+  Macro: {
+    src: "assets/images/optimized/nature/organic-macro-detail-desktop.webp",
+    alt: "Acorn seed detail photographed at macro scale",
+  },
+};
+
+const exploreCategoryItems = exploreCategoryDefinitions
+  .map(([category, galleryId]) => {
+    const gallery = featuredWorkItems.find((item) => item.id === galleryId);
+
+    if (!gallery) {
+      return null;
+    }
+
+    return {
+      ...gallery,
+      category,
+      categoryImage: exploreCategoryImageOverrides[category] || null,
+      galleryIndex: featuredWorkItems.indexOf(gallery),
+    };
+  })
+  .filter(Boolean);
 
 const bookingData = {
   sessionType: "",
@@ -91,11 +132,9 @@ const bookingData = {
 
 const featuredStage = document.getElementById("featuredStage");
 const featuredDots = document.getElementById("featuredDots");
+const featuredPrev = document.getElementById("featuredPrev");
+const featuredNext = document.getElementById("featuredNext");
 const featuredSummary = document.querySelector(".featured-summary");
-const featuredSummaryLabel = document.getElementById("featuredSummaryLabel");
-const featuredSummarySession = document.getElementById(
-  "featuredSummarySession",
-);
 const featuredSummaryTitle = document.getElementById("featuredSummaryTitle");
 const featuredSummaryLocation = document.getElementById(
   "featuredSummaryLocation",
@@ -118,6 +157,7 @@ const bentoPrev = heroBento?.querySelector("[data-bento-prev]");
 const bentoNext = heroBento?.querySelector("[data-bento-next]");
 const bentoStatus = heroBento?.querySelector("[data-bento-status]");
 const bookingSection = document.getElementById("booking");
+const portfolioSpotlight = document.getElementById("client-galleries");
 const mobileBookButton = document.querySelector(".mobile-book-button");
 
 const shootModal = document.getElementById("shootModal");
@@ -133,7 +173,6 @@ const shootModalPrev = document.getElementById("shootModalPrev");
 const shootModalNext = document.getElementById("shootModalNext");
 
 const categoryTrack = document.getElementById("categoryTrack");
-const categoryDots = document.getElementById("categoryDots");
 const pricingCards = Array.from(document.querySelectorAll(".pricing-card"));
 
 const sessionButtons = Array.from(document.querySelectorAll("[data-session]"));
@@ -236,6 +275,7 @@ let isBentoHovered = false;
 let isHeroVisible = false;
 let isBookingVisible = false;
 let isFooterVisible = false;
+let isPortfolioSpotlightVisible = false;
 let navHighlightFrame = 0;
 let featuredSummaryAnimationTimer = 0;
 const footerFaqAnimations = new WeakMap();
@@ -355,67 +395,6 @@ function updateDotGroup(container, activeIndex) {
   });
 }
 
-function getCategoryCardsPerPage() {
-  if (window.matchMedia("(min-width: 1100px)").matches) {
-    return categoryCards.length;
-  }
-
-  if (window.matchMedia("(min-width: 700px)").matches) {
-    return 2;
-  }
-
-  return 1;
-}
-
-function getCategoryPageCount() {
-  return Math.max(
-    Math.ceil(categoryCards.length / getCategoryCardsPerPage()),
-    0,
-  );
-}
-
-function getCategoryPageIndex(cardIndex) {
-  return Math.floor(cardIndex / getCategoryCardsPerPage());
-}
-
-function renderCategoryDots() {
-  if (!categoryDots) {
-    return;
-  }
-
-  const pageCount = getCategoryPageCount();
-  const pageContainer = categoryDots.parentElement;
-
-  if (pageContainer) {
-    pageContainer.classList.toggle("is-hidden", pageCount <= 1);
-  }
-
-  categoryDots.innerHTML = "";
-
-  if (pageCount <= 1) {
-    return;
-  }
-
-  createDots(categoryDots, pageCount, {
-    interactive: true,
-    label: "Show category page",
-    onSelect: (pageIndex) => {
-      const targetIndex = Math.min(
-        pageIndex * getCategoryCardsPerPage(),
-        categoryCards.length - 1,
-      );
-      categoryCards[targetIndex]?.scrollIntoView({
-        behavior: getMotionBehavior(),
-        inline: "start",
-        block: "nearest",
-      });
-      updateCategoryState(targetIndex);
-    },
-  });
-
-  updateDotGroup(categoryDots, 0);
-}
-
 function updatePressedState(buttons, activeButton) {
   buttons.forEach((button) => {
     const isActive = button === activeButton;
@@ -465,7 +444,10 @@ function toggleFooterFaqItem(item) {
 
   activeAnimation?.cancel();
 
-  if (prefersReducedMotion.matches || typeof answerWrap.animate !== "function") {
+  if (
+    prefersReducedMotion.matches ||
+    typeof answerWrap.animate !== "function"
+  ) {
     item.open = shouldOpen;
     syncFooterFaqExpandedState(item);
     resetFooterFaqAnimation(item, answerWrap);
@@ -594,6 +576,12 @@ function updateMobileBookViewportState() {
     isFooterVisible =
       footerRect.top < window.innerHeight && footerRect.bottom > 0;
   }
+
+  if (portfolioSpotlight) {
+    const spotlightRect = portfolioSpotlight.getBoundingClientRect();
+    isPortfolioSpotlightVisible =
+      spotlightRect.top < window.innerHeight && spotlightRect.bottom > 0;
+  }
 }
 
 function syncStickyUiVisibility() {
@@ -605,8 +593,13 @@ function syncStickyUiVisibility() {
   }
 
   const isMenuOpen = headerNav?.classList.contains("is-open");
+  const shouldHideForPortfolio = isPortfolioSpotlightVisible;
   setMobileBookButtonHidden(
-    isHeroVisible || isBookingVisible || isMenuOpen || isFooterVisible,
+    isHeroVisible ||
+      isBookingVisible ||
+      shouldHideForPortfolio ||
+      isMenuOpen ||
+      isFooterVisible,
   );
   setSiteHeaderHidden(isFooterVisible);
 }
@@ -854,7 +847,6 @@ function buildCategoryTrack() {
     card.className = "category-card";
     card.type = "button";
     card.dataset.category = item.category;
-    card.dataset.session = item.sessionType;
     card.setAttribute("aria-pressed", "false");
 
     const media = document.createElement("span");
@@ -864,23 +856,32 @@ function buildCategoryTrack() {
     image.loading = "lazy";
     image.decoding = "async";
     image.fetchPriority = "low";
-    hydrateGalleryImage(image, item.images[0], item, 0);
+    hydrateGalleryImage(image, item.categoryImage || item.images[0], item, 0);
 
     media.appendChild(image);
 
     const copy = document.createElement("span");
     copy.className = "category-copy";
 
+    const icon = document.createElement("span");
+    icon.className = "category-icon";
+    icon.setAttribute("aria-hidden", "true");
+    const categoryIcons = {
+      Wildlife: "#icon-paw",
+      Nature: "#icon-leaf",
+      "Los Angeles": "#icon-map-pin",
+      "Astro / Night": "#icon-moon",
+      Macro: "#icon-search",
+    };
+    icon.innerHTML = `<svg viewBox="0 0 24 24"><use href="${categoryIcons[item.category] || "#icon-camera"}"></use></svg>`;
+
     const name = document.createElement("span");
     name.className = "category-name";
     name.textContent = item.category;
 
-    const note = document.createElement("span");
-    note.className = "category-note";
-    note.textContent = item.meta;
-
-    copy.append(name, note);
+    copy.append(icon, name);
     card.append(media, copy);
+    card.setAttribute("aria-label", `Open ${item.category} gallery`);
     categoryTrack.appendChild(card);
   });
 
@@ -913,21 +914,20 @@ function bindCategoryCardEvents() {
   categoryCards.forEach((card) => {
     card.addEventListener("click", () => {
       const clickedCategoryIndex = categoryCards.indexOf(card);
+      const item = exploreCategoryItems[clickedCategoryIndex];
       updateCategoryState(clickedCategoryIndex);
-      card.scrollIntoView({
-        behavior: getMotionBehavior(),
-        inline: "start",
-        block: "nearest",
-      });
 
-      if (card.dataset.session) {
-        setSelectedSession(card.dataset.session);
+      if (item?.galleryIndex >= 0) {
+        openShootModal(item.galleryIndex, card);
       }
     });
   });
 }
 
 function buildFeaturedCarousel() {
+  if (!featuredStage || !featuredDots || !featuredWorkItems.length) {
+    return;
+  }
   featuredStage.innerHTML = "";
 
   featuredWorkItems.forEach((item, index) => {
@@ -942,22 +942,61 @@ function buildFeaturedCarousel() {
     const media = document.createElement("div");
     media.className = `featured-slide-media photo-placeholder has-image ${item.photoClass}`;
 
+    const picture = document.createElement("picture");
+    const mobileSource = document.createElement("source");
     const image = document.createElement("img");
-    image.loading = "lazy";
+    image.loading = index === featuredIndex ? "eager" : "lazy";
     image.decoding = "async";
-    image.fetchPriority = "low";
+    image.fetchPriority = index === featuredIndex ? "high" : "low";
     const coverSource = item.coverImage
       ? { src: item.coverImage, alt: item.alt }
       : item.images[0] || { src: "", alt: item.alt };
-    hydrateGalleryImage(image, coverSource, item, 0);
+    const desktopSource = item.image || coverSource.src;
 
-    media.appendChild(image);
+    mobileSource.media = "(max-width: 767px)";
+    mobileSource.dataset.srcset = item.mobileImage || desktopSource;
+    image.dataset.src = desktopSource;
+    image.alt = coverSource.alt;
+    slide.style.setProperty(
+      "--spotlight-position-desktop",
+      item.spotlightPosition || "50% 50%",
+    );
+    slide.style.setProperty(
+      "--spotlight-position-mobile",
+      item.spotlightPositionMobile || item.spotlightPosition || "50% 50%",
+    );
+
+    picture.append(mobileSource, image);
+    media.appendChild(picture);
     slide.append(stackLayer, media);
+
+    slide.setAttribute(
+      "aria-label",
+      `${item.title}. Select to bring this portfolio item forward.`,
+    );
+    slide.setAttribute("role", "button");
+    slide.tabIndex = -1;
 
     slide.addEventListener("click", () => {
       if (index !== featuredIndex) {
         setFeaturedIndex(index);
+        return;
       }
+
+      openShootModal(index, slide);
+    });
+
+    slide.addEventListener("keydown", (event) => {
+      if (index !== featuredIndex) {
+        return;
+      }
+
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
+      }
+
+      event.preventDefault();
+      openShootModal(index, slide);
     });
 
     featuredStage.appendChild(slide);
@@ -966,6 +1005,55 @@ function buildFeaturedCarousel() {
   featuredSlides = Array.from(
     featuredStage.querySelectorAll(".featured-slide"),
   );
+
+  hydrateFeaturedSlide(featuredIndex, true);
+}
+
+function hydrateFeaturedSlide(index, prioritize = false) {
+  const slide = featuredSlides[index];
+  const image = slide?.querySelector("img[data-src]");
+
+  if (!slide || !image || image.dataset.hydrated === "true") {
+    return;
+  }
+
+  const source = slide.querySelector("source[data-srcset]");
+  const item = featuredWorkItems[index];
+  const requestedSrc =
+    image.dataset.src ||
+    item.image ||
+    item.coverImage ||
+    item.images[0]?.src ||
+    "";
+
+  image.dataset.hydrated = "true";
+  image.loading = prioritize ? "eager" : "lazy";
+  image.fetchPriority = prioritize ? "high" : "low";
+
+  if (source?.dataset.srcset) {
+    source.srcset = source.dataset.srcset;
+  }
+
+  hydrateGalleryImage(image, { src: requestedSrc, alt: item.alt }, item, 0);
+}
+
+function queueFeaturedSlideHydration(index) {
+  const total = featuredWorkItems.length;
+  const normalizedIndex = (index + total) % total;
+  const hydrate = () => hydrateFeaturedSlide(normalizedIndex);
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(hydrate, { timeout: 1200 });
+    return;
+  }
+
+  window.setTimeout(hydrate, 180);
+}
+
+function preloadFeaturedNeighbors(index) {
+  [-1, 1, -2, 2].forEach((offset) => {
+    queueFeaturedSlideHydration(index + offset);
+  });
 }
 
 function setFeaturedIndex(index) {
@@ -979,19 +1067,28 @@ function setFeaturedIndex(index) {
 
 function updateFeaturedCarousel(animateSummary = false) {
   const item = featuredWorkItems[featuredIndex];
-  const isMobileFeaturedStack = window.innerWidth < 700;
-  const activeCardYOffset = isMobileFeaturedStack ? "0rem" : "-0.1rem";
-  const sideCardYOffset = isMobileFeaturedStack ? "0.8rem" : "0.6rem";
-  const outerCardYOffset = isMobileFeaturedStack ? "1.45rem" : "1.15rem";
+  if (!item) {
+    return;
+  }
+  const isMobileFeaturedStack = window.innerWidth < 768;
+  const isTabletFeaturedStack =
+    window.innerWidth >= 768 && window.innerWidth < 1024;
+  const sideCardYOffset = isMobileFeaturedStack ? "0.35rem" : "0.7rem";
   const sideCardXOffset = isMobileFeaturedStack
-    ? "clamp(4.8rem, 17vw, 7.8rem)"
-    : "clamp(6.9rem, 23vw, 10.8rem)";
-  const sideCardScale = isMobileFeaturedStack ? "0.8" : "0.82";
+    ? "clamp(11rem, 49vw, 15rem)"
+    : isTabletFeaturedStack
+      ? "clamp(16rem, 32vw, 21rem)"
+      : "clamp(24rem, 25vw, 32rem)";
+  const sideCardScale = isMobileFeaturedStack
+    ? "0.78"
+    : isTabletFeaturedStack
+      ? "0.7"
+      : "0.64";
   const transformStates = {
     0: {
       x: "0rem",
-      y: activeCardYOffset,
-      scale: isMobileFeaturedStack ? "1.04" : "1.08",
+      y: "0rem",
+      scale: "1.025",
       rotate: "0deg",
       opacity: "1",
       z: "5",
@@ -1003,51 +1100,25 @@ function updateFeaturedCarousel(animateSummary = false) {
       x: `calc(-1 * ${sideCardXOffset})`,
       y: sideCardYOffset,
       scale: sideCardScale,
-      rotate: "-3.1deg",
-      opacity: isMobileFeaturedStack ? "0.66" : "0.7",
+      rotate: "0deg",
+      opacity: isMobileFeaturedStack ? "0.5" : "0.56",
       z: "4",
-      saturation: "0.8",
-      brightness: "0.78",
-      blur: "0.9px",
+      saturation: "0.82",
+      brightness: "0.82",
+      blur: "0.8px",
     },
     1: {
       x: sideCardXOffset,
       y: sideCardYOffset,
       scale: sideCardScale,
-      rotate: "3.1deg",
-      opacity: isMobileFeaturedStack ? "0.66" : "0.7",
+      rotate: "0deg",
+      opacity: isMobileFeaturedStack ? "0.5" : "0.56",
       z: "4",
-      saturation: "0.8",
-      brightness: "0.78",
-      blur: "0.9px",
+      saturation: "0.82",
+      brightness: "0.82",
+      blur: "0.8px",
     },
   };
-
-  if (!isMobileFeaturedStack) {
-    transformStates["-2"] = {
-      x: "calc(-1 * clamp(11.2rem, 36vw, 17.4rem))",
-      y: outerCardYOffset,
-      scale: "0.67",
-      rotate: "-5.5deg",
-      opacity: "0.3",
-      z: "3",
-      saturation: "0.68",
-      brightness: "0.6",
-      blur: "1.5px",
-    };
-
-    transformStates[2] = {
-      x: "clamp(11.2rem, 36vw, 17.4rem)",
-      y: outerCardYOffset,
-      scale: "0.67",
-      rotate: "5.5deg",
-      opacity: "0.3",
-      z: "3",
-      saturation: "0.68",
-      brightness: "0.6",
-      blur: "1.5px",
-    };
-  }
   const hiddenState = {
     x: "0rem",
     y: "0rem",
@@ -1060,39 +1131,33 @@ function updateFeaturedCarousel(animateSummary = false) {
     blur: "2px",
   };
 
-  if (featuredSummarySession) {
-    featuredSummarySession.textContent = item.sessionType || item.badge;
-  }
-
-  if (featuredSummaryLabel) {
-    featuredSummaryLabel.textContent = `Viewing ${featuredIndex + 1} of ${featuredWorkItems.length}`;
-  }
-
   if (featuredSummaryTitle) {
     featuredSummaryTitle.textContent = item.title;
   }
 
   if (featuredSummaryLocation) {
-    featuredSummaryLocation.textContent =
-      item.location || item.meta || item.category;
+    featuredSummaryLocation.textContent = item.location || item.category;
   }
 
   if (featuredSummaryDate) {
-    const hasDate = Boolean(item.dateLabel);
+    const hasDate = Boolean(item.date);
     featuredSummaryDate.hidden = !hasDate;
-    featuredSummaryDate.textContent = hasDate ? item.dateLabel : "";
+    featuredSummaryDate.textContent = hasDate ? item.date : "";
   }
 
-  if (featuredSummaryButton) {
-    featuredSummaryButton.setAttribute(
-      "aria-label",
-      `View shoot: ${item.title}`,
-    );
+    if (featuredSummaryButton) {
+      featuredSummaryButton.setAttribute(
+        "aria-label",
+        `View shoot: ${item.title}`,
+      );
   }
 
   if (animateSummary) {
     animateFeaturedSummary();
   }
+
+  hydrateFeaturedSlide(featuredIndex, true);
+  preloadFeaturedNeighbors(featuredIndex);
 
   updateDotGroup(featuredDots, featuredIndex);
 
@@ -1117,26 +1182,15 @@ function updateFeaturedCarousel(animateSummary = false) {
 
     slide.classList.toggle("is-active", isActive);
     slide.classList.toggle("is-hidden", !transformStates[offset]);
-  });
-}
-
-function getCategoryCardIndex() {
-  const trackRect = categoryTrack.getBoundingClientRect();
-  let closestIndex = 0;
-  let closestDistance = Number.POSITIVE_INFINITY;
-
-  categoryCards.forEach((card, index) => {
-    const distance = Math.abs(
-      card.getBoundingClientRect().left - trackRect.left,
+    slide.setAttribute("aria-hidden", String(!isActive));
+    slide.tabIndex = isActive ? 0 : -1;
+    slide.setAttribute(
+      "aria-label",
+      isActive
+        ? `Open ${featuredWorkItems[index].title} gallery`
+        : `${featuredWorkItems[index].title}. Select to bring this portfolio item forward.`,
     );
-
-    if (distance < closestDistance) {
-      closestDistance = distance;
-      closestIndex = index;
-    }
   });
-
-  return closestIndex;
 }
 
 function updateCategoryState(activeIndex) {
@@ -1146,7 +1200,6 @@ function updateCategoryState(activeIndex) {
     card.setAttribute("aria-pressed", String(isActive));
   });
 
-  updateDotGroup(categoryDots, getCategoryPageIndex(activeIndex));
 }
 
 function formatCalendarDateKey(date) {
@@ -1273,11 +1326,7 @@ function renderBookingCalendar() {
   }
 
   for (let day = 1; day <= daysInMonth; day += 1) {
-    const date = new Date(
-      monthStart.getFullYear(),
-      monthStart.getMonth(),
-      day,
-    );
+    const date = new Date(monthStart.getFullYear(), monthStart.getMonth(), day);
     const dateKey = formatCalendarDateKey(date);
     const isSelected = bookingCalendarState.selectedDate === dateKey;
     const isUnavailable = date < earliestBookingDate;
@@ -1407,10 +1456,14 @@ function validateBookingForm() {
   instagramInput.value = instagramValue;
   phoneNumberInput.value = phoneNumberInput.value.trim();
 
-  [fullNameInput, confirmationEmailInput, instagramInput, phoneNumberInput]
-    .forEach((input) => {
-      clearBookingFieldError(input);
-    });
+  [
+    fullNameInput,
+    confirmationEmailInput,
+    instagramInput,
+    phoneNumberInput,
+  ].forEach((input) => {
+    clearBookingFieldError(input);
+  });
 
   syncBookingContactRequirements(preferredContactMethod);
 
@@ -1589,8 +1642,7 @@ function showStep(stepNumber) {
   });
 
   if (bookingStepStatus) {
-    const stepLabel = bookingStepLabels[stepNumber - 1] || "Confirm";
-    bookingStepStatus.textContent = `Step ${stepNumber} of ${stepIndicators.length} - ${stepLabel}`;
+    bookingStepStatus.textContent = `Step ${stepNumber} of ${stepIndicators.length}`;
   }
 
   if (stepper) {
@@ -1724,10 +1776,7 @@ async function sendBookingConfirmation() {
   formData.set("email", snapshot.confirmationEmail);
   formData.set("Session Type", snapshot.sessionType);
   formData.set("Preferred Date/Time", snapshot.preferredDateTime);
-  formData.set(
-    "Preferred Contact Method",
-    snapshot.preferredContactMethod,
-  );
+  formData.set("Preferred Contact Method", snapshot.preferredContactMethod);
   formData.delete("Instagram Handle");
   formData.delete("Phone Number");
 
@@ -1826,10 +1875,14 @@ function resetBookingFlow() {
   sessionError.textContent = "";
   dateError.textContent = "";
   contactError.textContent = "";
-  [fullNameInput, confirmationEmailInput, instagramInput, phoneNumberInput]
-    .forEach((input) => {
-      clearBookingFieldError(input);
-    });
+  [
+    fullNameInput,
+    confirmationEmailInput,
+    instagramInput,
+    phoneNumberInput,
+  ].forEach((input) => {
+    clearBookingFieldError(input);
+  });
 
   showContactField("");
   renderBookingCalendar();
@@ -2010,7 +2063,10 @@ function hydrateGalleryImage(
       return;
     }
 
-    if (imageElement.src === fallbackSrc || imageElement.currentSrc === fallbackSrc) {
+    if (
+      imageElement.src === fallbackSrc ||
+      imageElement.currentSrc === fallbackSrc
+    ) {
       finalizeImage({ naturalWidth: 4, naturalHeight: 5, isFallback: true });
       return;
     }
@@ -2224,10 +2280,10 @@ function clearBentoAutoplay() {
 function canRunBentoAutoplay() {
   return Boolean(
     heroBento &&
-      bentoScenes.length > 1 &&
-      !document.hidden &&
-      !isBentoHovered &&
-      shootModal.hidden,
+    bentoScenes.length > 1 &&
+    !document.hidden &&
+    !isBentoHovered &&
+    shootModal.hidden,
   );
 }
 
@@ -2397,8 +2453,7 @@ function openBentoPhotoModal(scene, triggerButton) {
 
     return {
       src: image?.currentSrc || image?.src || button.dataset.fullSrc || "",
-      alt:
-        button.dataset.photoAlt || image?.alt || `${sceneLabel} photograph`,
+      alt: button.dataset.photoAlt || image?.alt || `${sceneLabel} photograph`,
     };
   });
 
@@ -2519,13 +2574,12 @@ function setupBentoCarousel() {
 
 createDots(featuredDots, featuredWorkItems.length, {
   interactive: true,
-  label: "Show featured work",
+  label: "Show portfolio item",
   onSelect: (index) => {
     setFeaturedIndex(index);
   },
 });
 buildCategoryTrack();
-renderCategoryDots();
 bindCategoryCardEvents();
 buildFeaturedCarousel();
 updateFeaturedCarousel();
@@ -2544,6 +2598,14 @@ setupBentoCarousel();
 
 featuredSummaryButton?.addEventListener("click", () => {
   openShootModal(featuredIndex, featuredSummaryButton);
+});
+
+featuredPrev?.addEventListener("click", () => {
+  setFeaturedIndex(featuredIndex - 1);
+});
+
+featuredNext?.addEventListener("click", () => {
+  setFeaturedIndex(featuredIndex + 1);
 });
 
 featuredStage?.addEventListener("keydown", (event) => {
@@ -2571,7 +2633,10 @@ featuredStage?.addEventListener("keydown", (event) => {
   }
 });
 
-if ("IntersectionObserver" in window && (heroPrimaryCta || bookingSection || siteFooter)) {
+if (
+  "IntersectionObserver" in window &&
+  (heroPrimaryCta || bookingSection || siteFooter)
+) {
   // Hide the floating CTA around the hero, booking section, and footer.
   const headerOffset = siteHeader?.offsetHeight || 0;
   const mobileBookObserver = new IntersectionObserver(
@@ -2619,6 +2684,18 @@ if ("IntersectionObserver" in window && (heroPrimaryCta || bookingSection || sit
   syncStickyUi();
   window.addEventListener("scroll", syncStickyUi, { passive: true });
   window.addEventListener("resize", syncStickyUi);
+}
+
+if ("IntersectionObserver" in window && portfolioSpotlight) {
+  const portfolioSpotlightObserver = new IntersectionObserver(
+    ([entry]) => {
+      isPortfolioSpotlightVisible = entry.isIntersecting;
+      syncStickyUiVisibility();
+    },
+    { threshold: 0.01 },
+  );
+
+  portfolioSpotlightObserver.observe(portfolioSpotlight);
 }
 
 updateMobileBookViewportState();
@@ -2714,65 +2791,6 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-categoryTrack.addEventListener("scroll", () => {
-  window.requestAnimationFrame(() => {
-    updateCategoryState(getCategoryCardIndex());
-  });
-});
-
-categoryTrack.addEventListener("wheel", (event) => {
-  const atStart = categoryTrack.scrollLeft <= 0;
-  const atEnd =
-    categoryTrack.scrollLeft + categoryTrack.clientWidth >=
-    categoryTrack.scrollWidth - 1;
-
-  if (event.deltaX < 0 && atStart) {
-    categoryTrack.classList.add("bounce-right");
-  }
-
-  if (event.deltaX > 0 && atEnd) {
-    categoryTrack.classList.add("bounce-left");
-  }
-});
-
-categoryTrack.addEventListener("animationend", () => {
-  categoryTrack.classList.remove("bounce-left", "bounce-right");
-});
-
-window.addEventListener("resize", () => {
-  window.requestAnimationFrame(renderCategoryDots);
-});
-
-categoryTrack.addEventListener("keydown", (event) => {
-  const currentIndex = categoryCards.indexOf(document.activeElement);
-
-  if (currentIndex < 0) {
-    return;
-  }
-
-  if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") {
-    return;
-  }
-
-  event.preventDefault();
-
-  const direction = event.key === "ArrowRight" ? 1 : -1;
-  const nextIndex =
-    (currentIndex + direction + categoryCards.length) % categoryCards.length;
-  const nextCard = categoryCards[nextIndex];
-
-  nextCard?.focus();
-  nextCard?.scrollIntoView({
-    behavior: getMotionBehavior(),
-    inline: "start",
-    block: "nearest",
-  });
-  updateCategoryState(nextIndex);
-
-  if (nextCard?.dataset.session) {
-    setSelectedSession(nextCard.dataset.session);
-  }
-});
 
 sessionButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -2788,11 +2806,14 @@ calendarPrevMonth?.addEventListener("click", () => {
     1,
   );
 
-  if (previousMonth >= new Date(
-    earliestBookingDate.getFullYear(),
-    earliestBookingDate.getMonth(),
-    1,
-  )) {
+  if (
+    previousMonth >=
+    new Date(
+      earliestBookingDate.getFullYear(),
+      earliestBookingDate.getMonth(),
+      1,
+    )
+  ) {
     bookingCalendarState.visibleMonth = previousMonth;
     renderBookingCalendar();
   }
