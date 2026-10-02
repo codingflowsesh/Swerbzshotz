@@ -164,6 +164,7 @@ const shootModal = document.getElementById("shootModal");
 const shootModalPanel = document.getElementById("shootModalPanel");
 const shootModalBody = document.getElementById("shootModalBody");
 const shootModalSession = document.getElementById("shootModalSession");
+const shootModalCounter = document.getElementById("shootModalCounter");
 const shootModalImage = document.getElementById("shootModalImage");
 const shootModalThumbs = document.getElementById("shootModalThumbs");
 const shootModalViewer = document.getElementById("shootModalViewer");
@@ -2008,20 +2009,12 @@ function createGalleryFallbackArt(shoot) {
   `)}`;
 }
 
-function syncShootModalViewerLayout(dimensions = {}) {
-  if (!shootModalViewerCard) {
-    return;
-  }
-
-  const { naturalWidth = 0, naturalHeight = 0 } = dimensions;
-  const hasImageDimensions = naturalWidth > 0 && naturalHeight > 0;
-  const isPortrait = hasImageDimensions && naturalHeight > naturalWidth * 1.08;
-  const isLandscape = hasImageDimensions && naturalWidth > naturalHeight * 1.08;
-  const isSquare = hasImageDimensions && !isPortrait && !isLandscape;
-
-  shootModalViewerCard.classList.toggle("is-portrait", isPortrait);
-  shootModalViewerCard.classList.toggle("is-landscape", isLandscape);
-  shootModalViewerCard.classList.toggle("is-square", isSquare);
+function syncShootModalViewerLayout() {
+  shootModalViewerCard?.classList.remove(
+    "is-portrait",
+    "is-landscape",
+    "is-square",
+  );
 }
 
 function hydrateGalleryImage(
@@ -2112,6 +2105,7 @@ function renderShootModalThumbnails() {
   const shoot = getActiveModalShoot();
 
   shootModalThumbs.innerHTML = "";
+  shootModalThumbs.classList.toggle("is-single", shoot.images.length === 1);
 
   shoot.images.forEach((image, index) => {
     const thumbButton = document.createElement("button");
@@ -2154,7 +2148,11 @@ function renderShootModal() {
   const shoot = getActiveModalShoot();
   const activeImage = shoot.images[activeShootImageIndex];
 
-  shootModalSession.textContent = shoot.sessionType;
+  shootModalSession.textContent = shoot.title || shoot.sessionType;
+  if (shootModalCounter) {
+    shootModalCounter.textContent = `${activeShootImageIndex + 1} / ${shoot.images.length}`;
+  }
+
   syncShootModalViewerLayout();
   shootModalImage.decoding = "async";
   hydrateGalleryImage(
@@ -2165,6 +2163,7 @@ function renderShootModal() {
     syncShootModalViewerLayout,
   );
   renderShootModalThumbnails();
+  preloadShootModalNeighbors();
 }
 
 function setShootModalImage(index) {
@@ -2176,6 +2175,31 @@ function setShootModalImage(index) {
 
 function cycleShootModalImage(direction) {
   setShootModalImage(activeShootImageIndex + direction);
+}
+
+function preloadShootModalNeighbors() {
+  const shoot = getActiveModalShoot();
+
+  if (!shoot?.images?.length || shoot.images.length < 2) {
+    return;
+  }
+
+  [-1, 1].forEach((offset) => {
+    const imageData =
+      shoot.images[
+        (activeShootImageIndex + offset + shoot.images.length) %
+          shoot.images.length
+      ];
+    const src = imageData?.src;
+
+    if (!src) {
+      return;
+    }
+
+    const image = new Image();
+    image.decoding = "async";
+    image.src = src;
+  });
 }
 
 function openShootModal(index, triggerButton) {
